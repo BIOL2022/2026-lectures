@@ -1,0 +1,7 @@
+project:
+  type: default
+  output-dir: _site
+  title: "BIOL2022 — 2026"
+  render:
+    - "index.qmd"
+    - "lectures/**/*.qmd"
