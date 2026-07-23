@@ -173,7 +173,7 @@ Or, you can use your own software (PSPP, SAS, etc.) as long as you can export yo
 
 # Thanks!
 
-This presentation is based on the [SOLES Quarto reveal.js template](https://github.com/usyd-soles-edu/soles-revealjs) and is licensed under a [Creative Commons Attribution 4.0 International License][cc-by]. A pdf version of this document can be found [here](L00-welcome.pdf).
+This presentation is based on the [SOLES Quarto reveal.js template](https://github.com/usyd-soles-edu/soles-revealjs) and is licensed under a [Creative Commons Attribution 4.0 International License][cc-by].
 
 
 <!-- Links -->

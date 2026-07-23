@@ -400,4 +400,4 @@ We select units at regular intervals from a list of all units in the population.
 
 # Thanks!
 
-This presentation is based on the [SOLES Quarto reveal.js template](https://github.com/usyd-soles-edu/soles-revealjs). A pdf version of this presentation can be found [here](L02a-representative-sampling.pdf).
+This presentation is based on the [SOLES Quarto reveal.js template](https://github.com/usyd-soles-edu/soles-revealjs).

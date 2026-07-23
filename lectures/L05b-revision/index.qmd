@@ -336,7 +336,7 @@ Exam questions will focus on a case study to assess your understanding of key co
 
 # Thanks!
 
-This presentation is based on the [SOLES Quarto reveal.js template](https://github.com/usyd-soles-edu/soles-revealjs) and is licensed under a [Creative Commons Attribution 4.0 International License][cc-by]. A pdf version of this document can be found [here](L05b-revision.pdf).
+This presentation is based on the [SOLES Quarto reveal.js template](https://github.com/usyd-soles-edu/soles-revealjs) and is licensed under a [Creative Commons Attribution 4.0 International License][cc-by].
 
 
 <!-- Links -->

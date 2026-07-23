@@ -400,7 +400,7 @@ We will cover more on models and study design in the next few weeks, but I hope 
 
 # Thanks!
 
-This presentation is based on the [SOLES Quarto reveal.js template](https://github.com/usyd-soles-edu/soles-revealjs) and is licensed under a [Creative Commons Attribution 4.0 International License][cc-by]. A pdf version of this document can be found [here](L01c-Introduction.pdf).
+This presentation is based on the [SOLES Quarto reveal.js template](https://github.com/usyd-soles-edu/soles-revealjs) and is licensed under a [Creative Commons Attribution 4.0 International License][cc-by].
 
 
 <!-- Links -->

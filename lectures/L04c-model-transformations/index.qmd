@@ -230,7 +230,7 @@ A sensitivity analysis is quick and easy to perform, so it is worth doing as soo
 
 # Thanks!
 
-This presentation is based on the [SOLES Quarto reveal.js template](https://github.com/usyd-soles-edu/soles-revealjs) and is licensed under a [Creative Commons Attribution 4.0 International License][cc-by]. A pdf version of this document can be found [here](L04c-model-transformations.pdf).
+This presentation is based on the [SOLES Quarto reveal.js template](https://github.com/usyd-soles-edu/soles-revealjs) and is licensed under a [Creative Commons Attribution 4.0 International License][cc-by].
 
 
 <!-- Links -->
