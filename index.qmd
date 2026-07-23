@@ -9,9 +9,9 @@ title: "BIOL2022 2026 Lectures"
   .lec-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;}
   @media(max-width:680px){.lec-grid{grid-template-columns:1fr;}}
   .lec-card{display:block;text-decoration:none;color:inherit;}
-  .lec-card img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;background:#f0ece8;transition:opacity .15s ease;}
+  .lec-card .lec-title{font-size:.98rem;line-height:1.3;margin:0 0 8px;}
+  .lec-card img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;background:#f0ece8;border:1px solid #d9d3cb;border-radius:0;transition:opacity .15s ease;}
   .lec-card:hover img{opacity:.82;}
-  .lec-card .lec-title{font-size:.98rem;line-height:1.3;margin:8px 0 0;}
 </style>
 
 <div class="week">
@@ -19,38 +19,38 @@ title: "BIOL2022 2026 Lectures"
 ## Week 1: Introduction and fundamentals
 
 <div class="lec-grid">
-<a class="lec-card" href="lectures/L00-welcome-to-beda/index.html"><img src="assets/thumbnails/L00-welcome-to-beda.png" alt="L00 Welcome"><div class="lec-title">Welcome to BEDA</div></a>
-<a class="lec-card" href="lectures/L01-intro-exp-design-analysis/index.html"><img src="assets/thumbnails/L01-intro-exp-design-analysis.png" alt="L01 Intro"><div class="lec-title">Experimental design and analysis</div></a>
+<a class="lec-card" href="lectures/L00-welcome-to-beda/index.html"><div class="lec-title">Welcome to BEDA</div><img src="assets/thumbnails/L00-welcome-to-beda.png" alt="L00 Welcome"></a>
+<a class="lec-card" href="lectures/L01-intro-exp-design-analysis/index.html"><div class="lec-title">Experimental design and analysis</div><img src="assets/thumbnails/L01-intro-exp-design-analysis.png" alt="L01 Intro"></a>
 </div>
 
 ## Week 2: Sampling and modelling
 
 <div class="lec-grid">
-<a class="lec-card" href="lectures/L02a-representative-sampling/index.html"><img src="assets/thumbnails/L02a-representative-sampling.png" alt="L02a"><div class="lec-title">Representative sampling</div></a>
-<a class="lec-card" href="lectures/L02b-linear-model/index.html"><img src="assets/thumbnails/L02b-linear-model.png" alt="L02b"><div class="lec-title">The linear model</div></a>
-<a class="lec-card" href="lectures/L02c-all-linear-model/index.html"><img src="assets/thumbnails/L02c-all-linear-model.png" alt="L02c"><div class="lec-title">All linear models</div></a>
+<a class="lec-card" href="lectures/L02a-representative-sampling/index.html"><div class="lec-title">Representative sampling</div><img src="assets/thumbnails/L02a-representative-sampling.png" alt="L02a"></a>
+<a class="lec-card" href="lectures/L02b-linear-model/index.html"><div class="lec-title">The linear model</div><img src="assets/thumbnails/L02b-linear-model.png" alt="L02b"></a>
+<a class="lec-card" href="lectures/L02c-all-linear-model/index.html"><div class="lec-title">All linear models</div><img src="assets/thumbnails/L02c-all-linear-model.png" alt="L02c"></a>
 </div>
 
 ## Week 3: Assumptions and comparisons
 
 <div class="lec-grid">
-<a class="lec-card" href="lectures/L03a-model-appropriate/index.html"><img src="assets/thumbnails/L03a-model-appropriate.png" alt="L03a"><div class="lec-title">Is my model appropriate?</div></a>
-<a class="lec-card" href="lectures/L03b-ttests/index.html"><img src="assets/thumbnails/L03b-ttests.png" alt="L03b"><div class="lec-title">t-tests</div></a>
+<a class="lec-card" href="lectures/L03a-model-appropriate/index.html"><div class="lec-title">Is my model appropriate?</div><img src="assets/thumbnails/L03a-model-appropriate.png" alt="L03a"></a>
+<a class="lec-card" href="lectures/L03b-ttests/index.html"><div class="lec-title">t-tests</div><img src="assets/thumbnails/L03b-ttests.png" alt="L03b"></a>
 </div>
 
 ## Week 4: Multiple predictors and transformations
 
 <div class="lec-grid">
-<a class="lec-card" href="lectures/L04a-mlr/index.html"><img src="assets/thumbnails/L04a-mlr.png" alt="L04a"><div class="lec-title">Multiple linear regression</div></a>
-<a class="lec-card" href="lectures/L04b-anova/index.html"><img src="assets/thumbnails/L04b-anova.png" alt="L04b"><div class="lec-title">ANOVA</div></a>
-<a class="lec-card" href="lectures/L04c-model-transformations/index.html"><img src="assets/thumbnails/L04c-model-transformations.png" alt="L04c"><div class="lec-title">Model transformations</div></a>
+<a class="lec-card" href="lectures/L04a-mlr/index.html"><div class="lec-title">Multiple linear regression</div><img src="assets/thumbnails/L04a-mlr.png" alt="L04a"></a>
+<a class="lec-card" href="lectures/L04b-anova/index.html"><div class="lec-title">ANOVA</div><img src="assets/thumbnails/L04b-anova.png" alt="L04b"></a>
+<a class="lec-card" href="lectures/L04c-model-transformations/index.html"><div class="lec-title">Model transformations</div><img src="assets/thumbnails/L04c-model-transformations.png" alt="L04c"></a>
 </div>
 
 ## Week 5: Fixed and random effects
 
 <div class="lec-grid">
-<a class="lec-card" href="lectures/L05a-blocking-fixed-random/index.html"><img src="assets/thumbnails/L05a-blocking-fixed-random.png" alt="L05a"><div class="lec-title">Blocking: fixed and random</div></a>
-<a class="lec-card" href="lectures/L05b-revision/index.html"><img src="assets/thumbnails/L05b-revision.png" alt="L05b"><div class="lec-title">Module 1 revision</div></a>
+<a class="lec-card" href="lectures/L05a-blocking-fixed-random/index.html"><div class="lec-title">Blocking: fixed and random</div><img src="assets/thumbnails/L05a-blocking-fixed-random.png" alt="L05a"></a>
+<a class="lec-card" href="lectures/L05b-revision/index.html"><div class="lec-title">Module 1 revision</div><img src="assets/thumbnails/L05b-revision.png" alt="L05b"></a>
 </div>
 
 </div>
