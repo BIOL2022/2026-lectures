@@ -5,3 +5,5 @@ project:
   render:
     - "index.qmd"
     - "lectures/**/*.qmd"
+execute:
+  freeze: auto
