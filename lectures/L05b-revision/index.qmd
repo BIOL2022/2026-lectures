@@ -2,7 +2,7 @@
 title: "Revision: Module 1"
 subtitle: "**B**iology **E**xperimental **D**esign and **A**nalysis (**BEDA**)"
 author:
-  - name: Januar Harianto
+  - name: Dr Januar Harianto
     affiliations: The University of Sydney
 embed-resources: false # embed resources into single HTML file -- enable when ready to publish
 # NOTE: please check _quarto.yml file for more options
@@ -215,7 +215,7 @@ penguins |>
     facet_wrap(~sex) +
     geom_boxplot() +
     theme_cowplot() +
-    theme(legend.position = "botttom")
+    theme(legend.position = "bottom")
 ```
 
 ## Modelling in a nutshell
@@ -238,7 +238,7 @@ penguins |>
     geom_point() +
     geom_smooth(method = "lm") +
     theme_cowplot() +
-    theme(legend.position = "botttom")
+    theme(legend.position = "bottom")
 ```
 
 ## Modelling in a nutshell

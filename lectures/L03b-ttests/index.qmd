@@ -2,7 +2,7 @@
 title: "Introduction to *t*-tests: a special case of the GLM"
 subtitle: "BIOL2022: **B**iology **E**xperimental **D**esign and **A**nalysis (**BEDA**)"
 author:
-  - name: Januar Harianto
+  - name: Dr Januar Harianto
     affiliations: The University of Sydney
 embed-resources: false # embed resources into single HTML file -- enable when ready to publish
 # NOTE: please check _quarto.yml file for more options
@@ -88,7 +88,7 @@ You will:
 ::: fragment
 - A statistician at Guinness Brewery.
 - Developed the *t*-test to monitor the quality of stout (beer), **by comparing barley yields**.
-- Friends with both Karl Pearson and Ronald Fisher (you know [the story](https://biol2022.github.io/L01-intro-exp-design-analysis/#/needless-complexity-why))
+- Friends with both Karl Pearson and Ronald Fisher (you know [the story](../L01-intro-exp-design-analysis/index.html#/needless-complexity-why))
 :::
 :::
 :::

@@ -2,7 +2,7 @@
 title: "L03a: Is my model appropriate?"
 subtitle: "BIOL2022: **B**iology **E**xperimental **D**esign and **A**nalysis (**BEDA**)"
 author:
-  - name: Januar Harianto
+  - name: Dr Januar Harianto
     affiliations: The University of Sydney
 embed-resources: false # embed resources into single HTML file -- enable when ready to publish
 # NOTE: please check _quarto.yml file for more options
@@ -158,7 +158,7 @@ The assumptions under the **GLM** can be remembered using the acronym LINE:
 
 $$ \text{response} = \beta_0 + \beta_1 \cdot predictor + \epsilon $$
 
-### [Residuals](https://biol2022.github.io/L02b-linear-model/#/residuals-hat-epsilon)
+### [Residuals](../L02b-linear-model/index.html#/residuals-hat-epsilon)
 
 - Since everything else in the model is *fixed*, the residuals capture the variability in data.
 - Assumptions can therefore be checked using the residuals, regardless of how complex the model becomes (e.g. multiple predictors).
