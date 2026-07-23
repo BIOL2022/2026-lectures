@@ -2,6 +2,17 @@
 title: "BIOL2022 2026 Lectures"
 ---
 
-# Lectures
+# BIOL2022 2026 Lectures
 
-(Lecture links added once decks are migrated.)
+- [L00 Welcome](lectures/L00-welcome-to-beda/index.html)
+- [L01 Intro: experimental design and analysis](lectures/L01-intro-exp-design-analysis/index.html)
+- [L02a Representative sampling](lectures/L02a-representative-sampling/index.html)
+- [L02b Linear model](lectures/L02b-linear-model/index.html)
+- [L02c All linear model](lectures/L02c-all-linear-model/index.html)
+- [L03a Model-appropriate](lectures/L03a-model-appropriate/index.html)
+- [L03b t-tests](lectures/L03b-ttests/index.html)
+- [L04a Multiple linear regression](lectures/L04a-mlr/index.html)
+- [L04b ANOVA](lectures/L04b-anova/index.html)
+- [L04c Model transformations](lectures/L04c-model-transformations/index.html)
+- [L05a Blocking: fixed and random](lectures/L05a-blocking-fixed-random/index.html)
+- [L05b Revision](lectures/L05b-revision/index.html)
