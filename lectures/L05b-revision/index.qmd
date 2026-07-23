@@ -1,0 +1,343 @@
+---
+title: "Revision: Module 1"
+subtitle: "**B**iology **E**xperimental **D**esign and **A**nalysis (**BEDA**)"
+author:
+  - name: Januar Harianto
+    affiliations: The University of Sydney
+embed-resources: false # embed resources into single HTML file -- enable when ready to publish
+# NOTE: please check _quarto.yml file for more options
+format:
+  ochre-revealjs: default
+---
+
+
+```{r setup}
+#| include: false
+
+library(tidyverse)
+library(palmerpenguins)
+library(gtsummary)
+library(gt)
+library(rstatix)
+library(emmeans)
+library(patchwork)
+library(cowplot)
+library(ggdist)
+library(gghalves)
+data(penguins)
+```
+
+# You have made it to the end of Module 1!
+
+Please complete the Assessment Quiz for Module 1 by **THIS FRIDAY**, worth **10%** of your final grade.
+
+# What have we learnt?
+
+::: fragment
+1. Study design: IMPORTANT.
+2. (Almost) everything is a **general linear model**.
+3. Block what you can, randomise what you cannot (**controls**).
+:::
+
+## Experimental design
+
+::: fragment
+There is no *magical* statistical method that will make up for a poorly designed study.
+
+### 🗑️ Garbage in ▶ Garbage out 💩
+
+:::
+
+::: fragment
+### Abstraction comes before data collection
+
+:::
+
+::: fragment
+The **abstraction process** defines the problem, question, and hypothesis before collecting data, and includes:
+
+- Formulating the model i.e. the relationship between the **response** and **predictor/explanatory** variables.
+- Thinking about sources of variation and ensuring that the study design can account for them, i.e. **blocking** and **randomisation**.
+- Deciding on the appropriate statistical model to analyse the data (even without the data) by considering the structure of each variable (**categorical** or **continuous**).
+:::
+
+
+# Modelling
+## What is a model?
+::: fragment
+A way to describe the **relationship** between the response variable and the explanatory variable(s).
+
+$$y \sim x$$
+
+- $y$ is influenced by $x$.
+- A change in $y$ is dependent on $x$.
+- $y$ is the response to the explanatory variable $x$.
+- **$y$ is a function of $x$.**
+:::
+
+:::: fragment
+If you can plot it, you have got a model.
+::::
+
+## Modelling in a nutshell
+### $response \sim \mu$
+
+::: fragment
+> $y$ can be explained by a constant (e.g. mean or $\mu$)
+:::
+
+::: fragment
+```{r}
+ggplot(penguins, aes(x = body_mass_g)) +
+    geom_histogram(alpha = .6) +
+    geom_vline(
+        xintercept = mean(penguins$body_mass_g,
+            na.rm = TRUE
+        ),
+        color = "red"
+    ) +
+    theme_cowplot()
+```
+
+:::
+
+<!-- For models like these, it might be "simpler" to perform a *t*-test than to run a GLM, but it really depends on your platform of choice:
+
+- [**R**]{style="color:red"}: ***t*-test**: `t.test(y ~ x, data)`; **GLM**: `lm((y - µ) ~ 1, data)`
+- [**Jamovi**]{style="color:green"}: lots of clicking into things and changing data if you use a GLM, one-step if using *t*-test option. -->
+
+## Modelling in a nutshell
+### $response \sim x$
+
+::: fragment
+> The *response* can be explained by *a predictor*.
+:::
+
+::: fragment
+### When the predictor is [CONTINUOUS]{style="color:blue"}
+```{r}
+#| fig-height: 4
+ggplot(penguins, aes(x = body_mass_g, y = flipper_length_mm)) +
+    geom_point() +
+    geom_smooth(method = "lm") +
+    theme_cowplot()
+```
+:::
+
+
+## Modelling in a nutshell {auto-animate=true}
+### $response \sim x$
+
+> The *response* can be explained by *a predictor*.
+
+### When the predictor is [CATEGORICAL]{style="color:orange"}
+
+## Modelling in a nutshell {auto-animate=true}
+
+### When the predictor is [CATEGORICAL]{style="color:orange"}
+
+```{r}
+p1 <- ggplot(penguins, aes(y = body_mass_g, x = species)) +
+    geom_boxplot() +
+    theme_cowplot()
+p1
+```
+
+## Modelling in a nutshell
+
+### When the predictor is [CATEGORICAL]{style="color:orange"}
+
+```{r}
+p2 <- ggplot(penguins, aes(y = body_mass_g, x = species)) +
+    geom_boxplot(width = .2) +
+    ggdist::stat_halfeye(
+        aes(fill = species),
+        adjust = .33, ## bandwidth
+        width = .67,
+        color = NA, ## remove slab interval
+        position = position_nudge(x = .15)
+    ) +
+    ggdist::stat_dots(
+        side = "left",
+        dotsize = .4,
+        alpha = .5,
+        position = position_nudge(x = -.2)
+    ) +
+    theme_cowplot() +
+    scale_fill_brewer(palette = "Set2") +
+    theme(legend.position = "none")
+p2
+```
+
+
+
+## Modelling in a nutshell
+### $response \sim x_1 + x_2$
+
+::: fragment
+> The *response* can be explained by a linear combination of two predictors, $x_1$ and $x_2$.
+:::
+
+::: fragment
+### When both predictors are [CONTINUOUS]{style="color:blue"}
+
+```{r}
+#| fig-height: 3
+ggplot(
+    penguins,
+    aes(
+        x = body_mass_g,
+        y = bill_length_mm, color = flipper_length_mm
+    )
+) +
+    geom_point(size = 2, alpha = .8) +
+    geom_smooth(method = "lm") +
+    scale_colour_viridis_c() +
+    theme_cowplot()
+```
+
+:::
+
+
+## Modelling in a nutshell
+### $response \sim x_1 + x_2$
+
+> The *response* can be explained by a linear combination of two predictors, $x_1$ and $x_2$.
+
+
+### When both predictors are [CATEGORICAL]{style="color:orange"}
+
+```{r}
+#| fig-height: 3
+penguins |>
+    drop_na(sex) |>
+    ggplot(aes(y = body_mass_g, x = species)) +
+    facet_wrap(~sex) +
+    geom_boxplot() +
+    theme_cowplot() +
+    theme(legend.position = "botttom")
+```
+
+## Modelling in a nutshell
+### $response \sim x_1 + x_2$
+
+> The *response* can be explained by a linear combination of two predictors, $x_1$ and $x_2$.
+
+
+### When both predictors are [CONTINUOUS]{style="color:blue"} and [CATEGORICAL]{style="color:orange"}
+
+```{r}
+#| fig-height: 3
+penguins |>
+    drop_na(sex) |>
+    ggplot(aes(
+        x = flipper_length_mm,
+        y = body_mass_g,
+        colour = sex
+    )) +
+    geom_point() +
+    geom_smooth(method = "lm") +
+    theme_cowplot() +
+    theme(legend.position = "botttom")
+```
+
+## Modelling in a nutshell
+### $response \sim x_1 + x_2 + \dots + x_n$
+
+::: fragment
+> $y$ can be explained by a linear combination of $n$ predictors.
+:::
+
+::: fragment
+In this case, plotting is not quite useful, and it might be better to explore the summary tables (ANOVA or regression) to understand the relationship between the response and predictors.
+
+:::
+
+# Assumptions of a model
+
+
+## LINE
+
+A model should meet assumptions like how a job applicant should meet the job requirements. Are they fit for the task and outcome?
+
+Always check the assumptions ***before*** interpreting the results.
+
+- **L**inearity - use residual vs fitted plot
+- **I**ndependence - not checked
+- **N**ormality - use QQ-plot 
+- **E**qual variance - use residual vs fitted plot and/or 
+
+
+## Notes on assumptions
+
+### Normality
+- **Avoid using formal tests** (e.g. Shapiro-Wilk, Levene's) to check assumptions, unless sample size is so small that visual inspection is difficult.
+- If sampling is random and representative, the **Central Limit Theorem** will ensure that the distribution of the sample means will be approximately normal.
+- **Transformations** can be used to meet assumptions.
+
+### Equal variance
+
+- **Homoscedasticity**: the variance of the residuals is constant across all levels of the predictor.
+- Draw a perimeter around the points in a residual plot! if what you see is not a circle or rectangle, then you may have a problem.
+- **Transformations** can be used to meet assumptions.
+
+##
+
+```{r}
+par(mfrow = c(1, 4))
+plot(lm(flipper_length_mm ~ body_mass_g, data = penguins))
+```
+
+**Useful resource**: [How to interpret a QQ-plot?](https://stats.stackexchange.com/a/101290)
+
+# Exam
+
+## What to expect (Module 1)
+
+::: incremental
+- **Long answer questions** (but this applies to all modules).
+- You will be asked to **interpret** the results of a statistical analysis.
+- You will be asked to explain one or more study design concepts, e.g. pseudoreplication, with **example(s)**.
+- You *may* be asked to *re-design* a study to address a specific issue.
+- **No coding**
+- **No calculations**
+:::
+
+
+## Explain....
+
+Exam questions will focus on a case study to assess your understanding of key concepts. Some critical thinking will be required. If you can demonstrate a deep understanding of concepts like below, you will be well prepared:
+
+- **What is confounding?** How does it influence the interpretation of study results? Explain with **examples**.
+- Explain the purpose of the four **assumptions** of linear models (LINE). 
+- For each assumption, describe a scenario where **violating** it would lead to misleading conclusions about the relationship between a predictor and a response variable.
+
+## Interpret...
+
+- A model is presented to you in empirical form. Can you describe its key features and the **relationships** it suggests between variables?
+- An experiment was done, and its results analysed. You see ANOVA, regression summary and post-hoc tables. Are you able to pick out the **main findings** and their **implications**?
+  - How would you interpret **coefficients** and **95% confidence intervals**?
+  - What are **pairwise comparisons** and how are they interpreted in the context of **post-hoc** results?
+  - When there are significant **interactions** in a model, how would you approach interpreting the **main effects**?
+  - Draw a figure to illustrate the relationship between the predictor/explanatory and response variables (**boxplot, scatterplot**)
+
+
+## Re-design...
+
+- We may ask you to **critique** a study design and suggest improvements, perhaps to address potential biases or limitations in the original design.
+- You may also be asked to propose a completely **new** study design to investigate a specific research question.
+- A flawed study design was identified and you are asked to re-design the study to **address** the identified **issues**.
+
+## Week 13: revision
+
+- Lectures will be dedicated to revision 
+- I will run a mock exam during the practicals
+- **We will NOT provide past exam papers**
+
+# Thanks!
+
+This presentation is based on the [SOLES Quarto reveal.js template](https://github.com/usyd-soles-edu/soles-revealjs) and is licensed under a [Creative Commons Attribution 4.0 International License][cc-by]. A pdf version of this document can be found [here](L05b-revision.pdf).
+
+
+<!-- Links -->
+[cc-by]: http://creativecommons.org/licenses/by/4.0/

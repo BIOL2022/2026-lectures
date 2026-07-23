@@ -1,0 +1,408 @@
+---
+title: "Modelling fundamentals: a linear model with a single, continuous $X$"
+subtitle: "BIOL2022: **B**iology **E**xperimental **D**esign and **A**nalysis (**BEDA**)"
+author:
+  - name: Dr Januar Harianto
+    affiliations: The University of Sydney
+embed-resources: false # embed resources into single HTML file -- enable when ready to publish
+# NOTE: please check _quarto.yml file for more options
+scrolling: true
+format:
+  ochre-revealjs: default
+---
+
+```{r setup}
+#| include: false
+if (!require("pacman")) install.packages("pacman", repos = "http://cran.us.r-project.org")
+pacman::p_load(tidyverse, cowplot, gganimate, palmerpenguins, patchwork, HistData, broom, gt, gtsummary)
+pacman::p_load_gh("datalorax/equatiomatic")
+```
+
+# Learning objectives
+
+You should:
+
+- [ ] Understand the concept of a (general) linear model.
+- [ ] Be able to come up with a linear model equation and interpret the coefficients and error term.
+- [ ] Be able to interpret the results of a linear model.
+- [ ] Understand that a linear model needs to be validated by checking assumptions.
+- [ ] Be able to design a study with linear modelling in mind.
+
+# Introduction to linear modelling 
+
+> “Cars with flames painted on the hood might get more speeding tickets. Are the flames making the car go fast? No. Certain things just go together. And when they do, they are correlated. **It is the darling of all human errors to assume, without proper testing, that one is the cause of the other.**” 
+
+― Barbara Kingsolver, [Flight Behavior](https://en.wikipedia.org/wiki/Flight_Behavior) (2012)
+
+## Origin
+::: columns
+::: {.fragment .column width=30%} 
+![Adrien-Marie Legendre (1752–1833), French Mathematician, first introduced the method of least squares in 1806. No known portrait of Legendre exists. Source: [Wikipedia](https://en.wikipedia.org/wiki/Adrien-Marie_Legendre)](assets/legendre_med.jpg){height=300px}
+:::
+:::: {.fragment .column width=30%} 
+![Carl Friedrich Gauss (1777–1855), German mathematician, astronomer, and physicist. Published the method of least squares in 1809. Source: [Wikipedia](https://en.wikipedia.org/wiki/Carl_Friedrich_Gauss)](assets/gauss.jpg){height=300px}
+:::
+
+:::: {.fragment .column width=30%} 
+![Francis Galton (1822–1911), cousin of Charles Darwin, inventor of the regression line and the correlation coefficient. Source: [Wikipedia](https://en.wikipedia.org/wiki/Francis_Galton)](assets/galton.jpg){height=300px}
+:::
+:::
+
+## Galton's data 
+
+- 928 children of 205 pairs of parents. 
+- Height of parents and children measured in inches.
+- Size classes were binned (hence data looks discrete).
+
+## Scatterplot
+
+```{r}
+p1 <- ggplot(Galton, aes(x = parent, y = child)) +
+  geom_point(alpha = .2, size = 3, colour = "firebrick") +
+  labs(x = "Parent height (inches)", y = "Child height (inches)") +
+  theme_cowplot() +
+  geom_blank()
+p1
+```
+
+We want to explain this *noisy* relationship...
+
+## Regression line
+
+```{r}
+p2 <- ggplot(Galton, aes(x = parent, y = child)) +
+  geom_point(alpha = .2, size = 3, colour = "firebrick") +
+  labs(x = "Parent height (inches)", y = "Child height (inches)") +
+  theme_cowplot() +
+  geom_smooth(method = "lm")
+p2
+```
+
+We want to explain this *noisy* relationship... **using a deterministic model, i.e. a fixed equation.**
+
+
+
+# How does linear modelling work?
+
+# Least squares
+
+> The method of least squares is the **automobile of modern statistical analysis**: despite its limitations, occasional accidents and incidental pollution, it and its numerous variations, extensions, and related conveyances **carry the bulk of statistical analyses**, and are known and valued by nearly all.
+
+-- Stigler, 1981 (emphasis added)
+
+## Residuals, $\hat \epsilon$
+
+$$ \color{firebrick}{\hat{\epsilon_i}} = \color{royalblue}{y_i} - \color{forestgreen}{\hat{y_i}} $$
+
+. . .
+
+```{r}
+#| code-fold: true
+# simulate example data
+set.seed(340)
+x <- runif(8, 0, 30)
+y <- 5 * x + rnorm(8, 0, 40)
+df <- data.frame(x, y)
+
+# fit linear model, add residual vertical lines as arrows
+mod <- lm(y ~ x, data = df)
+p1 <- ggplot(df, aes(x, y)) +
+  geom_point() +
+  geom_segment(aes(xend = x, yend = fitted(mod)),
+    arrow = arrow(length = unit(0.2, "cm")),
+    color = "royalblue"
+  ) +
+  labs(x = "x", y = "y")
+
+p1 +
+  geom_smooth(method = "lm", se = FALSE, color = "firebrick") +
+  annotate("text",
+    x = 6.3, y = -6, size = 7,
+    label = expression(hat(epsilon[i])), colour = "royalblue"
+  ) +
+  annotate("text",
+    x = 5.6, y = 25, size = 7,
+    label = expression(hat(y[i])), colour = "forestgreen"
+  ) +
+  annotate("text",
+    x = 5.6, y = -36, size = 7,
+    label = expression(y[i]), colour = "firebrick"
+  ) +
+  theme_cowplot()
+```
+
+
+## How do we fit a line?
+
+*Minimise* the sum of the squared residuals:
+
+$$\color{firebrick}{argmin_{\beta_0, \beta_1}} \sum_{i=1}^n (y_i - \color{royalblue}{(\beta_0 + \beta_1 x_i)})^2$$ 
+
+::: columns
+::: {.column width=50%}
+![[Source](https://github.com/Enchufa2/ls-springs)](assets/leastsquares.gif){fig-align="left"}
+
+:::
+::: {.column width=50%}
+###
+
+::: incremental
+1. Draw a line.
+2. Calculate the residuals for each point.
+3. Square the residuals, sum them up.
+4. Repeat for all possible lines.
+5. Choose the line with the smallest sum of squared residuals.
+6. **Calculate the slope and intercept of that line.**
+:::
+
+:::
+:::
+
+
+
+# The linear model
+
+## Linear regression {auto-animate="true"}
+
+A statistical method that fits a linear model equation to explain the relationship between two variables, $x$ and $y$.
+The relationship is a **general linear model** that has the following form:
+
+$$y = c + mx + \epsilon$$
+
+where $\epsilon$ is the error term that accounts for the variability in $y$ that is not explained by $x$.
+
+::: fragment
+**In other words, we want to explain that changes in $y$ can be estimated by the slope $m$ and the intercept $c$.**
+:::
+
+
+
+## Modelling {auto-animate="true"}
+
+It would be useful to understand that in:
+
+ $$y = \color{royalblue}{c + mx} + \color{red}{\epsilon}$$
+
+we are fitting a *deterministic* straight line equation [$c + mx$]{style="color: royalblue"} to the data, with an *error* term [$\epsilon$]{style="color: red"} that accounts for the variability in $y$ that is not explained by $x$. Here are more ways to think about it:
+
+::: fragment
+
+- Response = [Prediction]{style="color: royalblue"} + [Error]{style="color: red"}
+- Response = [Signal]{style="color: royalblue"} + [Noise]{style="color: red"}
+- Response = [Deterministic]{style="color: royalblue"} + [Random]{style="color: red"}
+- Response = [Explainable]{style="color: royalblue"} + [Everything else]{style="color: red"}
+
+:::
+
+
+## What are we checking? {auto-animate="true"}
+
+$$y = \color{royalblue}{c + mx} + \color{red}{\epsilon}$$
+
+- Estimate the coefficients (intercept c and slope m).
+- **Once fitted, the line is fixed**; only the errors vary.
+- Assessment of the model rests on assessing the errors, *because nothing else changes*.
+
+:::fragment
+![It is just about the errors... source: Tim & Eric Awesome Show, Great Job! Episode 3 of season 4.](assets/mind_blown.gif){height=200px fig-align="left"}
+
+:::
+
+## Anatomy of a linear model
+
+$$y = c + mx + \epsilon$$
+can be expressed as 
+
+::: fragment
+
+$$y_i = \beta_0 + \beta_1 x_i + \epsilon_i$$
+
+where $y_i$ is the $i$-th observation of $y$, $x_i$ is the $i$-th observation of $x$, and $\epsilon_i$ is the $i$-th observation of the error term.
+
+:::
+
+
+::: fragment
+
+The model is a **general linear model** with coefficients $\beta_0$ and $\beta_1$ that are estimated from the data. These coefficients represent the intercept and slope of the linear equation, respectively.
+
+:::
+
+## Fitting Galton's data 
+
+Fitting a linear model will generally produce a result that looks like this:
+
+```{r}
+#| echo: true
+#| code-fold: true
+fit <- lm(child ~ parent, data = Galton)
+summary_table <-
+  fit |>
+  tbl_regression(intercept = TRUE, show_single_row = everything()) |>
+  modify_column_unhide(columns = c(statistic, std.error)) |>
+  add_glance_table(include = c(r.squared, adj.r.squared))
+summary_table
+```
+
+::: fragment
+And this results in the following model:
+
+```{r}
+#| echo: false
+fitlatex <- extract_eq(fit, use_coefs = TRUE)
+fitlatex
+```
+
+
+- **Beta** coefficients are the **estimated** coefficients of the linear model.
+- **SE** tells us how much the coefficient estimate might vary from the true value.
+- **95% CI** gives us a range of values that we are 95% confident contains the true coefficient.
+- **R-squared** tells us how much of the variability in the response variable is explained by the model. The **adjusted R-squared** adjusts for the number of predictors in the model (in this case, just one).
+
+Not all of these metrics are shown in all statistical outputs, and their availability may depend on the specific modelling function used.
+:::
+
+## Interpretation of the model 
+
+```{r}
+#| echo: false
+fitlatex
+```
+
+::: fragment
+
+```{r}
+#| echo: false
+extract_eq(fit, use_coefs = FALSE, intercept = "beta")
+```
+
+$$y = c + mx + \epsilon$$
+:::
+
+::: fragment
+
+- The **intercept** $\beta_0$ is the expected value of $y$ when $x = 0$.
+- The **slope** $\beta_1$ is the change in $y$ for a one-unit change in $x$.
+- The **error term** $\epsilon_i$ is the variability in $y$ that is not explained by $x$.
+:::
+
+## Results
+
+```{r}
+#| echo: true
+#| code-fold: true
+summary_table
+```
+
+::: {.fragment}
+The linear regression analysis revealed a significant positive relationship between parent height and child height (β = 0.65, R^2^ = 0.21, p < 0.001). This indicates that for every one-inch increase in parent height, the child's height is estimated to increase by 0.65 inches.
+:::
+
+
+## Example 2: penguins
+
+
+```{r}
+#| echo: true
+#| code-fold: true
+adelie <- penguins |> filter(species == "Adelie")
+fit_adelie <- lm(body_mass_g ~ flipper_length_mm, data = adelie)
+fit_adelie |>
+  tbl_regression(intercept = TRUE) |>
+  add_glance_table(include = c(r.squared, adj.r.squared))
+```
+
+::: {.fragment}
+The results indicate a significant positive relationship between flipper length and body mass in Adelie penguins (β = 33, R^2^ = 0.22, p < 0.001) indicating that for every 1 mm increase in flipper length, the body mass is expected to increase by 33 grams. Based on the R^2^ value he model explains approximately 22% of the variance in body mass.
+:::
+
+
+## Example 3: iris
+
+```{r}
+#| echo: true
+#| code-fold: true
+# Subset iris data for setosa species only
+setosa <- iris |> filter(Species == "setosa")
+
+# Fit linear model
+fit_setosa <- lm(Petal.Length ~ Sepal.Width, data = setosa)
+
+# Display results
+fit_setosa |>
+  tbl_regression(intercept = TRUE) |>
+  add_glance_table(include = c(r.squared, adj.r.squared))
+```
+
+::: {.fragment}
+The analysis found no significant relationship between sepal width and petal length in *Iris setosa* (β = 0.08, p = 0.2). The model explains only about 3% of the variance in petal length (R^2^ = 0.032), and the confidence interval for the slope includes zero. This indicates that sepal width is not a meaningful predictor of petal length in this species.
+
+Importantly: 
+
+- **Non-significant results are still valid results**: they tell us something important about the data
+- **Report the actual p-value** (do not just say "p > 0.05")
+- **Acknowledge the low explanatory power** (low R^2^)
+- **Avoid over-interpreting**, do not force biological explanations for non-significant relationships
+:::
+
+## Example 4: air quality
+
+```{r}
+#| echo: true
+#| code-fold: true
+# Remove missing values and fit linear model
+air_clean <- airquality |> filter(!is.na(Solar.R), !is.na(Wind))
+fit_air <- lm(Wind ~ Solar.R, data = air_clean)
+
+# Display results
+fit_air |>
+  tbl_regression(intercept = TRUE) |>
+  add_glance_table(include = c(r.squared, adj.r.squared))
+```
+
+::: {.fragment}
+The analysis shows no significant relationship between solar radiation and wind speed (β = 0.00, 95% CI: -0.01 to 0.00, p = 0.5). The model does not explain much of the variance in wind speed (R^2^ = 0.003). This result indicates that solar radiation and wind speed are influenced by different meteorological processes and are not expected to be directly related.
+:::
+
+
+## BUT WAIT! How do we know if the model is any good?
+
+- Before we can interpret the results of a linear model, we need to check if the model is a good "fit".
+- Nothing will stop you from fitting a linear model to data, just as nothing can stop **me** from fitting a non-linear model to the same data.
+
+::: fragment
+![](assets/diffmodels.png){height=500px}
+
+**Quick check**: Which is the better model, red or blue?
+:::
+
+# Assessing the validity of the linear model
+
+## Assumptions of linear regression
+
+Remember the acronym **LINE** for the key assumptions:
+
+- **L**inearity: Errors ($\epsilon$) are randomly scattered around the predicted values.
+- **I**ndependence: Errors ($\epsilon$) are independent of each other.
+- **N**ormality: Errors ($\epsilon$) follow a normal distribution.
+- **E**qual Variance: Errors ($\epsilon$) have constant variance (homoscedasticity).
+
+**These assumptions apply to the errors ($\epsilon$)**, not directly to the response variable ($y$) or the relationship between $x$ and $y$.
+
+:::fragment
+### How assumptions help "validate" a model
+
+- If the assumptions are met, then we can be confident that the model is a good representation of the data.
+- If they are *not* met, the results are still presented, but our **interpretation** of the model is likely to be **flawed**.
+- Importantly, we will never have "perfect" models, so assessing their validity is an ongoing process (and requires experience).
+
+We will explore this next week (when we check **model assumptions**).
+:::
+
+# Thanks
+
+This presentation is based on the [SOLES Quarto reveal.js template](https://github.com/usyd-soles-edu/soles-revealjs) and is licensed under a [Creative Commons Attribution 4.0 International License][cc-by]. A pdf version of this document can be found [here](L02b-linear-model.pdf).
+
+
+<!-- Links -->
+[cc-by]: http://creativecommons.org/licenses/by/4.0/

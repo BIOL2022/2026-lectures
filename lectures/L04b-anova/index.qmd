@@ -1,0 +1,347 @@
+---
+title: "Modelling multiple differences: a linear model with two or more categorical $X$ variables"
+subtitle: "BIOL2022: **B**iology **E**xperimental **D**esign and **A**nalysis (**BEDA**)"
+author:
+  - name: Januar Harianto
+    affiliations: The University of Sydney
+embed-resources: false # embed resources into single HTML file -- enable when ready to publish
+# NOTE: please check _quarto.yml file for more options
+format:
+  ochre-revealjs: default
+---
+
+
+```{r setup}
+#| include: false
+library(tidyverse)
+library(palmerpenguins)
+library(cowplot)
+library(patchwork)
+library(ggridges)
+library(see)
+library(performance)
+library(emmeans)
+
+data(penguins)
+```
+
+
+# Learning objectives
+
+You should:
+
+- [ ] Frame ANOVA as a specific application of the General Linear Model (GLM) for categorical predictors.
+- [ ] Formulate a GLM to test for differences between two or more group means.
+- [ ] Explain how an ANOVA summary partitions the variance of a GLM with categorical predictors.
+- [ ] Interpret main effects and interaction terms for categorical predictors within a GLM framework.
+- [ ] Use post-hoc tests to probe significant main effects and interactions in a GLM.
+- [ ] Visualize and interpret the results from a GLM with categorical predictors using interaction plots.
+
+# Analysis of variance (ANOVA)
+
+> It is better to solve the right problem approximately than to solve the *wrong* problem exactly.
+
+— [John Tukey](https://en.wikipedia.org/wiki/John_Tukey) (1915-2000)
+
+## The ANOVA model
+ANOVA is a type of linear regression that uses **categorical** predictors.
+
+::: fragment
+### How it works (GLM perspective)
+:::incremental
+1. Fit a linear model using dummy variables for the categories.
+2. Split the total variation in the response variable into:
+    - Variation *between* groups (explained by the model).
+    - Variation *within* groups (unexplained, or residual).
+3. Compare these to test if the differences between groups are greater than the variation within groups.
+:::
+:::
+
+
+## Variation between groups
+
+Can we explain the variation in body mass by species (i.e. **are the means different**)?
+
+```{r means_plot}
+
+
+means <-
+  penguins %>%
+  group_by(species) %>%
+  summarise(mean_bmass = mean(body_mass_g, na.rm = TRUE))
+
+p1 <-
+  ggplot(penguins, aes(x = species, y = body_mass_g)) +
+  geom_point(size = 2, alpha = .4) +
+  geom_hline(
+    yintercept = means$mean_bmass,
+    linetype = "dashed",
+    color = "red"
+  ) +
+  geom_text(
+    data = means,
+    aes(
+      x = 3.4, y = mean_bmass,
+      label = species
+    ),
+    vjust = -0.5
+  ) +
+  ylab("Body mass (g)") +
+  xlab("") +
+  theme_cowplot()
+
+p1
+
+```
+
+
+## Variation within groups
+
+Can we explain the variation in body mass by an overall mean (i.e. **are they all the same**)?
+
+```{r p2_plot}
+p2 <-
+  ggplot(penguins, aes(x = species, y = body_mass_g)) +
+  geom_point(size = 2, alpha = .4) +
+  geom_smooth(method = "lm", se = FALSE) +
+  geom_hline(
+    yintercept = mean(penguins$body_mass_g, na.rm = TRUE),
+    linetype = "dashed",
+    color = "red"
+  ) +
+  ylab("Body mass (g)") +
+  xlab("") +
+  theme_cowplot()
+p2
+```
+
+
+## Another way to look at it
+
+Are the distributions of body mass different enough to be considered separate?
+
+```{r density_ridges}
+ggplot(penguins, aes(x = body_mass_g, y = species, fill = species)) +
+  geom_density_ridges(alpha = 0.8) +
+  # draw vertical lines at the species means on the x-axis
+  geom_vline(xintercept = means$mean_bmass, linetype = "dashed") +
+  theme_cowplot() +
+  xlab("Body mass (g)") +
+  ylab("") +
+  scale_fill_viridis_d() +
+  theme(legend.position = "none") +
+  coord_flip()
+
+
+```
+
+## Modelling the relationship
+
+For a GLM: $$ \text{body mass} = \beta_0 + \beta_1 \cdot \text{species} + \epsilon $$ 
+
+Once we use an ANOVA summary to process the model, we get:
+
+$$ \text{body mass} = \text{mean} + \text{species effect (i.e. difference)} + \epsilon $$
+
+That is:
+
+- $\beta_0$ is the **overall mean** of body mass.
+- $\beta_1$ is the **difference** in body mass between species.
+- We can add the mean to each species effect to get the **estimated body mass** for each species.
+
+
+# Example
+
+![](assets/cartoon-penguins.png)
+
+Are species and sex significant predictors of body mass in penguins?
+
+## First, the general linear model {auto-animate=true}
+
+$$ \text{body mass} \sim \text{species} + \text{sex} $$
+
+### The interaction term
+
+Because we are interested in both predictor variables, we include an **interaction term**:
+
+
+$$ \text{body mass} \sim \text{species} \times \text{sex} $$
+
+::: fragment
+### Four steps (as always), with a [post-hoc](https://en.wikipedia.org/wiki/Post_hoc_analysis)
+1. **Fit the model**, but do not interpret yet. Visualise the relationship (if possible).
+2. **Check assumptions** from diagnostic plots (residuals).
+3. Select a different model or transform data if assumptions are violated, go back to (2). Skip if assumptions are met.
+4. **Interpret** the model **✨and post-hoc✨**.
+:::
+
+
+## 1. Model/plot {auto-animate=true}
+
+$$ \text{body mass} \sim \text{species} \times \text{sex} $$
+
+```{r pbox_plot}
+pbox <-
+  penguins |>
+  ggplot(aes(x = species, y = body_mass_g, fill = species)) +
+  geom_boxplot(alpha = 0.6) +
+  xlab("Species") +
+  ylab("Body mass (g)") +
+  theme_cowplot() +
+  scale_fill_viridis_d() +
+  theme(legend.position = "none")
+pbox
+```
+
+Side note: [Beyond bar and box plots](https://z3tt.github.io/beyond-bar-and-box-plots/)
+
+
+## 2. Check assumptions
+$$ \text{body mass} \sim \text{species} \times \text{sex} $$
+
+```{r fit_diagnostics}
+fit <- lm(body_mass_g ~ species * sex, data = penguins)
+par(mfrow = c(1, 4))
+plot(fit)
+```
+
+- We see clusters of residuals, a total of 6, representing the 6 combinations of **species $\times$ sex**.
+- Interpretation of the residuals is as normal: just think of **LINE**!
+
+
+## 2. Check assumptions
+$$ \text{body mass} \sim \text{species} \times \text{sex} $$
+
+```{r check_model}
+fit <- lm(body_mass_g ~ species * sex, data = penguins)
+check_model(fit)
+```
+
+
+
+## 4. Interpret
+
+In practice, if we are interested in comparing means, the **ANOVA summary** table is the most useful.
+
+
+```{r anova_fit}
+anova(fit)
+```
+
+There are **significant interactions**, so we no longer interpret the main effects. **Interpret the interaction term instead.**
+
+
+## Interpreting interactions
+
+We want to check two things:
+
+- Whether the relationship between body mass and species is dependent on **sex**, and/or
+- Whether the relationship between body mass and sex is dependent on **species**.
+
+
+```{r emmip_plots}
+p1 <- emmeans::emmip(fit, species ~ sex) +
+  theme_cowplot() +
+  theme(legend.position = "top")
+p2 <- emmeans::emmip(fit, sex ~ species) +
+  theme_cowplot() +
+  theme(legend.position = "top")
+
+p1 + p2
+```
+
+
+
+## Interpreting interactions
+
+- Species affects the relationship between body mass and sex. Males are generally heavier than females, but the difference is less pronounced in Chinstrap penguins as seen by the flatter slope compared to the other two species.
+- Sex also affects the relationship between body mass and species. Adelie males are generally heavier than Chinstrap males, but in females it is the opposite: Adelie females are generally lighter than Chinstrap females.
+
+## What if we look at the non-ANOVA summary?
+```{r lm_fit}
+summary(fit)
+# emm <- emmeans(fit, ~ species * sex)
+# pwpp(emm)
+```
+
+
+
+# Example 2
+
+![](assets/gentoo.jpeg)
+
+Are species and sex significant predictors of bill length in penguins?
+
+## 1. Model/plot {auto-animate=true}
+
+$$ \text{bill length} \sim \text{species} \times \text{sex} $$
+
+```{r bill_boxplot}
+ggplot(penguins, aes(x = species, y = bill_length_mm, fill = species)) +
+  geom_boxplot(alpha = 0.6) +
+  xlab("Species") +
+  ylab("Bill length (mm)") +
+  theme_cowplot() +
+  scale_fill_viridis_d() +
+  theme(legend.position = "none")
+```
+
+## 2. Check assumptions
+
+$$ \text{bill length} \sim \text{species} \times \text{sex} $$
+
+```{r fit2_diagnostics}
+fit2 <- lm(bill_length_mm ~ species * sex, data = penguins)
+par(mfrow = c(1, 4))
+plot(fit2)
+```
+
+## 4. Interpret
+
+
+```{r anova_fit2}
+anova(fit2)
+```
+
+No significant interactions, **so we can interpret the main effects**.
+
+- The results revealed significant main effects for both species and sex. 
+- Specifically, the effect of species on bill length was statistically significant, F(2, 327) = 654.19, p < .001, indicating that bill length varies significantly across different species. 
+- The effect of sex was also significant, F(1, 327) = 211.81, p < .001, suggesting that bill length differs between males and females.
+
+
+## 4. Post-hoc
+
+To further investigate where the differences lie, we can perform a post-hoc test. The most common post-hoc is the Tukey HSD test (honestly significant difference), which can be performed using estimated marginal means (often referred to as emmeans). 
+
+```{r emm_sp}
+emm_sp <- emmeans(fit2, pairwise ~ species)
+emm_sp
+```
+
+##
+
+
+```{r plot_emm_sp}
+plot(emm_sp) +
+  theme_cowplot()
+```
+
+Post-hoc tests revealed that Chinstrap penguins had significantly longer mean bill lengths (48.8 mm $\pm$ 0.28 SE) compared to Adelie (38.8 mm $\pm$ 0.19 SE) and Gentoo penguins (47.5 mm $\pm$ 0.21 SE), and that all pairwise comparisons were statistically significant (p < .001).
+
+
+## Questions to consider
+
+- When is it more appropriate to summarise a GLM with an ANOVA table versus regression coefficients?
+- How do the standard GLM assumptions (LINE) apply when working with categorical predictors?
+- How does the GLM formulation and interpretation change when including one vs. two categorical predictors, especially regarding main effects and interactions?
+- What does a significant interaction term in a GLM tell us about the relationship between categorical predictors?
+- Why are post-hoc tests necessary for interpreting GLMs with significant categorical predictors with more than two levels?
+
+# Thanks!
+
+This presentation is based on the [SOLES Quarto reveal.js template](https://github.com/usyd-soles-edu/soles-revealjs) and is licensed under a [Creative Commons Attribution 4.0 International License][cc-by]. A pdf version of this document can be found [here](L04b-anova.pdf).
+
+
+<!-- Links -->
+[cc-by]: http://creativecommons.org/licenses/by/4.0/

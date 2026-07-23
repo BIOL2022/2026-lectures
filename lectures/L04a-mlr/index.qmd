@@ -1,0 +1,510 @@
+---
+title: "Modelling multiple relationships: a linear model with multiple, continuous $X$ variables"
+subtitle: "BIOL2022: **B**iology **E**xperimental **D**esign and **A**nalysis (**BEDA**)"
+author:
+  - name: Januar Harianto
+    affiliations: The University of Sydney
+embed-resources: false # embed resources into single HTML file -- enable when ready to publish
+# NOTE: please check _quarto.yml file for more options
+toc: true
+toc-depth: 1
+scrollable: true
+format:
+  ochre-revealjs: default
+---
+
+```{r setup}
+#| include: false
+
+library(tidyverse)
+library(palmerpenguins)
+library(cowplot)
+library(patchwork)
+library(gtsummary)
+library(broom)
+library(broom.helpers)
+library(cardx)
+library(see)
+library(performance)
+library(plotly)
+
+data(penguins)
+```
+
+# Learning objectives
+
+You should:
+
+- [ ] Understand how to include multiple predictors in a model.
+- [ ] Be able to interpret the coefficients of a multiple linear regression (MLR) model and report the results.
+- [ ] Know how to assess assumptions of a MLR model.
+- [ ] Understand the concept of multicollinearity and how to check for it in a MLR model.
+- [ ] Be able to understand when to include interactions in a model and how to interpret them, including how to visualise interactions.
+
+
+# 
+
+> “Life is really simple, but we insist on making it complicated.”
+
+— [Confucius](https://en.wikipedia.org/wiki/Confucius)
+
+
+## 
+
+![](assets/adele_flipper.jpg)
+
+## Expanding a model {auto-animate=true}
+
+::: fragment
+We start with the *simple* model:
+
+$$ \text{body mass} \sim \text{flipper length}$$ 
+
+:::
+
+::: fragment
+But, we know that there are other (possible) factors that may influence the body mass of a penguin.
+
+$$ Sex $$ $$ Species $$ $$ Bill\ length $$
+
+:::
+
+::: fragment
+### It is rarely the case that a response variable is influenced by a *single* explanatory variable.
+:::
+
+
+## How do we include multiple predictors in a model? {auto-animate=true}
+
+$$ \text{body mass} \sim \text{flipper length}$$ 
+
+::: fragment
+$$ y \sim x $$
+:::
+
+::: fragment
+
+We add more predictors to the model by including them in the equation:
+
+$$ y \sim x_1 + x_2 + x_3 + \ldots + x_n $$ 
+
+where $x_1, x_2, x_3, \ldots, x_n$ are the predictors **that can be continuous or categorical**, or both.
+:::
+
+::: fragment
+
+### Examples
+
+- $\text{body mass} \sim \color{blue}\text{flipper length} \color{black} + \color{blue}\text{bill depth}$, all continuous
+- $\text{body mass} \sim \color{blue}\text{flipper length} \color{black} + \color{orange}\text{species}$, at *least* one continuous, one categorical
+- $\text{body mass} \sim \color{orange}\text{sex} \color{black} + \color{orange}\text{species}$, all categorical
+
+:::
+
+## Simple is best {auto-animate=true}
+
+- $\text{body mass} \sim \color{blue}\text{flipper length} \color{black} + \color{blue}\text{bill depth}$, all continuous
+- $\text{body mass} \sim \color{blue}\text{flipper length} \color{black} + \color{orange}\text{species}$, at *least* one continuous, one categorical
+- $\text{body mass} \sim \color{orange}\text{sex} \color{black} + \color{orange}\text{species}$, all categorical
+
+The simplest model is one that is **ADDITIVE**, where in theory, each predictor contributes to the response variable *independently* of the other predictors.
+
+::: fragment
+**Once the model is built, we can start to think about:** 
+
+- data structure (e.g. continuous, categorical), which defines the "traditional" name of the model: **Continuing...**
+- interactions between predictors: **Week 4 (this week)**
+- transformation to better fit the model: **Week 4 (this week)**
+- the purpose of the predictors in the model (i.e. whether a predictor is considered a control, covariate, random variable, or fixed variable): **Weeks 4 & 5**
+:::
+
+##
+### In this lecture, we will focus on models with multiple predictors:
+
+$$\text{body mass} \sim \color{blue}\text{flipper length} \color{black} + \color{blue}\text{bill depth}$$
+
+where all predictors are *continuous* variables, the multiple linear regression (MLR), and its interpretation.
+
+### Study design
+
+- **Response variable**: body mass (g)
+- **Predictors**: flipper length (mm) and bill depth (mm)
+- **Control variables**: none
+
+We define *no* control variables in this model, so both flipper length and bill depth are main effects of interest. More on control variables next week.
+
+# Why do we need multiple variables?
+
+> The combination of some data and an aching desire for an answer does not ensure that a reasonable answer can be extracted from a given body of data.
+
+— [John Tukey](https://en.wikipedia.org/wiki/John_Tukey) (1915-2000), *The Future of Data Analysis* (1962)
+
+## Controls and interactions
+
+- **Control**: Add a variable which we believe **may influence the response variable**, but we are *not interested in its effect* on the response.
+- **Interaction**: Because we added more variables, we want to assess how one variable influences the *relationship between the other variables*.
+
+Depending on the research question(s), the above two reasons are common motivations for including multiple variables in a model.
+
+::: fragment
+
+**Once interactions are included** the interpretation of the model then falls on either the:
+
+- **main effects** (interpretation of the predictors that are of interest), or
+- **interactions** (interpretation of how predictors interact with each other)
+
+:::
+
+## Predictive power
+
+
+- Include multiple variables **to increase the predictive power of the model**. 
+- **Focus** shifts, from *interpretation* to *prediction*.
+- Anything goes, as long as the model "performs" better than before.
+- **Not the focus of BEDA but important in other fields (e.g. machine learning).**
+
+
+Simple models are preferred in biological research, especially when data is collected from the field. Try not to overcomplicate the model and include additional variables only if they are necessary (controls or interactions) or part of the research question.
+
+## Additional considerations of MLR
+
+Once we include multiple predictors in the model, the interpretation of the model changes:
+
+1. **Coefficients** ($\beta_i$) are now **conditional** on the other predictors being fixed.
+2. **Hypotheses** can be tested for each predictor via traditional p-values.
+3. **Interactions** are now possible and should be considered when including multiple predictors. **If interactive effects are statistically significant, we place more emphasis on the interaction terms than the main effects.**
+4. **Multi-collinearity** (the correlation between predictors) are considered if interactions are not included; otherwise ignore it if interactions are included and significant.
+5. **Transformations** are more common in MLR due to the scale of the predictors. *This will be covered tomorrow.*
+
+# Example: penguins dataset
+Starting with a simple linear regression model...
+
+## Simple linear regression
+
+$$ \text{body mass} \sim \color{blue}\text{flipper length} $$
+
+### Four steps:
+
+1. **Fit the model**, but do not interpret yet. Visualise the relationship (if possible).
+2. **Check assumptions** from diagnostic plots (residuals).
+3. Select a different model or transform data if assumptions are violated, go back to (2). Skip if assumptions are met.
+4. **Interpret** the model.
+
+## 1. Model/plot
+
+$$ \text{body mass} \sim \color{blue}\text{flipper length} $$
+
+```{r}
+data(penguins)
+
+penguins |>
+  ggplot(aes(x = flipper_length_mm, y = body_mass_g)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  xlab("Flipper length (mm)") +
+  ylab("Body mass (g)") +
+  theme_cowplot()
+
+```
+
+## 2. Diagnostic plots (assumptions) - `performance`
+
+$$ \text{body mass} \sim \color{blue}\text{flipper length} $$
+
+```{r}
+fit <- lm(body_mass_g ~ flipper_length_mm, data = penguins)
+# return a list of single plots
+diag <- plot(check_model(fit, panel = FALSE))
+(diag[[2]] | diag[[5]] | diag[[3]] | diag[[4]])
+```
+
+## 2. Diagnostic plots (assumptions)
+
+$$ \text{body mass} \sim \color{blue}\text{flipper length} $$
+
+```{r}
+par(mfrow = c(1, 4))
+plot(fit)
+```
+
+
+## 4. Interpret
+
+$$ \text{body mass} \sim \color{blue}\text{flipper length} $$
+
+```{r}
+
+# penguins |>
+#   lm(body_mass_g ~ flipper_length_mm, data = _) |>
+#   tbl_regression(intercept = TRUE, conf.int = FALSE) |>
+#   add_glance_source_note(
+#     label = list(sigma = "\U03C3"),
+#     include = c(r.squared, AIC, sigma)
+#   )
+
+summary(fit)
+```
+
+
+
+## 4. Interpret
+
+$$ \text{body mass} \sim \color{blue}\text{flipper length} $$
+
+```{r}
+#| label: tbl-penguin1
+#| tbl-cap: "Summary table of regression analysis for predicting body mass from flipper length. Note: σ is the standard error of the residuals."
+
+penguins |>
+  lm(body_mass_g ~ flipper_length_mm, data = _) |>
+  tbl_regression(intercept = TRUE, conf.int = FALSE) |>
+  add_glance_source_note(
+    label = list(sigma = "\U03C3"),
+    include = c(r.squared, sigma)
+  )
+
+```
+
+::: fragment
+
+> The results of the multiple linear regression analysis indicate that the flipper length is a highly significant predictor of the body mass of penguins (p < 0.001, @tbl-penguin1). The model demonstrates a strong relationship between the two variables, explaining 75% of the variance in the body mass (R^2^ = 0.76). Specifically, the analysis reveals that for every 1 mm increase in flipper length, the body mass of a penguin increases by 50 g.
+
+:::
+
+
+# Adding more predictors 
+
+## A *multiple* linear regression model 
+$$ \text{body mass} \sim \color{blue}\text{flipper length} \color{black} + \color{blue}\text{bill depth}$$
+
+### Four steps (it does not change!):
+
+1. **Fit the model**, but do not interpret yet. Visualise the relationship (if possible).
+2. **Check assumptions** from diagnostic plots (residuals), **including multicollinearity**.
+3. Select a different model or transform data if assumptions are violated, go back to (2). Skip if assumptions are met.
+4. **Interpret** the model.
+
+
+## Multicollinearity
+
+- **Multicollinearity** is the correlation between predictors in the model.
+- **Problem**: 
+  - It can inflate the standard errors of the coefficients (i.e. make error margins wider), making the interpretation of the coefficients less reliable.
+  - Interpretation of coefficients becomes difficult, since they are correlated, the effect of one predictor is confounded by the other predictor.
+- **Solution**: Check the correlation between predictors and consider removing one of the predictors if the correlation is too high. Rule of thumb: $r > 0.7$.
+  - Alternatively: check the variance inflation factor (VIF), a measure of how much the variance of the coefficient is inflated due to multicollinearity. **A value of 5 or more is considered problematic.**
+
+Multicollinearity is not a problem if
+
+- **There is significant interaction.** We will not interpret the main effects anyway.
+- **The goal is prediction**. Although, it could affect computational efficiency.
+
+
+## 1. Model/plot
+
+$$ \text{body mass} \sim \color{blue}\text{flipper length} \color{black} + \color{blue}\text{bill depth}$$
+
+```{r}
+plot_ly(penguins,
+  x = ~flipper_length_mm,
+  y = ~body_mass_g,
+  z = ~bill_depth_mm,
+  type = "scatter3d",
+  mode = "markers",
+  size = I(16),
+  height = 500
+)
+
+```
+
+Visualising MLR is challenging. Perhaps the maximum number of predictors we can visualise is 2 against the response variable. In most cases we rely on the diagnostic plots to interpret the model.
+
+## 2. Diagnostic plots (assumptions)
+
+$$ \text{body mass} \sim \color{blue}\text{flipper length} \color{black} + \color{blue}\text{bill depth}$$
+
+```{r}
+fit <-
+  penguins |>
+  lm(body_mass_g ~ flipper_length_mm + bill_depth_mm, data = _)
+par(mfrow = c(1, 4))
+plot(fit)
+```
+
+## 2. Multicollinearity
+
+Correlation between predictors:
+```{r}
+penguins |>
+  select(flipper_length_mm, bill_depth_mm) |>
+  cor()
+```
+
+Plot the predictors:
+```{r}
+penguins |>
+  select(flipper_length_mm, bill_depth_mm) |>
+  plot()
+```
+
+
+## 2. Multicollinearity
+
+Or, use performance package and check the Collinearity Diagnostics:
+
+```{r}
+check_model(fit)
+```
+
+## 4. Interpret
+
+$$ \text{body mass} \sim \color{blue}\text{flipper length} \color{black} + \color{blue}\text{bill depth}$$
+
+```{r}
+fit |>
+  tbl_regression(intercept = FALSE, conf.int = FALSE) |>
+  add_glance_source_note(
+    label = list(sigma = "\U03C3"),
+    include = c(r.squared, adj.r.squared, sigma)
+  )
+```
+
+### Interpretation (coefficients are now conditional)
+
+- Flipper length is a significant predictor of body mass (p < 0.001), with a positive relationship where, for every 1 mm increase in flipper length, the body mass of a penguin increases by 52 g, *holding bill depth constant*.
+- Bill depth is also a significant predictor of body mass (p < 0.001), with a positive relationship where, for every 1 mm increase in bill depth, the body mass of a penguin increases by 23 g, *holding flipper length constant*.
+- Both predictors explain 76% of the variance in body mass (adjusted R^2^ = 0.76).
+
+# Interactions
+Will the relationship between A and B change, if C changes?
+
+
+## When to include interactions?
+
+For any predictor that is included in the model and is not used as a control, we should consider interactions with other predictors.
+
+### Why interactions?
+
+Interactions allow us to assess how one predictor influences the relationship between the response variable and another predictor. Examples:
+
+- Does sunlight exposure affect plant growth? It **depends** on water availability, i.e. sunlight exposure and water availability may interact such that the effect of sunlight exposure on plant growth is different depending on the level of water availability.
+- Does the effect of a drug on blood pressure depend on the age of the patient? It **depends** on the age of the patient, i.e. the effect of the drug on blood pressure may be different depending on the age of the patient.
+
+## Recall the plot of flipper length and bill depth 
+
+```{r}
+penguins |>
+  select(flipper_length_mm, bill_depth_mm) |>
+  plot()
+```
+
+Do you think the two predictors are interacting?
+
+## Including interactions in the model {auto-animate=true}
+
+For a given MLR model $$ y \sim x_1 + x_2 $$ we can declare an interaction term between $x_1$ and $x_2$ by changing the operator from $+$ to $\times$ or $*$: $$ y \sim x_1 \times x_2 $$
+
+::: fragment
+So for the current MLR model from the penguins dataset:
+
+$$ \text{body mass} \sim \color{blue}\text{flipper length} \color{black} + \color{blue}\text{bill depth}$$
+
+becomes:
+
+$$ \text{body mass} \sim \color{blue}\text{flipper length} \color{black} \times \color{blue}\text{bill depth}$$
+
+which is also equivalent to:
+$$ \text{body mass} \sim \color{blue}\text{flipper length} \color{black} + \color{blue}\text{bill depth} \color{black} + \color{red}\text{flipper length:bill depth}$$
+:::
+
+
+## Checking the model {auto-animate=true}
+
+$$ \text{body mass} \sim \color{blue}\text{flipper length} \color{black} \times \color{blue}\text{bill depth}$$
+
+
+### Four steps (it does not change!):
+
+1. **Fit the model**, but do not interpret yet. Visualise the relationship (if possible).
+2. **Check assumptions** from diagnostic plots (residuals), **including multicollinearity**.
+3. Select a different model or transform data if assumptions are violated, go back to (2). Skip if assumptions are met.
+4. **Interpret** the model.
+
+## 2. Diagnostic plots (assumptions)
+
+$$ \text{body mass} \sim \color{blue}\text{flipper length} \color{black} \times \color{blue}\text{bill depth}$$
+
+```{r}
+fit <- lm(body_mass_g ~ flipper_length_mm * bill_depth_mm, data = penguins)
+par(mfrow = c(1, 4))
+plot(fit)
+```
+
+## 4. Interpret 
+
+```{r}
+summary(fit)
+```
+
+- If the interaction term is significant, it means that the interpretation of the main effects are most likely incorrect. We no longer interpret the main effects. **Instead, we figure out *how* those main effects are interacting.**
+
+
+## Interaction plots 
+
+To view the interaction, we need to work out at what "level" of a variable the relationship between the response variable and the other predictor is significant. 
+
+This can be automated in both R and Jamovi.
+
+```{r}
+library(emmeans)
+p_emm <- emmip(fit, flipper_length_mm ~ bill_depth_mm, cov.reduce = range) +
+  theme_cowplot()
+p_emm
+```
+
+## Interaction plot in Jamovi
+
+
+![](assets/interaction_jamovi.svg)
+
+## Interpreting the plot 
+
+> Does bill depth affect the predicted outcome? It depends on flipper length!
+
+Results indicate a significant interaction between flipper length and bill depth (p < 0.001). The interaction plot shows that the relationship between flipper length and body mass is dependent on bill depth. Specifically:
+
+- For smaller flipper lengths (e.g. 172 mm), increasing bill depth is associated with an increase in body mass.
+- For larger flipper lengths (e.g. 231 mm), increasing bill depth is associated with a decrease in body mass.
+
+Note, R provides some information about what is "small" or "large" in the interaction plot, whereas Jamovi does not.
+
+
+## What is actually happening?
+
+```{r}
+penguins |>
+  select(flipper_length_mm, bill_depth_mm) |>
+  plot()
+```
+
+It is likely that something else is confounding the relationship between flipper length and body mass, as we have observed clustering in the plot of flipper length and bill depth.
+
+# Adding even more predictors: live demonstration
+
+# End of demonstration
+
+## Questions to consider
+
+- What does it mean for a model to be additive?
+- How do we interpret the coefficients of a multiple linear regression model?
+- What are the assumptions of a multiple linear regression model? 
+- How do we check for multicollinearity in a multiple linear regression model?
+- What is an interaction term in a multiple linear regression model, and how can we interpret it if it is significant?
+
+# Thanks!
+
+This presentation is based on the [SOLES Quarto reveal.js template](https://github.com/usyd-soles-edu/soles-revealjs) and is licensed under a [Creative Commons Attribution 4.0 International License][cc-by]. A pdf version of this document can be found [here](L04a-mlr.pdf).
+
+
+<!-- Links -->
+[cc-by]: http://creativecommons.org/licenses/by/4.0/
