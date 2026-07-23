@@ -1,6 +1,6 @@
 ---
 title: (Re-)introduction to experimental design and analysis
-subtitle: BIOL2022 -- **B**iology **E**xperimental **D**esign and **A**nalysis (**BEDA**)
+subtitle: "BIOL2022: **B**iology **E**xperimental **D**esign and **A**nalysis (**BEDA**)"
 author:
   - name: Dr Januar Harianto
     affiliations: The University of Sydney
@@ -79,8 +79,8 @@ There is no magical statistical method that will make up for a poorly designed s
 ![A digital elevation model that simplifies a 3D terrain in 2D. Licensed from Adobe.](assets/dem_adobe.jpeg){fig-align="left"}
 
 ::: fragment
-- **Models simplify complex data** -- by capturing the underlying relationships between variables.
-- They *condense* information -- which allows us to formulate hypotheses and make predictions.
+- **Models simplify complex data** by capturing the underlying relationships between variables.
+- They *condense* information, which allows us to formulate hypotheses and make predictions.
 - Just like physical models (e.g. world map), models in statistics are **abstractions** that overlook some details of reality.
 
 **So how do we model data?**
@@ -93,7 +93,7 @@ There is no magical statistical method that will make up for a poorly designed s
 If you have studied statistics before, you might have been taught that:
 
 ::: incremental
-- Each statistical technique is distinct and separte from the others, and so, e.g. [you need to choose the right one](https://stats.oarc.ucla.edu/other/mult-pkg/whatstat/).
+- Each statistical technique is distinct and separate from the others, and so, e.g. [you need to choose the right one](https://stats.oarc.ucla.edu/other/mult-pkg/whatstat/).
 - To make sense of it all, you probably need to refer to a flowchart, e.g. [like this](https://statswithcats.net/wp-content/uploads/2010/08/selection-methods-8-21-2010.png).
 :::
 :::
@@ -105,7 +105,7 @@ If you have studied statistics before, you might have been taught that:
 
 
 
-## Needless complexity -- why?
+## Needless complexity: why?
 
 
 :::: columns
@@ -132,8 +132,8 @@ If you have studied statistics before, you might have been taught that:
 
 ## Dropping the complexity
 - It turns out that *most* statistical techniques are based on the **same underlying principles**.
-- We can easily observe this with modern statistical software -- without doing the math -- like R (**more on this next week**).
-- It makes learning statistics simpler as well -- a **model-centric** approach.
+- We can easily observe this with modern statistical software (without doing the math) like R (**more on this next week**).
+- It makes learning statistics simpler as well: a **model-centric** approach.
 
 
 
@@ -151,9 +151,9 @@ The process of developing a model that relies on **data** to make predictions, r
 -- Mosteller and Tukey (1977)[^1]
 
 ::: fragment
-It doesn't have to be *the perfect model* from the start:
+It does not have to be *the perfect model* from the start:
 
-- Model the data, even if we don't have a clear idea.
+- Model the data, even if we do not have a clear idea.
 - **Use** the model to *guide* the planning of the study design.
 - Iterate the model as we learn *more* about the **limitations** of our study and finalise the **statistical** model.
 :::
@@ -203,11 +203,9 @@ It doesn't have to be *the perfect model* from the start:
 2. Some are [keystone](https://education.nationalgeographic.org/resource/role-keystone-species-ecosystem/) species.
 3. Understanding the health of urchin populations provides insights into the health of the ecosystem.
 
-:::fragment
-::: callout-tip
+::::fragment
 It is best to test for *simple* relationships first, before moving on to more complex ones, for complex questions.
-:::
-:::
+::::
 
 :::fragment
 ### Abstraction (a quick example)
@@ -263,7 +261,7 @@ ggplot(urchins, aes(x = temp_cat, y = response)) +
   - Box plot: measure metabolic rates at fixed temperatures. Aim: to compare.
 :::
 :::fragment
-- Prepares for defining the model empirically -- but it all doesn't *really* matter from that point of view... because both designs are still based on the *same* modelling framework!
+- Prepares for defining the model empirically, but it all does not *really* matter from that point of view... because both designs are still based on the *same* modelling framework!
 :::
 
 ## What is a variable?
@@ -298,7 +296,7 @@ Puts things into boxes.
 A value on a scale.
 
 -   **Interval**: A scale with no true 'zero'.
-    -   *Example*: `Temperature` in Celsius is a number (e.g., 14.5°C). 0°C isn't 'no temperature'.
+    -   *Example*: `Temperature` in Celsius is a number (e.g., 14.5°C). 0°C is not 'no temperature'.
 -   **Ratio**: A scale with a true 'zero'.
     -   *Example*: `Height` in cm. 0 cm is 'no height'.
 :::
@@ -393,7 +391,7 @@ All of these models can be incorporated within a unified statistical framework, 
 
 We will cover more on models and study design in the next few weeks, but I hope you are less intimidated by the process!
 
-**Don't forget...**
+**Do not forget...**
 
 <center>
 ### 🗑️ $Garbage\ in \rightarrow Garbage\ out$ 💩
