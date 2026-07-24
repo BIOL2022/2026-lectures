@@ -11,3 +11,5 @@ template.pdf
 .DS_Store
 
 **/*.quarto_ipynb
+
+/.luarc.json

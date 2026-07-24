@@ -1,6 +1,6 @@
 ---
 title: Welcome to 🐝-DA
-subtitle: "BIOL2022: **B**iology **E**xperimental **D**esign and **A**nalysis"
+subtitle: "BIOL2022"
 author:
   - name: Dr Januar Harianto
     affiliations: The University of Sydney

@@ -1,6 +1,6 @@
 ---
 title: "Introduction to *t*-tests: a special case of the GLM"
-subtitle: "BIOL2022: **B**iology **E**xperimental **D**esign and **A**nalysis (**BEDA**)"
+subtitle: "BIOL2022"
 author:
   - name: Dr Januar Harianto
     affiliations: The University of Sydney

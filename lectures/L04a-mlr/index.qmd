@@ -1,6 +1,6 @@
 ---
 title: "Modelling multiple relationships: a linear model with multiple, continuous $X$ variables"
-subtitle: "BIOL2022: **B**iology **E**xperimental **D**esign and **A**nalysis (**BEDA**)"
+subtitle: "BIOL2022"
 author:
   - name: Dr Januar Harianto
     affiliations: The University of Sydney

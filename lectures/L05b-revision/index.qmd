@@ -1,6 +1,6 @@
 ---
 title: "Revision: Module 1"
-subtitle: "**B**iology **E**xperimental **D**esign and **A**nalysis (**BEDA**)"
+subtitle: "BIOL2022"
 author:
   - name: Dr Januar Harianto
     affiliations: The University of Sydney
