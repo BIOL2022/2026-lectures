@@ -13,3 +13,5 @@ template.pdf
 **/*.quarto_ipynb
 
 /.luarc.json
+_mockup-*.html
+_mockup-*.png
