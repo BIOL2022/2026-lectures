@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Feedback showcase — variants</title>
+<style>
+  *{box-sizing:border-box;}
+  body{margin:0;background:#ded8d0;font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  .wrap{display:flex;flex-direction:column;align-items:center;gap:18px;padding:24px;}
+  .label{color:#5a534b;font-size:13px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;}
+  .label span{color:#e64626;}
+  .slide{position:relative;width:1100px;height:620px;background:#fff;overflow:hidden;box-shadow:0 14px 40px -16px rgba(0,0,0,.5);}
+  .slide h2{position:absolute;top:22px;left:40px;margin:0;font-size:24px;z-index:5;}
+  .slide h2 small{display:block;font-size:12px;color:#9a938b;font-weight:400;}
+  .cc{position:absolute;line-height:1.35;color:#3a332c;background:#fffaf3;border:1px solid #ead9c9;box-shadow:0 8px 20px -12px rgba(0,0,0,.45);padding:12px 16px;}
+  .cc::before{content:"\201C";position:absolute;top:-12px;left:8px;font-size:38px;color:#e64626;line-height:1;font-family:Georgia,serif;}
+  .cc em{font-style:italic;} .cc b{color:#1f1f24;}
+
+  /* V1 scattered cloud */
+  .v1 .a{top:104px;left:30px;font-size:20px;max-width:360px;transform:rotate(-2deg);}
+  .v1 .b{top:96px;left:430px;font-size:14px;max-width:230px;transform:rotate(2.5deg);}
+  .v1 .c{top:110px;right:30px;font-size:16px;max-width:280px;transform:rotate(-1.5deg);}
+  .v1 .d{top:330px;left:120px;font-size:16px;max-width:280px;transform:rotate(2deg);}
+  .v1 .e{top:350px;left:470px;font-size:14px;max-width:240px;transform:rotate(-2.5deg);}
+  .v1 .f{top:360px;right:80px;font-size:16px;max-width:270px;transform:rotate(1.8deg);}
+
+  /* V2 masonry columns */
+  .v2 .cols{position:absolute;top:96px;left:40px;right:40px;bottom:24px;column-count:3;column-gap:22px;}
+  .v2 .cc{position:static;display:inline-block;width:100%;margin:0 0 18px;break-inside:avoid;font-size:16px;max-width:none;}
+
+  /* V3 spotlight */
+  .v3 .spot{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 120px;}
+  .v3 .spot .mark{font-size:90px;color:#e64626;line-height:.6;font-family:Georgia,serif;}
+  .v3 .spot .q{font-size:34px;line-height:1.35;color:#1f1f24;font-style:italic;max-width:780px;margin:6px 0 26px;}
+  .v3 .spot .q b{font-style:normal;}
+  .v3 .dots{display:flex;gap:8px;}
+  .v3 .dots i{width:9px;height:9px;border-radius:50%;background:#e3dcd4;display:block;}
+  .v3 .dots i.on{background:#e64626;}
+  .v3 .count{position:absolute;bottom:26px;right:36px;color:#b3aca3;font-size:13px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="label"><span>V1</span> &nbsp; Scattered cloud — sticky-note cards, varied size &amp; tilt, fade in one-by-one</div>
+  <div class="slide v1">
+    <h2>Feedback showcase<small>what students actually said — we are not perfect</small></h2>
+    <div class="cc a"><em>overall <b>the worst class I have taken at usyd</b></em></div>
+    <div class="cc b"><em>let us <b>drink in the lab</b>, there are no chemicals</em></div>
+    <div class="cc c"><em>I got a <b>migraine after every lab</b> from the lights &amp; screens</em></div>
+    <div class="cc d"><em>demos had <b>hella attitude</b>; 10am lecture then a 2pm lab</em></div>
+    <div class="cc e"><em>tell us about the <b>insect collection</b> at the start</em></div>
+    <div class="cc f"><em>labs <b>without lab coats</b>, a more <b>group-friendly</b> class</em></div>
+  </div>
+
+  <div class="label"><span>V2</span> &nbsp; Masonry feed — staggered columns, clean &amp; scannable</div>
+  <div class="slide v2">
+    <h2>Feedback showcase<small>what students actually said — we are not perfect</small></h2>
+    <div class="cols">
+      <div class="cc"><em>overall <b>the worst class I have taken at usyd</b></em></div>
+      <div class="cc"><em>I got a <b>migraine after every lab</b> from the lights &amp; screens</em></div>
+      <div class="cc"><em>labs <b>without lab coats</b>, a more <b>group-friendly</b> class</em></div>
+      <div class="cc"><em>let us <b>drink in the lab</b>, there are no chemicals</em></div>
+      <div class="cc"><em>demos had <b>hella attitude</b>; 10am lecture then a 2pm lab</em></div>
+      <div class="cc"><em>tell us about the <b>insect collection</b> at the start of semester</em></div>
+    </div>
+  </div>
+
+  <div class="label"><span>V3</span> &nbsp; Spotlight — one big quote at a time, stepped through (fragments)</div>
+  <div class="slide v3">
+    <h2>Feedback showcase<small>what students actually said — we are not perfect</small></h2>
+    <div class="spot">
+      <div class="mark">&ldquo;</div>
+      <div class="q">overall <b>the worst class I have taken at usyd</b></div>
+      <div class="dots"><i class="on"></i><i></i><i></i><i></i><i></i><i></i></div>
+    </div>
+    <div class="count">1 / 6</div>
+  </div>
+
+</div>
+</body>
+</html>

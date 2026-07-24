@@ -15,18 +15,26 @@ format:
 
 ## Feedback showcase (we are not perfect)
 
-:::: {.incremental}
-- *This is overall **the worst class I have taken at usyd.** *
-- *This might just be a me thing but **I got a migraine after every lab**, so maybe pick a lab or classroom
-not so *intense* on the **lights** and **whites** and **screens**, especially considering we're staring at a screen
-the whole time.*
-- *Can we go to labs where **we don't have to wear lab coats**?? Hahaha and also a more **group-friendly** class, where we can talk to each other more easily.*
-- *Drink in lab there are *no* chemicals.*
-- *Certain demos seem to have **hella attitude** when you ask them a question. Its not fair to have a
-lecture Wednesday morning from 10-11am and then expect students coming to the lab at 2pm to
-have caught up on the lecture.*
-- *The requirement for the **insect collection** should be told at the beginning of the semester*
-::::
+<style>
+.spotlight{position:relative;height:460px;}
+.spotlight .quote{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 80px;background:#fff;}
+.spotlight .quote .mark{font-size:84px;color:#e64626;line-height:.5;font-family:Georgia,serif;}
+.spotlight .quote p{font-size:30px;line-height:1.35;font-style:italic;color:#1f1f24;max-width:760px;margin:10px 0 0;}
+.spotlight .quote p strong{font-style:normal;}
+</style>
+
+```{r}
+#| results: asis
+#| echo: false
+q <- readLines("assets/feedback.txt")
+q <- trimws(q); q <- q[nzchar(q)]
+q <- gsub("\\*\\*(.+?)\\*\\*", "<strong>\\1</strong>", q)
+fmt <- function(x, i) {
+  cls <- if (i == 1) "quote" else "quote fragment"
+  sprintf('<div class="%s"><span class="mark">&ldquo;</span><p>%s</p></div>', cls, x)
+}
+cat('<div class="spotlight">', paste(mapply(fmt, q, seq_along(q)), collapse = "\n"), '</div>')
+```
 
 
 ## Your suggestions matter
