@@ -1,6 +1,7 @@
 ---
 title: "Modelling fundamentals: a linear model with a single, continuous $X$"
 subtitle: "BIOL2022"
+draft: true
 author:
   - name: Dr Januar Harianto
     affiliations: The University of Sydney

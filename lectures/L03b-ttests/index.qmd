@@ -1,6 +1,7 @@
 ---
 title: "Introduction to *t*-tests: a special case of the GLM"
 subtitle: "BIOL2022"
+draft: true
 author:
   - name: Dr Januar Harianto
     affiliations: The University of Sydney

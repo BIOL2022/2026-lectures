@@ -257,8 +257,8 @@ Artificial Intelligence.. or Academic Integrity?
 
 AI helped us:
 
-- Create `tofu`, our jamovi module for **multivariate analysis**
-- Organise the automated schedule in the handbook and the canvas front page
+- Create [`tofu`](https://github.com/usyd-soles-edu/tofu), our jamovi module for **multivariate analysis**
+- Organise the automated [schedule](https://biol2022.github.io/BEDA-handbook/schedule) in the handbook and the Canvas front page's dynamic week tracker
 - Tidy up the handbook (grammar, spelling and structure, as it is based on markup and code)
 - Generate some of the interactive content you will see in some lectures
 - Generate FAQS for the reports

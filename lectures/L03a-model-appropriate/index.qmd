@@ -1,6 +1,7 @@
 ---
 title: "L03a: Is my model appropriate?"
 subtitle: "BIOL2022"
+draft: true
 author:
   - name: Dr Januar Harianto
     affiliations: The University of Sydney

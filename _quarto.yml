@@ -4,6 +4,6 @@ project:
   title: "BIOL2022 — 2026"
   render:
     - "index.qmd"
-    - "lectures/**/*.qmd"
+    - "lectures/L00-welcome-to-beda/index.qmd"
 execute:
   freeze: auto

@@ -1,6 +1,7 @@
 ---
 title: Control, fixed and random variables
 subtitle: "BIOL2022"
+draft: true
 author:
   - name: Dr Januar Harianto
     affiliations: The University of Sydney
