@@ -6,97 +6,204 @@ author:
     affiliations: The University of Sydney
 embed-resources: false # embed resources into single HTML file -- enable when ready to publish
 # NOTE: please check _quarto.yml file for more options
-toc: true
+toc: false
 format:
   ochre-revealjs: default
 ---
 
-# BIOL2022 in a nutshell 
+# Biology Experimental Design and Analysis (BEDA)
 
-## Feedback showcase (we are not perfect)
+## Why BEDA?
 
+You are a behavioural ecologist. What questions come to mind?
+
+![Photo by <a href="https://unsplash.com/@davidclode?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">David Clode</a> on <a href="https://unsplash.com/photos/kangaroos-on-grass-field-yLxQRYpuwqg?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>](assets/wallaby-fight.webp)
+
+::: {.incremental}
+- What species are we looking at? What interactions are occurring? How can we tell whether this is play-fighting or a serious fight?
+- Watson & Croft (1993), [*Playfighting in captive red-necked wallabies, Macropus rufogriseus banksianus*](https://doi.org/10.1163/156853993X00128) (the photograph shows agile wallabies)
+:::
+
+## Why BEDA?
+
+You are a casual observer. What questions come to mind when you see this image?
+
+![Collage by <a href="https://commons.wikimedia.org/wiki/File:Darwin%27s_finches.png">Kiwi Rex</a>, Wikimedia Commons, <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>. Resized and converted to WebP.](assets/darwins-finches-dinky.webp)
+
+::: {.incremental}
+- Why are there so many different beak shapes? Why would different beak shapes be beneficial to the species? How would you compare beaks in terms of how they help the birds live their lives?
+- Lamichhaney et al. (2016), [*A beak size locus in Darwin's finches facilitated character displacement during a drought*](https://www.scienceintheclassroom.org/research-papers/search-beak-genes-darwins-finches) (note that we are linking to an article that is based on the research paper, so the title is different)
+:::
+
+
+# Experimental design and analysis is a [core]{.underline} skill for biologists
+
+::: {.fragment}
+But also a great crictical thinking skill for anyone in any field
+:::
+
+## Why experimental design?
+
+1. **Experimental design** is the process of **planning** an experiment to ensure that the data obtained can provide a valid and objective answer to the **research question**.
+2. **Statistical analysis** is the process of **interpreting** and drawing conclusions from the data collected.
+
+Both are essential skills, but one is taught *more* than the other.
+
+::: {.fragment}
+### More on this later
+:::
+
+# About us
+
+## Your teaching team
+
+```{=html}
 <style>
-.years{display:flex;gap:28px;align-items:flex-start;}
-.years .year{flex:1 1 0;display:flex;flex-direction:column;gap:12px;}
-.years .year>h3{margin:0 0 4px;font-size:18px;color:#9a938b;font-weight:600;letter-spacing:.04em;}
-.years .q{padding:12px 16px;background:#fffaf3;border:1px solid #ead9c9;box-shadow:0 6px 16px -12px rgba(0,0,0,.4);border-radius:0;}
-.years .q .qmark{display:block;background:transparent;color:#e64626;font-family:Georgia,serif;font-size:30px;line-height:.5;margin-bottom:6px;}
-.years .q p{margin:0;font-size:17px;line-height:1.4;font-style:italic;color:#3a332c;}
-.years .q p strong{font-style:normal;color:#1f1f24;}
+#your-teaching-team .teaching-team {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.8rem;
+  text-align: center;
+}
+
+#your-teaching-team .teaching-team img {
+  width: 130px;
+  height: 170px;
+  object-fit: cover;
+  margin: 0 auto 0.45rem;
+}
+
+#your-teaching-team .teaching-team h3 {
+  margin: 0 0 0.2rem;
+  font-size: 0.9em;
+}
+
+#your-teaching-team .teaching-team p {
+  margin: 0.15rem 0;
+  font-size: 0.62em;
+  line-height: 1.25;
+}
 </style>
 
-```{r}
-#| results: asis
-#| echo: false
-raw <- readLines("assets/feedback.txt")
-raw <- trimws(raw[nzchar(raw)])
-p <- strsplit(raw, "|", fixed = TRUE)
-yr <- sapply(p, `[`, 1)
-qt <- sapply(p, function(x) paste(x[-1], collapse = "|"))
-qt <- gsub("\\*\\*(.+?)\\*\\*", "<strong>\\1</strong>", trimws(qt))
-out <- vapply(sort(unique(yr)), function(y) {
-  cards <- sprintf('<div class="q"><span class="qmark">&ldquo;</span><p>%s</p></div>', qt[yr == y])
-  sprintf('<div class="year"><h3>%s</h3>%s</div>', y, paste(cards, collapse = ""))
-}, "")
-cat('<div class="years">', paste(out, collapse = ""), '</div>')
+<div class="teaching-team">
+  <div>
+    <img src="assets/januar-harianto.png" alt="Dr Januar Harianto">
+    <h3>Dr Januar Harianto</h3>
+    <p><strong>Lecturer in Agricultural Data Science</strong></p>
+    <p>Unit coordinator & Module 1</p>
+    <p><a href="mailto:januar.harianto@sydney.edu.au">januar.harianto@sydney.edu.au</a><br>C81 Biomedical Building</p>
+  </div>
+  <div>
+    <img src="assets/clare-mcarthur.jpg" alt="Professor Clare McArthur">
+    <h3>Prof Clare McArthur</h3>
+    <p><strong>Professor of Behavioural Ecology</strong></p>
+    <p>Module 2</p>
+    <p><a href="mailto:clare.mcarthur@sydney.edu.au">clare.mcarthur@sydney.edu.au</a><br>A08 Heydon-Laurence</p>
+  </div>
+  <div>
+    <img src="assets/mathew-crowther.jpg" alt="Professor Mathew Crowther">
+    <h3>Prof Mathew Crowther</h3>
+    <p><strong>Professor</strong></p>
+    <p>Module 3</p>
+    <p><a href="mailto:mathew.crowther@sydney.edu.au">mathew.crowther@sydney.edu.au</a><br>A08 Heydon-Laurence</p>
+  </div>
+  <div>
+    <img src="assets/gary-truong.jpg" alt="Dr Gary Truong">
+    <h3>Dr Gary Truong</h3>
+    <p><strong>Senior Technical Officer</strong></p>
+    <p>Practical technical support</p>
+    <p><a href="mailto:gary.truong@sydney.edu.au">gary.truong@sydney.edu.au</a><br>F07 Carslaw Building</p>
+  </div>
+</div>
 ```
 
+## Your tutors and demonstrators
 
-## Your suggestions matter
-:::: {.fragment}
-> **I, along with many other fellow students**, were thoroughly **frustrated** with the lack of help on
-occasions using softwares such as Jamovi (which was one of the options that we had to use), when
-they didn't actually know how to use the software themselves. There was also a lot of software and
-skill use of concepts/methods that were never actually explained to us, or if so, very minimally, which
-**left us feeling very lost and useless**. That being said, the instructors [redacted], [redacted] and [redacted] were
-consistently clear, patient and well informed and actually guided us through exercises.
+:::: columns
+::: column
 
-> I have talked to quite the number of **disgruntled**
-classmates though- and I'm sure you've seen some of their survey responses- but I just want to put
-my two cents in and say that theres really nothing wrong with the material, assignments, teaching,
-etc. **Its just a hard class** that requires a good bit of effort and time and some people *just don't like
-that.*
+- Anahi Castillo Angon
+- Fiona Clissold
+- Gabby Jarvis
+- Geoffrey Mazue
+- Reilly Seet
+- Federico Facchin
 
->  The **practicals**. The format was very laid back, tutors were very relaxed when it came to learning.
-Questions were returned with a response that was "oh it doesn't really matter." It felt reassuring if
-there was a difficulty understanding something but it also was **not helpful in the long run**
-::::
+:::
+::: column
 
-# Is there good feedback?
+- Alfredo Ortega Gonzalez
+- Chloe Hayes
+- Anushika Herath
+- Toby Champneys
+- Chandler Tsz To Tsang
+- Ana Pantoja
 
-**Yes!**
-
-(This link will only work for the lecturer: [click](https://canvas.sydney.edu.au/courses/67437/files/44775572?module_item_id=2842603))
-
-## We are an *applied* and *practical* unit
-- Focus on **interpretation**, *not* complex statistical/mathematical derivations.
-- **Software-agnostic**, use any software you like (R, SPSS, Jamovi, etc.) **BUT** some modules will recommend specifics e.g. Module 3 will use PRIMER v7.
-- Hands-on with *real* data from real experiments, **practical attendance is mandatory**.
-
-
-
-
-## Canvas site 
-
-- ***All* information on the front page**
-- [**Unit Handbook**](https://biol2022.github.io/BEDA-handbook/), your "bible" and a *living* document (PDF available).
-- [**Lectures and labs**](https://biol2022.github.io/BEDA-handbook/#schedule), all resources in one place.
-- [**Assessments**](https://biol2022.github.io/BEDA-handbook/assessments/assessments.html), all assessment tasks and due dates.
-- [**Ed**](https://edstem.org/au/courses/26541/discussion), ask questions, share resources, etc.
-
-:::: {.fragment}
-[![](assets/canvas2025.png)](https://canvas.sydney.edu.au/courses/67437)
+:::
 ::::
 
 
+I may bring some of them in as guests :D
 
-## Modules and assessment
 
 
-- **Module 1**, study design principles: introduces principles, computer-based labs | **EFT (5%) and Quiz (10%)**
-- **Module 2**, univariate experimental design: design and conduct a univariate experiment | **Report 1 (25%)**
-- **Module 3**, multivariate study design: design and conduct a multivariate experiment | **Report 2 (20%)**
-- **Exam**, written, no MCQ, *up to* 6 questions **(40%) HURDLE TASK** 
+
+## Resources
+
+```{=html}
+<style>
+#resources .resource-links {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.2rem 3rem;
+  margin: 1rem auto 0;
+  max-width: 760px;
+  text-align: center;
+}
+
+#resources .resource-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.7rem;
+  color: inherit;
+  text-decoration: none;
+}
+
+#resources .resource-link img {
+  width: 170px;
+  height: 170px;
+  object-fit: contain;
+}
+
+#resources .resource-link .platform-mark {
+  border-radius: 18px;
+}
+
+#resources .resource-link h3 {
+  margin: 0;
+}
+</style>
+
+<div class="resource-links">
+  <a class="resource-link" href="https://canvas.sydney.edu.au/courses/74353" target="_blank" rel="noopener">
+    <img class="platform-mark" src="assets/canvas-logo.png" alt="Canvas">
+    <h3>Canvas</h3>
+  </a>
+  <a class="resource-link" href="https://edstem.org/au/courses/36475/discussion" target="_blank" rel="noopener">
+    <img class="platform-mark" src="assets/ed-logo.png" alt="Ed">
+    <h3>Ed Discussion</h3>
+  </a>
+  <a class="resource-link" href="https://biol2022.github.io/BEDA-handbook/" target="_blank" rel="noopener">
+    <img src="assets/beda-handbook-logo.png" alt="BEDA">
+    <h3>BEDA Handbook</h3>
+  </a>
+  <a class="resource-link" href="https://canvas.sydney.edu.au/courses/74353/pages/unit-outline" target="_blank" rel="noopener">
+    <img src="assets/usyd-badge.svg" alt="The University of Sydney shield">
+    <h3>Unit outline</h3>
+  </a>
+</div>
+```
 
 
 
@@ -105,27 +212,34 @@ there was a difficulty understanding something but it also was **not helpful in 
 
 ## Learning by osmosis will not work here...
 
-:::: {.columns}
-:::: {.column width=30%}
+
 ![](assets/osmosis-study.gif)
-::::
 
-:::: {.column}
-:::: fragment
-###
-- **4 hours** of timetabled activities per week (2 lectures, 1 practical).
-- **6 hours of self-study per week (minimum)**, based on the University's recommendation of 10 hours per week for a 6 credit point unit.
-- Do not leave things to the last minute...
-::::
-::::
+Please check the [Unit Outline](https://canvas.sydney.edu.au/courses/74353/pages/unit-outline) for more details on what you need to do to pass the unit.
 
-::::
+## Assessments
+
+[Full assessment details and due dates](https://biol2022.github.io/BEDA-handbook/assessments/assessments.html)
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
+<style>
+#assessments .bi {
+  display: inline-block;
+  width: 1.25em;
+}
+</style>
+
+- <i class="bi bi-lightbulb" aria-hidden="true"></i> **EFT (5%):** a 15-minute online quiz, with feedback before census.
+- <i class="bi bi-question-circle" aria-hidden="true"></i> **Quizzes (10%):** a Module 1 evaluation with two attempts; the higher score counts.
+- <i class="bi bi-file-earmark-text" aria-hidden="true"></i> **Reports (45%):** tied to the praticals and your data collection. Two reports in total (25% and 20%).
+- <i class="bi bi-pencil-square" aria-hidden="true"></i> **Exam (40%):** extended answers (essay). Hurdle task. **If you take report writing seriously you will be well-prepared for the exam.**
 
 
+- Report submissions are compulsory - **Absent Fail** if either is not submitted.
+- **Final exam is a 40% hurdle task.**
 
-:::: fragment
-You must be comfortable with asking questions. **No question is too silly!** Ask on Ed or in-person in the practicals.
-::::
+
 
 ## Communication and feedback
 - **Announcements and discussions on Ed.**
@@ -133,37 +247,98 @@ You must be comfortable with asking questions. **No question is too silly!** Ask
 - **Weekly drop-in sessions** for **questions** and **help**, hosted on Zoom (more details on Ed).
 - Each assessment will include feedback to help you improve.
 
-**Email** **Januar** if you have a personal issue or need to discuss something in private.
+
+**Q: What do you think is feedback in BEDA?**
+
+# Our policy on AI
+Artificial Intelligence.. or Academic Integrity?
+
+## We use it too
+
+AI helped us:
+
+- Create `tofu`, our jamovi module for **multivariate analysis**
+- Organise the automated schedule in the handbook and the canvas front page
+- Tidy up the handbook (grammar, spelling and structure, as it is based on markup and code)
+- Generate some of the interactive content you will see in some lectures
+- Generate FAQS for the reports
+- Proofread our text from time to time...
+
+## We do NOT use AI to...
+
+- write any practical, lecture or assessment content (including exams). This is my (Januar) stance for BEDA and I stand by it.
+- mark your assessments (all our 12 demonstrators will be full hands on deck for marking)
+- check your assessments for plagiarism (AI checking AI... not a smart move)
+
+
+## Not against Generative AI
+
+- Fine to use as a tool for **learning** - please use it to *support* your thinking.
+- Retain ownership of *every decision*. We want you to develop habits that **responsible professionals** use with AI.
+- For BEDA, problem solving and critical thinking are what will most help you in the future - so don't let AI take that away from you!
+
+## Discussion - good and bad uses of AI
+
+In general, you can imagine AI as a very capable friend. A good friend will help you learn, but they will not do your work or help you cheat. Which of these requests are reasonable?
+
+- [ ] *Here are the data. Can you decide which analyses to use and write the report for me?*
+- [ ] *I have made some basic notes. Can you turn them into a report using these data and the rubric?”*
+- [ ] *Can you help me understand this output? I have written down what I think it means, please check?*
+- [ ] *Can you proofread my report and tell me whether I have followed the rubric?*
+- [ ] *Can you summarise this lecture so I do not need to read the slides?*
+- [ ] *Can you explain this concept to me in simpler terms?*
+- [ ] *Can you find references for me to support my conclusion so I can add them to my report?*
+
+## Discussion - how will I know if my use of AI is acceptable?
+
+We think it is appropriate if:
+
+- You can explain all the work that has been done if we ask you to.
+- You can justify all the decisions you made in your work e.g. why did you interpret the results in a certain way.
+- You can claim responsibility for the work that you submit and have adequately explained how you used AI in the acknowledgements section of your report.
+
+# We have to, so we will (audit)
+
+Be prepared to be **interviewed**. We will also use the practicals to audit your progress, as 60% of the practicals involve you collecting and analysing your own data.
 
 # Before your first lab...
 
-## Take your pick
+## Which software should you use?
+
+### Recommended and fully supported
 
 :::: columns
-:::: column
-![](assets/rlogo.svg){height=100px}
+::: column
+[![](assets/rlogo.svg){height=80px}](https://cran.r-project.org/)
+[![](assets/positron-icon.svg){height=80px}](https://positron.posit.co/download)
+[![](assets/rstudio-icon.svg){height=80px}](https://posit.co/download/rstudio-desktop/)
 
-[**R**](https://cran.r-project.org/), free, powerful, steep learning curve. Use with [RStudio](https://posit.co/downloads/). You will need to be comfortable with writing `code`.
+#### R in Positron or RStudio
 
-![](assets/spsslogo.svg){height=100px}
+Free, code-based and reproducible.
+:::
 
-**SPSS** (**winding-down support**), user-friendly, expensive, limited. Point and click, no coding required. **Unfortunately, needs licensing.** Use via Citrix or on Lab computers.
+::: column
+[![](assets/jamovilogo.svg){height=80px}](https://www.jamovi.org/download)
+
+#### jamovi
+
+Free and point-and-click. Analyses can be transferred to R.
+:::
 ::::
 
-:::: column
-![](assets/jamovilogo.svg){height=100px}
+### Supported, but not recommended
 
-[**Jamovi**](https://www.jamovi.org/), free, user-friendly and well-documented. Point and click, limited options but extensible via modules. Analyses are also transferrable to R.
+[![](assets/spsslogo.svg){height=80px}](https://www.ibm.com/products/spss-statistics/resources)
+[![](assets/primer-e-logo.svg){height=80px}](https://www.primer-e.com/download/)
 
-![](assets/jasplogo.svg){height=100px}
+#### SPSS and PRIMER
 
-[**JASP**](https://jasp-stats.org/) (**not supported**), free, user-friendly (more so than Jamovi). Point and click. Not extensible, but has lots of features out of the box (e.g. Bayesian stats).
-::::
-::::
+Both are proprietary and require a licence.
 
 
 
-## I am a beginner, what should I do?
+## I am a beginner, which should I use?
 
 :::: fragment
 Use the first practical session this week to test drive the software.
@@ -172,7 +347,7 @@ Use the first practical session this week to test drive the software.
 :::: fragment
 ### 1. Jamovi/R
 - Try **Jamovi**, it is free and user-friendly, **and you can always switch to R later.**
-- If you do not mind the initial learning curve, **R** will be most beneficial in the long run.
+- Use **R** only if you have prior experience. It takes many weeks to learn, but it is the most powerful and flexible option.
 
 ### 2. SPSS
 - Go ahead if this is the software you are *most* comfortable with. Licensing is required (but our lab computers have it installed).
