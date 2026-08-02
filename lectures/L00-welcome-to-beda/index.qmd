@@ -7,8 +7,6 @@ author:
 embed-resources: false # embed resources into single HTML file -- enable when ready to publish
 # NOTE: please check _quarto.yml file for more options
 toc: false
-format:
-  ochre-revealjs: default
 ---
 
 # Biology Experimental Design and Analysis (BEDA)

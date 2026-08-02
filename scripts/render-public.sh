@@ -11,4 +11,4 @@ fi
 
 rm -rf "$OUTPUT_DIR"
 cd "$PROJECT_ROOT"
-quarto render
+quarto render --profile public

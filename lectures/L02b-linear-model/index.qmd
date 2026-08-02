@@ -8,8 +8,6 @@ author:
 embed-resources: false # embed resources into single HTML file -- enable when ready to publish
 # NOTE: please check _quarto.yml file for more options
 scrolling: true
-format:
-  ochre-revealjs: default
 ---
 
 ```{r setup}
@@ -372,7 +370,7 @@ The analysis shows no significant relationship between solar radiation and wind 
 - Nothing will stop you from fitting a linear model to data, just as nothing can stop **me** from fitting a non-linear model to the same data.
 
 ::: fragment
-![](assets/diffmodels.png){height=500px}
+![](../../assets/diffmodels.png){height=500px}
 
 **Quick check**: Which is the better model, red or blue?
 :::

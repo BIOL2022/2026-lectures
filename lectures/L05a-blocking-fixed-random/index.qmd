@@ -6,8 +6,6 @@ author:
   - name: Dr Januar Harianto
     affiliations: The University of Sydney
 embed-resources: false # embed resources into single HTML file -- enable when ready to publish
-format:
-  ochre-revealjs: default
 # NOTE: please check _quarto.yml file for more options
 ---
 
@@ -224,7 +222,7 @@ What is the effect of lake size on species diversity, *if we control for the eff
 
 We want to determine differences in the body mass of penguins based on their species, but we know that the sex of the penguin matters (e.g. males are generally heavier). 
 
-![](assets/cartoon-penguins.png){fig-align="center"}
+![](../../assets/cartoon-penguins.png){fig-align="center"}
 
 
 $$ \text{body mass} \sim \color{red}{\text{sex}} + \color{black}\text{species} $$

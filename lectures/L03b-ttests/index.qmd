@@ -10,8 +10,6 @@ embed-resources: false # embed resources into single HTML file -- enable when re
 execute: 
   echo: true
 code-fold: true
-format:
-  ochre-revealjs: default
 ---
 
 
@@ -37,7 +35,7 @@ You will:
 
 ##
 
-![](assets/gentoo.jpeg)
+![](../../assets/gentoo.jpeg)
 
 ::: fragment
 > Are male Gentoo penguins heavier than female penguins? 

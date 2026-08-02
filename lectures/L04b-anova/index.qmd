@@ -7,8 +7,6 @@ author:
     affiliations: The University of Sydney
 embed-resources: false # embed resources into single HTML file -- enable when ready to publish
 # NOTE: please check _quarto.yml file for more options
-format:
-  ochre-revealjs: default
 ---
 
 
@@ -153,7 +151,7 @@ That is:
 
 # Example
 
-![](assets/cartoon-penguins.png)
+![](../../assets/cartoon-penguins.png)
 
 Are species and sex significant predictors of body mass in penguins?
 
@@ -269,7 +267,7 @@ summary(fit)
 
 # Example 2
 
-![](assets/gentoo.jpeg)
+![](../../assets/gentoo.jpeg)
 
 Are species and sex significant predictors of bill length in penguins?
 

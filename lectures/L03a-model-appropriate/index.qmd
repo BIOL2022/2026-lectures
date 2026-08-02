@@ -7,8 +7,6 @@ author:
     affiliations: The University of Sydney
 embed-resources: false # embed resources into single HTML file -- enable when ready to publish
 # NOTE: please check _quarto.yml file for more options
-format:
-  ochre-revealjs: default
 ---
 
 ```{r}
@@ -139,7 +137,7 @@ Pretend that we have a model where we are trying to interpret the relationship b
 
 ## Why check assumptions?
 
-![](assets/diffmodels.png){height=500px}
+![](../../assets/diffmodels.png){height=500px}
 
 Among other things, checking assumptions can help us understand the data and decide on a model that meets the requirements of the data.
 

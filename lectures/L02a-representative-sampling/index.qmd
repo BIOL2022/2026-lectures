@@ -6,8 +6,6 @@ author:
   - name: Dr Januar Harianto
     affiliations: The University of Sydney
 # NOTE: please check _quarto.yml file for more options
-format:
-  ochre-revealjs: default
 ---
 
 

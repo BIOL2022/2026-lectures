@@ -10,8 +10,6 @@ embed-resources: false # embed resources into single HTML file -- enable when re
 toc: true
 toc-depth: 1
 scrollable: true
-format:
-  ochre-revealjs: default
 ---
 
 ```{r setup}

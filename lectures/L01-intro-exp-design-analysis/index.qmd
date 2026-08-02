@@ -7,11 +7,9 @@ author:
     affiliations: The University of Sydney
 embed-resources: false # embed resources into single HTML file -- enable when ready to publish
 # NOTE: please check _quarto.yml file for more options
-toc: true
-toc-depth: 1
+# toc: true
+# toc-depth: 1
 scrollable: true
-format:
-  ochre-revealjs: default
 ---
 ```{r setup}
 #| include: false
