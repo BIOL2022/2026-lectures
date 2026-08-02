@@ -198,7 +198,7 @@ I may bring some of them in as guests :D
     <img src="assets/beda-handbook-logo.png" alt="BEDA">
     <h3>BEDA Handbook</h3>
   </a>
-  <a class="resource-link" href="https://canvas.sydney.edu.au/courses/74353/pages/unit-outline" target="_blank" rel="noopener">
+  <a class="resource-link" href="https://www.sydney.edu.au/units/BIOL2022" target="_blank" rel="noopener">
     <img src="assets/usyd-badge.svg" alt="The University of Sydney shield">
     <h3>Unit outline</h3>
   </a>
