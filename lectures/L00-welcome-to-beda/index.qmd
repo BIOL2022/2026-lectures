@@ -266,9 +266,11 @@ AI helped us:
 
 ## We do NOT use AI to...
 
-- write any practical, lecture or assessment content (including exams). This is my (Januar) stance for BEDA and I stand by it.
+- write any practical, lecture or assessment content (including exams) (although proofreading may be done)
 - mark your assessments (all our 12 demonstrators will be full hands on deck for marking)
-- check your assessments for plagiarism (AI checking AI... not a smart move)
+- check your assessments for plagiarism
+
+![Created with the Imgflip. Meme Creator](assets/stones.jpg)
 
 
 ## Not against Generative AI
@@ -297,9 +299,19 @@ We think it is appropriate if:
 - You can justify all the decisions you made in your work e.g. why did you interpret the results in a certain way.
 - You can claim responsibility for the work that you submit and have adequately explained how you used AI in the acknowledgements section of your report.
 
+## Some interesting articles
+
+
+::: incremental
+- Barcaui (2025), [*ChatGPT as a cognitive crutch*](https://doi.org/10.1016/j.ssaho.2025.102287): *"...unrestricted ChatGPT use impaired long-term retention, likely by reducing the cognitive effort that supports durable memory... while AI assistance may ease initial learning, it appears to undermine the effortful processes needed for robust learning"*
+- Dell’Acqua et al. (2026), [*Navigating the jagged technological frontier*](https://doi.org/10.1287/orsc.2025.21838): *"... for a complex managerial task selected to be outside the frontier, subjects using AI were 19% less likely to produce correct solutions compared with those without AI..."*
+- Messeri and Crockett (2024), [*Artificial intelligence and illusions of understanding in scientific research*](https://doi.org/10.1038/s41586-024-07146-0): *"The proliferation of AI tools in science risks introducing a phase of scientific enquiry in which we produce more but understand less."*
+- Hao et al. (2026), [*AI tools expand scientists’ impact but contract science’s focus*](https://doi.org/10.1038/s41586-025-09922-y): *"... adoption of AI in science presents what seems to be a paradox: an expansion of individual scientists’ impact but a contraction in collective science’s reach, as AI-augmented work moves collectively towards areas richest in data"*
+:::
+
 # We have to, so we will (audit)
 
-Be prepared to be **interviewed**. We will also use the practicals to audit your progress, as 60% of the practicals involve you collecting and analysing your own data.
+Be prepared to be *interviewed* on your understanding of **your own reports** with penalties applied. We will also use the practicals to audit your progress from Week 4 onwards.
 
 # Before your first lab...
 
@@ -334,30 +346,15 @@ Free and point-and-click. Analyses can be transferred to R.
 
 #### SPSS and PRIMER
 
-Both are proprietary and require a licence.
+Both are proprietary and require a licence, and will need $$$ to maintain once you graduate.
 
 
+## Help us collect some snails!
 
-## I am a beginner, which should I use?
-
-:::: fragment
-Use the first practical session this week to test drive the software.
-::::
-
-:::: fragment
-### 1. Jamovi/R
-- Try **Jamovi**, it is free and user-friendly, **and you can always switch to R later.**
-- Use **R** only if you have prior experience. It takes many weeks to learn, but it is the most powerful and flexible option.
-
-### 2. SPSS
-- Go ahead if this is the software you are *most* comfortable with. Licensing is required (but our lab computers have it installed).
-::::
-
-:::: fragment
-Or, you can use your own software (PSPP, SAS, etc.) as long as you can export your results in a format that we can read in the reports.
-::::
-
- 
+<div style="text-align: center;">
+<a href="https://canvas.sydney.edu.au/courses/74353/pages/snail-collecting-competition" target="_blank" rel="noopener noreferrer"><img src="assets/snail.jpg" alt="A garden snail" height="440" style="display: block; margin: 0 auto;"></a>
+<p class="caption" style="font-size: 0.7em;">Click the image to view details. Photograph by <a href="https://commons.wikimedia.org/wiki/File:Cornu_aspersum,_A_Garden_Snail._Chapeltoun._North_Ayrshire._Scotland.jpg">Roger Griffith</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>.</p>
+</div>
 
 # Thanks!
 
