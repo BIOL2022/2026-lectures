@@ -1,7 +1,6 @@
 ---
 title: (Re-)introduction to experimental design and analysis
 subtitle: "BIOL2022"
-draft: true
 author:
   - name: Dr Januar Harianto
     affiliations: The University of Sydney
@@ -117,7 +116,7 @@ Many of us have learnt statistics as a set of techniques, often relying some kin
 :::: columns
 
 ::: {.column width="40%"}
-![](assets/abstraction_first3.png)
+![](assets/abstraction_first3.png){height=500px}
 :::
 
 ::: column

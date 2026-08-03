@@ -2,3 +2,4 @@ project:
   render:
     - "index.qmd"
     - "lectures/L00-welcome-to-beda/index.qmd"
+    - "lectures/L01-intro-exp-design-analysis/index.qmd"
