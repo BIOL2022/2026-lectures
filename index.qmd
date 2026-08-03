@@ -25,7 +25,7 @@ title: "BIOL2022 2026 Lectures"
 
 <div class="lec-grid">
 <div class="lec-card"><a href="lectures/L00-welcome-to-beda/index.html"><span class="lec-title">Welcome to BEDA</span><img src="assets/thumbnails/L00-welcome-to-beda.png" alt="L00 Welcome"></a><a class="lec-pdf" href="lectures/L00-welcome-to-beda/slides.pdf">PDF slides</a></div>
-<div class="lec-card"><a href="lectures/L01-intro-exp-design-analysis/index.html"><span class="lec-title">Experimental design and analysis</span><img src="assets/thumbnails/L01-intro-exp-design-analysis.png" alt="L01 Experimental design and analysis"></a><a class="lec-pdf" href="lectures/L01-intro-exp-design-analysis/slides.pdf">PDF slides</a></div>
+<div class="lec-card"><a href="lectures/L01-intro-exp-design-analysis/index.html"><span class="lec-title">Fundamentals of experimental design and analysis</span><img src="assets/thumbnails/L01-intro-exp-design-analysis.png" alt="Fundamentals of experimental design and analysis"></a><a class="lec-pdf" href="lectures/L01-intro-exp-design-analysis/slides.pdf">PDF slides</a></div>
 </div>
 
 ## Week 2: Sampling and modelling

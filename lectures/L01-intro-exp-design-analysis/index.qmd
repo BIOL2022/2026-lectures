@@ -1,6 +1,6 @@
 ---
-title: (Re-)introduction to experimental design and analysis
-subtitle: "BIOL2022"
+title: Fundamentals of experimental design and analysis
+subtitle: "BIOL2022 - L01"
 author:
   - name: Dr Januar Harianto
     affiliations: The University of Sydney
