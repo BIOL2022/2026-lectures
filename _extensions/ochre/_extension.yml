@@ -12,6 +12,7 @@ contributes:
       theme: [default, usyd.scss]
       width: 1280
       height: 720
+      slide-number: c/t
       title-slide-attributes:
         data-background-image: logo_charcoal.svg
         data-background-size: 10%
