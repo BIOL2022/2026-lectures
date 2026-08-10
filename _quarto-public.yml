@@ -4,3 +4,5 @@ project:
     - "lectures/L00-welcome-to-beda/index.qmd"
     - "lectures/L01-intro-exp-design-analysis/index.qmd"
     - "lectures/L02a-representative-sampling/index.qmd"
+    - "lectures/L02b-linear-model/index.qmd"
+    - "lectures/L02c-all-linear-model/index.qmd"

@@ -32,8 +32,8 @@ title: "BIOL2022 2026 Lectures"
 
 <div class="lec-grid">
 <div class="lec-card"><a href="lectures/L02a-representative-sampling/index.html"><span class="lec-title">Representative sampling</span><img src="assets/thumbnails/L02a-representative-sampling.png" alt="Representative sampling"></a><a class="lec-pdf" href="lectures/L02a-representative-sampling/slides.pdf">PDF slides</a></div>
-<div class="lec-card is-draft"><span class="lec-title">The linear model</span><div class="lec-preview"><span class="lec-status">Coming soon</span></div></div>
-<div class="lec-card is-draft"><span class="lec-title">All linear models</span><div class="lec-preview"><span class="lec-status">Coming soon</span></div></div>
+<div class="lec-card"><a href="lectures/L02b-linear-model/index.html"><span class="lec-title">The linear model</span><img src="assets/thumbnails/L02b-linear-model.png" alt="The linear model"></a><a class="lec-pdf" href="lectures/L02b-linear-model/slides.pdf">PDF slides</a></div>
+<div class="lec-card"><a href="lectures/L02c-all-linear-model/index.html"><span class="lec-title">All linear models</span><img src="assets/thumbnails/L02c-all-linear-model.png" alt="All linear models"></a><a class="lec-pdf" href="lectures/L02c-all-linear-model/slides.pdf">PDF slides</a></div>
 </div>
 
 ## Week 3: Assumptions and comparisons
