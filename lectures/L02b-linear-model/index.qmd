@@ -1,6 +1,6 @@
 ---
 title: "Modelling fundamentals: a linear model with a single, continuous $X$"
-subtitle: "BIOL2022"
+subtitle: "BIOL2022 - L02b"
 author:
   - name: Dr Januar Harianto
     affiliations: The University of Sydney
@@ -11,50 +11,108 @@ scrolling: true
 
 ```{r setup}
 #| include: false
-if (!require("pacman")) install.packages("pacman", repos = "http://cran.us.r-project.org")
-pacman::p_load(tidyverse, cowplot, gganimate, palmerpenguins, patchwork, HistData, broom, gt, gtsummary)
-pacman::p_load_gh("datalorax/equatiomatic")
+library(tidyverse)
+library(cowplot)
+library(palmerpenguins)
+library(HistData)
+library(gt)
+library(gtsummary)
+
+style_results_table <- function(table) {
+  table |>
+    tab_style(
+      style = list(
+        cell_text(weight = "bold", size = px(24)),
+        cell_borders(sides = c("top", "bottom"), color = "black", weight = px(2))
+      ),
+      locations = cells_column_labels(everything())
+    ) |>
+    tab_style(
+      style = cell_borders(sides = "bottom", color = "black", weight = px(1)),
+      locations = cells_body()
+    ) |>
+    tab_options(
+      table.font.size = px(26),
+      data_row.padding = px(8),
+      table.width = px(1050),
+      table.additional_css = "th, td { border-color: black !important; }",
+      table.border.top.style = "solid",
+      table.border.top.width = px(2),
+      table.border.top.color = "black",
+      table.border.bottom.style = "solid",
+      table.border.bottom.width = px(2),
+      table.border.bottom.color = "black",
+      column_labels.border.top.style = "solid",
+      column_labels.border.top.width = px(2),
+      column_labels.border.top.color = "black",
+      column_labels.border.bottom.style = "solid",
+      column_labels.border.bottom.width = px(2),
+      column_labels.border.bottom.color = "black",
+      row_group.font.size = px(22),
+      row_group.font.weight = "bold",
+      row_group.border.top.color = "black",
+      row_group.border.bottom.color = "black",
+      table_body.hlines.style = "solid",
+      table_body.hlines.width = px(1),
+      table_body.hlines.color = "black",
+      table_body.border.top.color = "black",
+      table_body.border.bottom.color = "black"
+    )
+}
 ```
 
-# Learning objectives
+## Learning objectives
 
-You should:
+By the end of this lecture, you should be able to:
 
-- [ ] Understand the concept of a (general) linear model.
-- [ ] Be able to come up with a linear model equation and interpret the coefficients and error term.
-- [ ] Be able to interpret the results of a linear model.
-- [ ] Understand that a linear model needs to be validated by checking assumptions.
-- [ ] Be able to design a study with linear modelling in mind.
+- Describe a linear model for a continuous response and predictor.
+- Write and interpret a simple linear model equation.
+- Explain how residuals and the least-squares method are used to fit a line.
+- Interpret coefficients, confidence intervals, and $R^2$ in model output.
+- Recognise that coefficient interpretation depends on residual checks, which we will learn next week.
 
-# Introduction to linear modelling 
+## Introduction to linear modelling
 
-> “Cars with flames painted on the hood might get more speeding tickets. Are the flames making the car go fast? No. Certain things just go together. And when they do, they are correlated. **It is the darling of all human errors to assume, without proper testing, that one is the cause of the other.**” 
+> “Cars with flames painted on the hood might get more speeding tickets. Are the flames making the car go fast? No. Certain things just go together. And when they do, they are correlated. **It is the darling of all human errors to assume, without proper testing, that one is the cause of the other.**”
 
 ― Barbara Kingsolver, [Flight Behavior](https://en.wikipedia.org/wiki/Flight_Behavior) (2012)
 
-## Origin
+## A short history of least squares
+
 ::: columns
-::: {.fragment .column width=30%} 
-![Adrien-Marie Legendre (1752–1833), French Mathematician, first introduced the method of least squares in 1806. No known portrait of Legendre exists. Source: [Wikipedia](https://en.wikipedia.org/wiki/Adrien-Marie_Legendre)](assets/legendre_med.jpg){height=300px}
-:::
-:::: {.fragment .column width=30%} 
-![Carl Friedrich Gauss (1777–1855), German mathematician, astronomer, and physicist. Published the method of least squares in 1809. Source: [Wikipedia](https://en.wikipedia.org/wiki/Carl_Friedrich_Gauss)](assets/gauss.jpg){height=300px}
+
+::: {.fragment .column width=30%}
+![Illustrative image of Adrien-Marie Legendre](assets/legendre_med.jpg){height=300px}
+
+**Legendre**: No known portrait exists; this is an illustrative image from [Wikipedia](https://en.wikipedia.org/wiki/Adrien-Marie_Legendre). Introduced least squares in 1806.
 :::
 
-:::: {.fragment .column width=30%} 
-![Francis Galton (1822–1911), cousin of Charles Darwin, inventor of the regression line and the correlation coefficient. Source: [Wikipedia](https://en.wikipedia.org/wiki/Francis_Galton)](assets/galton.jpg){height=300px}
-:::
+::: {.fragment .column width=30%}
+![Carl Friedrich Gauss](assets/gauss.jpg){height=300px}
+
+**Gauss**: Published work on least squares in 1809. [Source: Wikipedia](https://en.wikipedia.org/wiki/Carl_Friedrich_Gauss)
 :::
 
-## Galton's data 
+::: {.fragment .column width=30%}
+![Francis Galton](assets/galton.jpg){height=300px}
 
-- 928 children of 205 pairs of parents. 
-- Height of parents and children measured in inches.
-- Size classes were binned (hence data looks discrete).
+**Galton**: Introduced regression to the mean ([1886](https://galton.org/bib/JournalItem.aspx_action=view_id=157)) and correlation ([1888](https://galton.org/essays/1880-1889/galton-1888-co-relations-royal-soc/galton_corr.html)).
+:::
+
+:::
+
+## The Galton dataset
+
+- 928 children from 205 parent pairs.
+- Parent and child heights were recorded in inches.
+- Heights were recorded in size classes, so the plot will show horizontal bands.
+
+**Question:** How does child height vary with parent height?
 
 ## Scatterplot
 
 ```{r}
+#| fig-alt: "Scatterplot of child height against parent height, showing a positive but noisy relationship."
 p1 <- ggplot(Galton, aes(x = parent, y = child)) +
   geom_point(alpha = .2, size = 3, colour = "firebrick") +
   labs(x = "Parent height (inches)", y = "Child height (inches)") +
@@ -68,6 +126,7 @@ We want to explain this *noisy* relationship...
 ## Regression line
 
 ```{r}
+#| fig-alt: "Scatterplot of child height against parent height with a fitted straight line through the positive pattern."
 p2 <- ggplot(Galton, aes(x = parent, y = child)) +
   geom_point(alpha = .2, size = 3, colour = "firebrick") +
   labs(x = "Parent height (inches)", y = "Child height (inches)") +
@@ -76,25 +135,29 @@ p2 <- ggplot(Galton, aes(x = parent, y = child)) +
 p2
 ```
 
-We want to explain this *noisy* relationship... **using a deterministic model, i.e. a fixed equation.**
+We want to explain this *noisy* relationship... **using a linear model.**
 
 
 
 # How does linear modelling work?
 
-# Least squares
+## Least squares
 
 > The method of least squares is the **automobile of modern statistical analysis**: despite its limitations, occasional accidents and incidental pollution, it and its numerous variations, extensions, and related conveyances **carry the bulk of statistical analyses**, and are known and valued by nearly all.
 
 -- Stigler, 1981 (emphasis added)
 
-## Residuals, $\hat \epsilon$
+## Residuals, $\widehat{\epsilon}$
 
-$$ \color{firebrick}{\hat{\epsilon_i}} = \color{royalblue}{y_i} - \color{forestgreen}{\hat{y_i}} $$
+$$Residual = observed − predicted$$
+$$ \color{royalblue}{\widehat{\epsilon}_i} = \color{firebrick}{y_i} - \color{forestgreen}{\widehat{y}_i} $$
+
+If a child is 178 cm tall and the fitted line predicts 174 cm, the residual is +4 cm.
 
 . . .
 
 ```{r}
+#| fig-alt: "Plot showing observations, a fitted line, and vertical residual distances from each observation to the line."
 #| code-fold: true
 # simulate example data
 set.seed(340)
@@ -132,25 +195,27 @@ p1 +
 
 ## How do we fit a line?
 
-*Minimise* the sum of the squared residuals:
+Choose the intercept ($\beta_0$) and slope ($\beta_1$) that make the total squared residual as small as possible:
 
-$$\color{firebrick}{argmin_{\beta_0, \beta_1}} \sum_{i=1}^n (y_i - \color{royalblue}{(\beta_0 + \beta_1 x_i)})^2$$ 
+
 
 ::: columns
 ::: {.column width=50%}
-![[Source](https://github.com/Enchufa2/ls-springs)](assets/leastsquares.gif){fig-align="left"}
+![Source: [ls-springs](https://github.com/Enchufa2/ls-springs)
+](assets/leastsquares.gif){fig-align="left"}
 
 :::
 ::: {.column width=50%}
 ###
 
+$$\color{firebrick}{\mathop{\mathrm{arg\,min}}_{\beta_0, \beta_1}} \sum_{i=1}^n (y_i - \color{royalblue}{(\beta_0 + \beta_1 x_i)})^2$$
+
 ::: incremental
-1. Draw a line.
-2. Calculate the residuals for each point.
-3. Square the residuals, sum them up.
-4. Repeat for all possible lines.
-5. Choose the line with the smallest sum of squared residuals.
-6. **Calculate the slope and intercept of that line.**
+1. Draw a candidate line.
+2. Calculate the residuals.
+3. Square and sum them.
+4. Find the line with the smallest sum.
+5. **Report its slope and intercept.**
 :::
 
 :::
@@ -160,28 +225,27 @@ $$\color{firebrick}{argmin_{\beta_0, \beta_1}} \sum_{i=1}^n (y_i - \color{royalb
 
 # The linear model
 
-## Linear regression {auto-animate="true"}
+## Linear regression
 
-A statistical method that fits a linear model equation to explain the relationship between two variables, $x$ and $y$.
-The relationship is a **general linear model** that has the following form:
+A linear model describes the relationship between a response $y$ and a predictor $x$.
 
-$$y = c + mx + \epsilon$$
+$$y_i = \beta_0 + \beta_1 x_i + \epsilon_i$$
 
-where $\epsilon$ is the error term that accounts for the variability in $y$ that is not explained by $x$.
-
-::: fragment
-**In other words, we want to explain that changes in $y$ can be estimated by the slope $m$ and the intercept $c$.**
-:::
+- $\beta_0$: intercept
+- $\beta_1$: slope
+- $\epsilon_i$: deviation of observation $i$ from the mean response predicted at $x_i$
 
 
 
 ## Modelling {auto-animate="true"}
 
-It would be useful to understand that in:
+In the model:
 
- $$y = \color{royalblue}{c + mx} + \color{red}{\epsilon}$$
+$$y_i = \color{royalblue}{\beta_0 + \beta_1 x_i} + \color{red}{\epsilon_i}$$
 
-we are fitting a *deterministic* straight line equation [$c + mx$]{style="color: royalblue"} to the data, with an *error* term [$\epsilon$]{style="color: red"} that accounts for the variability in $y$ that is not explained by $x$. Here are more ways to think about it:
+The blue component is the fixed mean relationship. The red component is random variation around it.
+
+We can think of the response as being made up of two components:
 
 ::: fragment
 
@@ -193,111 +257,105 @@ we are fitting a *deterministic* straight line equation [$c + mx$]{style="color:
 :::
 
 
-## What are we checking? {auto-animate="true"}
 
-$$y = \color{royalblue}{c + mx} + \color{red}{\epsilon}$$
+## How do we assess a fitted model? {auto-animate="true"}
 
-- Estimate the coefficients (intercept c and slope m).
-- **Once fitted, the line is fixed**; only the errors vary.
-- Assessment of the model rests on assessing the errors, *because nothing else changes*.
+$$y_i = \color{royalblue}{\beta_0 + \beta_1 x_i} + \color{red}{\epsilon_i}$$
 
-:::fragment
+**A fitted line is not automatically a valid model.**
+
+We cannot observe the errors directly, so after fitting we inspect their estimates, the residuals $\widehat{\epsilon}$.
+
+Residual checks help us judge whether the observed error patterns are reasonably compatible with the model assumptions.
+
+:::::fragment
 ![It is just about the errors... source: Tim & Eric Awesome Show, Great Job! Episode 3 of season 4.](assets/mind_blown.gif){height=200px fig-align="left"}
 
-:::
+:::::
 
-## Anatomy of a linear model
+## From model to fitted equation
 
-$$y = c + mx + \epsilon$$
-can be expressed as 
-
-::: fragment
+**The model:**
 
 $$y_i = \beta_0 + \beta_1 x_i + \epsilon_i$$
 
-where $y_i$ is the $i$-th observation of $y$, $x_i$ is the $i$-th observation of $x$, and $\epsilon_i$ is the $i$-th observation of the error term.
+**After fitting the data:**
 
-:::
+$$\widehat{y}_i = \widehat{\beta}_0 + \widehat{\beta}_1 x_i$$
 
+The fitted intercept is $\widehat{\beta}_0$.
 
-::: fragment
+The fitted slope is $\widehat{\beta}_1$.
 
-The model is a **general linear model** with coefficients $\beta_0$ and $\beta_1$ that are estimated from the data. These coefficients represent the intercept and slope of the linear equation, respectively.
+**For Galton's data:**
 
-:::
+$$\widehat{child} = 23.94 + 0.65(parent)$$
 
-## Fitting Galton's data 
-
-Fitting a linear model will generally produce a result that looks like this:
+## Galton regression output
 
 ```{r}
-#| echo: true
-#| code-fold: true
+#| echo: false
 fit <- lm(child ~ parent, data = Galton)
-summary_table <-
-  fit |>
-  tbl_regression(intercept = TRUE, show_single_row = everything()) |>
-  modify_column_unhide(columns = c(statistic, std.error)) |>
-  add_glance_table(include = c(r.squared, adj.r.squared))
-summary_table
+coefficient <- summary(fit)$coefficients
+confidence <- confint(fit)
+
+results <- tibble(
+  term = c("Intercept", "Parent height (in)", "R²", "Adjusted R²", "n"),
+  estimate_se = c(
+    sprintf("%.2f (%.2f)", coefficient[1, 1], coefficient[1, 2]),
+    sprintf("%.2f (%.3f)", coefficient[2, 1], coefficient[2, 2]),
+    sprintf("%.2f", summary(fit)$r.squared),
+    sprintf("%.2f", summary(fit)$adj.r.squared),
+    as.character(nrow(Galton))
+  ),
+  ci = c(
+    sprintf("%.2f–%.2f", confidence[1, 1], confidence[1, 2]),
+    sprintf("%.2f–%.2f", confidence[2, 1], confidence[2, 2]),
+    "", "", ""
+  ),
+  p = c(
+    ifelse(coefficient[1, 4] < 0.001, "<0.001", format.pval(coefficient[1, 4], digits = 2)),
+    ifelse(coefficient[2, 4] < 0.001, "<0.001", format.pval(coefficient[2, 4], digits = 2)),
+    "", "", ""
+  )
+)
+
+results |>
+  gt() |>
+  cols_label(
+    term = "Term",
+    estimate_se = "Estimate (SE)",
+    ci = "95% CI",
+    p = "p-value"
+  ) |>
+  cols_align(align = "right", columns = c(estimate_se, ci, p)) |>
+  tab_row_group(
+    label = "Model fit",
+    rows = term %in% c("R²", "Adjusted R²", "n")
+  ) |>
+  tab_row_group(
+    label = "Coefficients",
+    rows = term %in% c("Intercept", "Parent height (in)")
+  ) |>
+  style_results_table() |>
+  tab_source_note(source_note = "SE = standard error; CI = confidence interval.")
 ```
 
-::: fragment
-And this results in the following model:
 
-```{r}
-#| echo: false
-fitlatex <- extract_eq(fit, use_coefs = TRUE)
-fitlatex
-```
+## Interpreting the fitted model
 
+$$\widehat{child} = 23.94 + 0.65(parent)$$
 
-- **Beta** coefficients are the **estimated** coefficients of the linear model.
-- **SE** tells us how much the coefficient estimate might vary from the true value.
-- **95% CI** gives us a range of values that we are 95% confident contains the true coefficient.
-- **R-squared** tells us how much of the variability in the response variable is explained by the model. The **adjusted R-squared** adjusts for the number of predictors in the model (in this case, just one).
+**Main result:** Parent height is positively associated with child height.
 
-Not all of these metrics are shown in all statistical outputs, and their availability may depend on the specific modelling function used.
-:::
-
-## Interpretation of the model 
-
-```{r}
-#| echo: false
-fitlatex
-```
-
-::: fragment
-
-```{r}
-#| echo: false
-extract_eq(fit, use_coefs = FALSE, intercept = "beta")
-```
-
-$$y = c + mx + \epsilon$$
-:::
-
-::: fragment
-
-- The **intercept** $\beta_0$ is the expected value of $y$ when $x = 0$.
-- The **slope** $\beta_1$ is the change in $y$ for a one-unit change in $x$.
-- The **error term** $\epsilon_i$ is the variability in $y$ that is not explained by $x$.
-:::
-
-## Results
-
-```{r}
-#| echo: true
-#| code-fold: true
-summary_table
-```
-
-::: {.fragment}
-The linear regression analysis revealed a significant positive relationship between parent height and child height (β = 0.65, R^2^ = 0.21, p < 0.001). This indicates that for every one-inch increase in parent height, the child's height is estimated to increase by 0.65 inches.
-:::
+- **Slope:** For each 1-inch increase in parent height, predicted child height increases by 0.65 inches (95% CI 0.57–0.73, $p < 0.001$).
+- **Model fit:** Parent height explains 21% of the variation in child height ($R^2 = 0.21$).
+- **Intercept:** 23.94 is the predicted child height when parent height is zero. Because zero is outside the observed range, it is not biologically meaningful here.
 
 
-## Example 2: penguins
+
+
+## Example 2: Adelie penguins
 
 
 ```{r}
@@ -306,16 +364,21 @@ The linear regression analysis revealed a significant positive relationship betw
 adelie <- penguins |> filter(species == "Adelie")
 fit_adelie <- lm(body_mass_g ~ flipper_length_mm, data = adelie)
 fit_adelie |>
-  tbl_regression(intercept = TRUE) |>
-  add_glance_table(include = c(r.squared, adj.r.squared))
+  tbl_regression(
+    intercept = TRUE,
+    label = list(flipper_length_mm ~ "Flipper length (mm)")
+  ) |>
+  add_glance_table(include = c(r.squared, adj.r.squared)) |>
+  as_gt() |>
+  style_results_table()
 ```
 
-::: {.fragment}
-The results indicate a significant positive relationship between flipper length and body mass in Adelie penguins (β = 33, R^2^ = 0.22, p < 0.001) indicating that for every 1 mm increase in flipper length, the body mass is expected to increase by 33 grams. Based on the R^2^ value he model explains approximately 22% of the variance in body mass.
-:::
+
+Among Adelie penguins, longer flippers were associated with greater body mass. For each 1 mm increase in flipper length, the model estimated a 33 g increase in body mass (95% CI: 23–43 g per mm, $p < 0.001$). The model accounted for 22% of the observed variation in body mass ($R^2 = 0.22$).
 
 
-## Example 3: iris
+
+## Example 3: *Iris setosa*
 
 ```{r}
 #| echo: true
@@ -326,24 +389,19 @@ setosa <- iris |> filter(Species == "setosa")
 # Fit linear model
 fit_setosa <- lm(Petal.Length ~ Sepal.Width, data = setosa)
 
-# Display results
 fit_setosa |>
-  tbl_regression(intercept = TRUE) |>
-  add_glance_table(include = c(r.squared, adj.r.squared))
+  tbl_regression(
+    intercept = TRUE,
+    label = list(Sepal.Width ~ "Sepal width (cm)")
+  ) |>
+  add_glance_table(include = c(r.squared, adj.r.squared)) |>
+  as_gt() |>
+  style_results_table()
 ```
 
-::: {.fragment}
-The analysis found no significant relationship between sepal width and petal length in *Iris setosa* (β = 0.08, p = 0.2). The model explains only about 3% of the variance in petal length (R^2^ = 0.032), and the confidence interval for the slope includes zero. This indicates that sepal width is not a meaningful predictor of petal length in this species.
+In *Iris setosa*, the estimated association between sepal width and petal length was small and uncertain. A 1 cm increase in sepal width corresponded to an estimated 0.08 cm increase in petal length (95% CI: −0.05–0.21 cm per cm, $p = 0.20$). Because the interval includes zero, these data do not provide clear evidence of a linear association. The model accounted for only 3.2% of the observed variation ($R^2 = 0.032$).
 
-Importantly: 
-
-- **Non-significant results are still valid results**: they tell us something important about the data
-- **Report the actual p-value** (do not just say "p > 0.05")
-- **Acknowledge the low explanatory power** (low R^2^)
-- **Avoid over-interpreting**, do not force biological explanations for non-significant relationships
-:::
-
-## Example 4: air quality
+## Example 4: Air quality data
 
 ```{r}
 #| echo: true
@@ -352,50 +410,35 @@ Importantly:
 air_clean <- airquality |> filter(!is.na(Solar.R), !is.na(Wind))
 fit_air <- lm(Wind ~ Solar.R, data = air_clean)
 
-# Display results
 fit_air |>
-  tbl_regression(intercept = TRUE) |>
-  add_glance_table(include = c(r.squared, adj.r.squared))
+  tbl_regression(
+    intercept = TRUE,
+    label = list(Solar.R ~ "Solar radiation (Langley units)")
+  ) |>
+  add_glance_table(include = c(r.squared, adj.r.squared)) |>
+  as_gt() |>
+  style_results_table()
 ```
 
-::: {.fragment}
-The analysis shows no significant relationship between solar radiation and wind speed (β = 0.00, 95% CI: -0.01 to 0.00, p = 0.5). The model does not explain much of the variance in wind speed (R^2^ = 0.003). This result indicates that solar radiation and wind speed are influenced by different meteorological processes and are not expected to be directly related.
-:::
+In the 1973 New York *airquality* data, solar radiation was not a useful linear predictor of wind speed. The estimated slope was −0.002 mph per Langley (95% CI: −0.009–0.004 mph per Langley, $p = 0.50$), and the model accounted for only 0.3% of the observed variation ($R^2 = 0.003$). This does not prove that the variables can never be related.
 
 
-## BUT WAIT! How do we know if the model is any good?
+## A fitted model is not automatically a good model
 
-- Before we can interpret the results of a linear model, we need to check if the model is a good "fit".
-- Nothing will stop you from fitting a linear model to data, just as nothing can stop **me** from fitting a non-linear model to the same data.
+Any dataset can produce a fitted line. Before interpreting its coefficients, ask:
+
+- Does the line capture the systematic pattern in the data?
+- Do the residuals behave as expected?
 
 ::: fragment
-![](../../assets/diffmodels.png){height=500px}
+![Comparison of two candidate models fitted to the same data, shown in red and blue. The better model captures the pattern with less systematic residual structure.](../../assets/diffmodels.png){height=500px}
 
-**Quick check**: Which is the better model, red or blue?
+**Quick check:** Which model better represents the pattern: red or blue?
 :::
 
-# Assessing the validity of the linear model
+# Next week: model assumptions
 
-## Assumptions of linear regression
-
-Remember the acronym **LINE** for the key assumptions:
-
-- **L**inearity: Errors ($\epsilon$) are randomly scattered around the predicted values.
-- **I**ndependence: Errors ($\epsilon$) are independent of each other.
-- **N**ormality: Errors ($\epsilon$) follow a normal distribution.
-- **E**qual Variance: Errors ($\epsilon$) have constant variance (homoscedasticity).
-
-**These assumptions apply to the errors ($\epsilon$)**, not directly to the response variable ($y$) or the relationship between $x$ and $y$.
-
-:::fragment
-### How assumptions help "validate" a model
-
-- If the assumptions are met, then we can be confident that the model is a good representation of the data.
-- If they are *not* met, the results are still presented, but our **interpretation** of the model is likely to be **flawed**.
-- Importantly, we will never have "perfect" models, so assessing their validity is an ongoing process (and requires experience).
-
-We will explore this next week (when we check **model assumptions**).
-:::
+We will explore the assumptions of linear regression and learn how to assess whether they are reasonable for our data.
 
 # Thanks
 

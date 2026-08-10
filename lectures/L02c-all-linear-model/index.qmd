@@ -1,6 +1,6 @@
 ---
 title: (Almost) every technique is a linear model
-subtitle: "BIOL2022"
+subtitle: "BIOL2022 - L02c"
 author:
   - name: Dr Januar Harianto
     affiliations: The University of Sydney
