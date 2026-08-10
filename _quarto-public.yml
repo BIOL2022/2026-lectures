@@ -3,3 +3,4 @@ project:
     - "index.qmd"
     - "lectures/L00-welcome-to-beda/index.qmd"
     - "lectures/L01-intro-exp-design-analysis/index.qmd"
+    - "lectures/L02a-representative-sampling/index.qmd"

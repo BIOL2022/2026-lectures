@@ -1,7 +1,6 @@
 ---
 title: Sampling data
 subtitle: "BIOL2022 - L02a"
-draft: true
 author:
   - name: Dr Januar Harianto
     affiliations: The University of Sydney
