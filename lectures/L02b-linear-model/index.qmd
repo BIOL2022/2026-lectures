@@ -1,6 +1,8 @@
 ---
 title: "Modelling fundamentals: a linear model with a single, continuous $X$"
 subtitle: "BIOL2022 - L02b"
+revealjs-plugins:
+  - solarized-pdf
 author:
   - name: Dr Januar Harianto
     affiliations: The University of Sydney
@@ -13,6 +15,7 @@ scrolling: true
 #| include: false
 library(tidyverse)
 library(cowplot)
+library(gganimate)
 library(palmerpenguins)
 library(HistData)
 library(gt)
@@ -65,11 +68,9 @@ style_results_table <- function(table) {
 
 By the end of this lecture, you should be able to:
 
-- Describe a linear model for a continuous response and predictor.
-- Write and interpret a simple linear model equation.
-- Explain how residuals and the least-squares method are used to fit a line.
-- Interpret coefficients, confidence intervals, and $R^2$ in model output.
-- Recognise that coefficient interpretation depends on residual checks, which we will learn next week.
+- [ ] Describe a linear model for a continuous response and predictor.
+- [ ] Write and interpret a simple linear model equation.
+- [ ] Interpret coefficients, confidence intervals, and $R^2$ in model output.
 
 ## Introduction to linear modelling
 
@@ -77,20 +78,20 @@ By the end of this lecture, you should be able to:
 
 ― Barbara Kingsolver, [Flight Behavior](https://en.wikipedia.org/wiki/Flight_Behavior) (2012)
 
-## A short history of least squares
+## A short history
 
 ::: columns
 
 ::: {.fragment .column width=30%}
 ![Illustrative image of Adrien-Marie Legendre](assets/legendre_med.jpg){height=300px}
 
-**Legendre**: No known portrait exists; this is an illustrative image from [Wikipedia](https://en.wikipedia.org/wiki/Adrien-Marie_Legendre). Introduced least squares in 1806.
+**Legendre**: Introduced least squares in 1806. Best image that I could find. Source: [Wikipedia](https://en.wikipedia.org/wiki/Adrien-Marie_Legendre)
 :::
 
 ::: {.fragment .column width=30%}
 ![Carl Friedrich Gauss](assets/gauss.jpg){height=300px}
 
-**Gauss**: Published work on least squares in 1809. [Source: Wikipedia](https://en.wikipedia.org/wiki/Carl_Friedrich_Gauss)
+**Gauss**: Published work on least squares in 1809. Source: [Wikipedia](https://en.wikipedia.org/wiki/Carl_Friedrich_Gauss)
 :::
 
 ::: {.fragment .column width=30%}
@@ -101,7 +102,7 @@ By the end of this lecture, you should be able to:
 
 :::
 
-## The Galton dataset
+## The Galton dataset (as a quick example)
 
 - 928 children from 205 parent pairs.
 - Parent and child heights were recorded in inches.
@@ -126,16 +127,72 @@ We want to explain this *noisy* relationship...
 ## Regression line
 
 ```{r}
-#| fig-alt: "Scatterplot of child height against parent height with a fitted straight line through the positive pattern."
+#| fig-alt: "Animated scatterplot of child height against parent height. Several straight and curved regression relationships appear in turn before the animation pauses on the fitted straight line."
+#| gganimate:
+#|   autoplay: true
+#|   loop: true
+#|   controls: false
+#|   muted: true
+#| cache: true
+x_values <- seq(min(Galton$parent), max(Galton$parent), length.out = 200)
+x_centred <- x_values - mean(x_values)
+mean_child_height <- mean(Galton$child)
+fitted_model <- lm(child ~ parent, data = Galton)
+
+model_sequence <- c(
+  "Negative line",
+  "Steeper positive line",
+  "Curved relationship",
+  "Saturating relationship",
+  "Fitted regression line"
+)
+
+animated_models <- bind_rows(
+  tibble(model = model_sequence[1], parent = x_values,
+         predicted = mean_child_height - 0.35 * x_centred),
+  tibble(model = model_sequence[2], parent = x_values,
+         predicted = mean_child_height + 0.75 * x_centred),
+  tibble(model = model_sequence[3], parent = x_values,
+         predicted = mean_child_height + 0.22 * x_centred^2 - 1.5),
+  tibble(model = model_sequence[4], parent = x_values,
+         predicted = mean_child_height + 3 * tanh(x_centred / 1.5)),
+  tibble(model = model_sequence[5], parent = x_values,
+         predicted = predict(fitted_model, newdata = tibble(parent = x_values)))
+) |>
+  mutate(model = factor(model, levels = model_sequence))
+
 p2 <- ggplot(Galton, aes(x = parent, y = child)) +
   geom_point(alpha = .2, size = 3, colour = "firebrick") +
+  geom_line(
+    data = animated_models,
+    aes(x = parent, y = predicted, group = 1),
+    inherit.aes = FALSE,
+    colour = "royalblue",
+    linewidth = 1.5
+  ) +
   labs(x = "Parent height (inches)", y = "Child height (inches)") +
   theme_cowplot() +
-  geom_smooth(method = "lm")
-p2
+  transition_states(
+    model,
+    transition_length = 1,
+    state_length = c(1, 1, 1, 1, 3),
+    wrap = TRUE
+  ) +
+  ease_aes("sine-in-out")
+
+animate(
+  p2,
+  nframes = 160,
+  fps = 20,
+  width = 960,
+  height = 540,
+  units = "px",
+  res = 120,
+  renderer = ffmpeg_renderer()
+)
 ```
 
-We want to explain this *noisy* relationship... **using a linear model.**
+We want to explain this *noisy* relationship... **using a linear model...?**
 
 
 
@@ -193,7 +250,7 @@ p1 +
 ```
 
 
-## How do we fit a line?
+## Using residuals to find the best line
 
 Choose the intercept ($\beta_0$) and slope ($\beta_1$) that make the total squared residual as small as possible:
 
@@ -223,9 +280,9 @@ $$\color{firebrick}{\mathop{\mathrm{arg\,min}}_{\beta_0, \beta_1}} \sum_{i=1}^n 
 
 
 
-# The linear model
+# The linear regression
 
-## Linear regression
+## Model definition
 
 A linear model describes the relationship between a response $y$ and a predictor $x$.
 
@@ -237,7 +294,9 @@ $$y_i = \beta_0 + \beta_1 x_i + \epsilon_i$$
 
 
 
-## Modelling {auto-animate="true"}
+
+
+## Understanding the model {auto-animate="true"}
 
 In the model:
 
@@ -258,20 +317,15 @@ We can think of the response as being made up of two components:
 
 
 
-## How do we assess a fitted model? {auto-animate="true"}
+## How do we "explain" a fitted model? {auto-animate="true"}
 
 $$y_i = \color{royalblue}{\beta_0 + \beta_1 x_i} + \color{red}{\epsilon_i}$$
 
-**A fitted line is not automatically a valid model.**
+If we were to use plain English, we could say:
 
-We cannot observe the errors directly, so after fitting we inspect their estimates, the residuals $\widehat{\epsilon}$.
+> The response variable $y$ changes by $\beta_1$ units for every 1-unit change in the predictor $x$, and the average value of $y$ when $x = 0$ is $\beta_0$. The remaining variation in $y$ is due to random error.
 
-Residual checks help us judge whether the observed error patterns are reasonably compatible with the model assumptions.
 
-:::::fragment
-![It is just about the errors... source: Tim & Eric Awesome Show, Great Job! Episode 3 of season 4.](assets/mind_blown.gif){height=200px fig-align="left"}
-
-:::::
 
 ## From model to fitted equation
 
@@ -283,18 +337,18 @@ $$y_i = \beta_0 + \beta_1 x_i + \epsilon_i$$
 
 $$\widehat{y}_i = \widehat{\beta}_0 + \widehat{\beta}_1 x_i$$
 
-The fitted intercept is $\widehat{\beta}_0$.
-
-The fitted slope is $\widehat{\beta}_1$.
-
 **For Galton's data:**
 
 $$\widehat{child} = 23.94 + 0.65(parent)$$
 
-## Galton regression output
+Once we fit the model, it is now called an estimate (although other terms are also used, such as "fitted value" or "predicted value"), and we no longer have the error term because we are now describing the mean response at each value of $x$.
+
+# Interpretation?
+
+##
 
 ```{r}
-#| echo: false
+#| include: false
 fit <- lm(child ~ parent, data = Galton)
 coefficient <- summary(fit)$coefficients
 confidence <- confint(fit)
@@ -320,88 +374,201 @@ results <- tibble(
   )
 )
 
-results |>
-  gt() |>
-  cols_label(
-    term = "Term",
-    estimate_se = "Estimate (SE)",
-    ci = "95% CI",
-    p = "p-value"
-  ) |>
-  cols_align(align = "right", columns = c(estimate_se, ci, p)) |>
-  tab_row_group(
-    label = "Model fit",
-    rows = term %in% c("R²", "Adjusted R²", "n")
-  ) |>
-  tab_row_group(
-    label = "Coefficients",
-    rows = term %in% c("Intercept", "Parent height (in)")
-  ) |>
-  style_results_table() |>
-  tab_source_note(source_note = "SE = standard error; CI = confidence interval.")
+galton_results_table <- function(
+  highlight_terms = character(),
+  highlight_columns = names(results)
+) {
+  table <- results |>
+    gt() |>
+    cols_label(
+      term = "Term",
+      estimate_se = "Estimate (SE)",
+      ci = "95% CI",
+      p = "p-value"
+    ) |>
+    cols_align(align = "right", columns = c(estimate_se, ci, p)) |>
+    tab_row_group(
+      label = "Model fit",
+      rows = term %in% c("R²", "Adjusted R²", "n")
+    ) |>
+    tab_row_group(
+      label = "Coefficients",
+      rows = term %in% c("Intercept", "Parent height (in)")
+    ) |>
+    style_results_table() |>
+    tab_options(
+      table.font.size = px(24),
+      data_row.padding = px(5),
+      table.width = px(1000),
+      row_group.font.size = px(20)
+    ) |>
+    tab_source_note(source_note = "SE = standard error; CI = confidence interval.")
+
+  if (length(highlight_terms) > 0) {
+    table <- table |>
+      tab_style(
+        style = list(
+          cell_fill(color = "#FCE8CC"),
+          cell_borders(
+            sides = c("top", "bottom"),
+            color = "#E64626",
+            weight = px(3)
+          )
+        ),
+        locations = cells_body(
+          columns = all_of(highlight_columns),
+          rows = term %in% highlight_terms
+        )
+      )
+  }
+
+  table
+}
 ```
-
-
-## Interpreting the fitted model
 
 $$\widehat{child} = 23.94 + 0.65(parent)$$
 
-**Main result:** Parent height is positively associated with child height.
-
-- **Slope:** For each 1-inch increase in parent height, predicted child height increases by 0.65 inches (95% CI 0.57–0.73, $p < 0.001$).
-- **Model fit:** Parent height explains 21% of the variation in child height ($R^2 = 0.21$).
-- **Intercept:** 23.94 is the predicted child height when parent height is zero. Because zero is outside the observed range, it is not biologically meaningful here.
-
-
-
-
-## Example 2: Adelie penguins
-
-
 ```{r}
-#| echo: true
-#| code-fold: true
-adelie <- penguins |> filter(species == "Adelie")
-fit_adelie <- lm(body_mass_g ~ flipper_length_mm, data = adelie)
-fit_adelie |>
-  tbl_regression(
-    intercept = TRUE,
-    label = list(flipper_length_mm ~ "Flipper length (mm)")
-  ) |>
-  add_glance_table(include = c(r.squared, adj.r.squared)) |>
-  as_gt() |>
-  style_results_table()
+#| echo: false
+galton_results_table()
 ```
 
 
-Among Adelie penguins, longer flippers were associated with greater body mass. For each 1 mm increase in flipper length, the model estimated a 33 g increase in body mass (95% CI: 23–43 g per mm, $p < 0.001$). The model accounted for 22% of the observed variation in body mass ($R^2 = 0.22$).
+##
 
+$$\widehat{child} = 23.94 + 0.65(parent)$$
 
-
-## Example 3: *Iris setosa*
 
 ```{r}
-#| echo: true
-#| code-fold: true
-# Subset iris data for setosa species only
-setosa <- iris |> filter(Species == "setosa")
-
-# Fit linear model
-fit_setosa <- lm(Petal.Length ~ Sepal.Width, data = setosa)
-
-fit_setosa |>
-  tbl_regression(
-    intercept = TRUE,
-    label = list(Sepal.Width ~ "Sepal width (cm)")
-  ) |>
-  add_glance_table(include = c(r.squared, adj.r.squared)) |>
-  as_gt() |>
-  style_results_table()
+#| echo: false
+galton_results_table(
+  highlight_terms = "Parent height (in)",
+  highlight_columns = c("term", "estimate_se")
+)
 ```
 
-In *Iris setosa*, the estimated association between sepal width and petal length was small and uncertain. A 1 cm increase in sepal width corresponded to an estimated 0.08 cm increase in petal length (95% CI: −0.05–0.21 cm per cm, $p = 0.20$). Because the interval includes zero, these data do not provide clear evidence of a linear association. The model accounted for only 3.2% of the observed variation ($R^2 = 0.032$).
+A 1-inch increase in parent height corresponds to a 0.65-inch increase in predicted mean child height. This value corresponds to $\widehat{\beta}_1$, the estimated slope of the fitted line.
 
-## Example 4: Air quality data
+
+##
+
+$$\widehat{child} = 23.94 + 0.65(parent)$$
+
+```{r}
+#| echo: false
+galton_results_table(highlight_terms = "Parent height (in)")
+```
+
+- If you see SE, that's the standard error of the estimated slope. It describes how precise the estimate is.
+- If you see a 95% CI, that indicates the range of slope values we are confident that if we repeated the experiment many times, 95% of the time the true slope would fall within that range.
+- The $p$-value tests the null hypothesis that the slope is zero. A small $p$-value indicates that the slope is unlikely to be zero, and we can conclude that there is a **significant** linear association between parent and child height.
+
+
+##
+
+$$\widehat{child} = 23.94 + 0.65(parent)$$
+
+
+```{r}
+#| echo: false
+galton_results_table(highlight_terms = "Intercept")
+```
+
+The intercept is $\widehat{\beta}_0$, the estimated mean child height when parent height is zero. Does this make sense?
+
+
+
+##
+
+$$\widehat{child} = 23.94 + 0.65(parent)$$
+
+```{r}
+#| echo: false
+galton_results_table(
+  highlight_terms = c("R²", "Adjusted R²", "n"),
+  highlight_columns = c("term", "estimate_se")
+)
+```
+
+$R^2 = 0.21$ explains that parent height accounts for 21% of the observed variation in child height. Adjusted $R^2$ applies a penalty for model complexity. With one predictor and 928 observations, it remains 0.21. Finally, $n$ is the number of observations used to fit the model.
+
+## Putting the result into words
+
+$$\widehat{child} = 23.94 + 0.65(parent)$$
+
+1. Statistical interpretaion
+2. Biological interpretation
+
+::: fragment
+> There was a significant, positive linear association between parent and child height (95% CI 0.57–0.73, p < 0.001), and the model accounted for 21% of the variation in child height. A 1-inch increase in parent height corresponded to a 0.65-inch increase in predicted mean child height.
+:::
+
+
+# Practice
+
+## Example: Adelie penguins
+
+```{=html}
+<style>
+#example-adelie-penguins pre {
+  max-height: 580px !important;
+  overflow-y: visible !important;
+}
+</style>
+```
+
+```
+lm(formula = body_mass_g ~ flipper_length_mm, data = penguins)
+
+Residuals:
+    Min      1Q  Median      3Q     Max
+-875.68 -331.10  -14.53  265.74 1144.81
+
+Coefficients:
+                   Estimate Std. Error t value Pr(>|t|)
+(Intercept)       -2535.837    964.798  -2.628  0.00948 **
+flipper_length_mm    32.832      5.076   6.468 1.34e-09 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 406.6 on 149 degrees of freedom
+  (1 observation deleted due to missingness)
+Multiple R-squared:  0.2192,    Adjusted R-squared:  0.214
+F-statistic: 41.83 on 1 and 149 DF,  p-value: 1.343e-09
+```
+
+-----
+
+```{r}
+ggplot(penguins, aes(x = flipper_length_mm, y = body_mass_g)) +
+  geom_point(alpha = 0.5) +
+  geom_smooth(method = "lm", se = FALSE, color = "firebrick") +
+  labs(
+    x = "Flipper length (mm)",
+    y = "Body mass (g)"
+  ) +
+  theme_cowplot()
+```
+
+
+## Example: *Iris setosa*
+
+![](assets/iris-setosa-jamovi-regression.png){fig-alt="Jamovi linear regression output for petal length predicted by sepal width in 50 Iris setosa observations." width=760px}
+
+-----
+
+```{r}
+ggplot(iris, aes(x = Sepal.Width, y = Petal.Length)) +
+  geom_point(alpha = 0.5) +
+  geom_smooth(method = "lm", se = FALSE, color = "firebrick") +
+  labs(
+    x = "Sepal width (cm)",
+    y = "Petal length (cm)"
+  ) +
+  theme_cowplot()
+```
+
+## Example: Air quality data
 
 ```{r}
 #| echo: true
@@ -410,33 +577,64 @@ In *Iris setosa*, the estimated association between sepal width and petal length
 air_clean <- airquality |> filter(!is.na(Solar.R), !is.na(Wind))
 fit_air <- lm(Wind ~ Solar.R, data = air_clean)
 
-fit_air |>
-  tbl_regression(
-    intercept = TRUE,
-    label = list(Solar.R ~ "Solar radiation (Langley units)")
+air_summary <- summary(fit_air)
+air_coefficients <- air_summary$coefficients
+air_confidence <- confint(fit_air)
+
+tibble(
+  term = c("Intercept", "Solar radiation (Langley units)"),
+  estimate_se = sprintf(
+    "%.3f (%.3f)",
+    air_coefficients[, "Estimate"],
+    air_coefficients[, "Std. Error"]
+  ),
+  ci = sprintf("%.3f to %.3f", air_confidence[, 1], air_confidence[, 2]),
+  p = format.pval(air_coefficients[, "Pr(>|t|)"], digits = 2, eps = 0.001)
+) |>
+  gt() |>
+  cols_label(
+    term = "Term",
+    estimate_se = "Estimate (SE)",
+    ci = "95% CI",
+    p = "p-value"
   ) |>
-  add_glance_table(include = c(r.squared, adj.r.squared)) |>
-  as_gt() |>
+  cols_align(align = "right", columns = c(estimate_se, ci, p)) |>
+  tab_source_note(
+    source_note = sprintf(
+      "Model fit: R² = %.3f; adjusted R² = %.3f; n = %d.",
+      air_summary$r.squared,
+      air_summary$adj.r.squared,
+      nobs(fit_air)
+    )
+  ) |>
   style_results_table()
 ```
 
-In the 1973 New York *airquality* data, solar radiation was not a useful linear predictor of wind speed. The estimated slope was −0.002 mph per Langley (95% CI: −0.009–0.004 mph per Langley, $p = 0.50$), and the model accounted for only 0.3% of the observed variation ($R^2 = 0.003$). This does not prove that the variables can never be related.
+-----
+
+
+```{r}
+ggplot(air_clean, aes(x = Solar.R, y = Wind)) +
+  geom_point(alpha = 0.5) +
+  geom_smooth(method = "lm", se = FALSE, color = "firebrick") +
+  labs(
+    x = "Solar radiation (Langley units)",
+    y = "Wind speed (mph)"
+  ) +
+  theme_cowplot()
+```
 
 
 ## A fitted model is not automatically a good model
 
-Any dataset can produce a fitted line. Before interpreting its coefficients, ask:
-
-- Does the line capture the systematic pattern in the data?
-- Do the residuals behave as expected?
+Any dataset can be given a fitted straight line, but that does not mean the line describes the data well.
 
 ::: fragment
-![Comparison of two candidate models fitted to the same data, shown in red and blue. The better model captures the pattern with less systematic residual structure.](../../assets/diffmodels.png){height=500px}
+![Two  models fitted to the same data.](../../assets/diffmodels.png)
 
-**Quick check:** Which model better represents the pattern: red or blue?
 :::
 
-# Next week: model assumptions
+## Next week: model assumptions
 
 We will explore the assumptions of linear regression and learn how to assess whether they are reasonable for our data.
 

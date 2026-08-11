@@ -1,6 +1,6 @@
 ---
 title: Model transformations
-subtitle: "BIOL2022"
+subtitle: "BIOL2022 - L04c"
 draft: true
 author:
   - name: Dr Januar Harianto

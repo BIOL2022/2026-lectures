@@ -1,6 +1,6 @@
 ---
 title: "Revision: Module 1"
-subtitle: "BIOL2022"
+subtitle: "BIOL2022 - L05b"
 draft: true
 author:
   - name: Dr Januar Harianto

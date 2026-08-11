@@ -1,6 +1,6 @@
 ---
 title: "Modelling multiple relationships: a linear model with multiple, continuous $X$ variables"
-subtitle: "BIOL2022"
+subtitle: "BIOL2022 - L04a"
 draft: true
 author:
   - name: Dr Januar Harianto

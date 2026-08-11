@@ -1,6 +1,6 @@
 ---
 title: "L03a: Is my model appropriate?"
-subtitle: "BIOL2022"
+subtitle: "BIOL2022 - L03a"
 draft: true
 author:
   - name: Dr Januar Harianto

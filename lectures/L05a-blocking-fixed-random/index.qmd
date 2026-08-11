@@ -1,6 +1,6 @@
 ---
 title: Control, fixed and random variables
-subtitle: "BIOL2022"
+subtitle: "BIOL2022 - L05a"
 draft: true
 author:
   - name: Dr Januar Harianto

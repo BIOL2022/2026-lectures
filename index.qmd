@@ -12,6 +12,7 @@ title: "BIOL2022 2026 Lectures"
   .lec-card a{display:block;text-decoration:none;color:inherit;}
   .lec-card .lec-title{display:block;font-size:.98rem;line-height:1.3;margin:0 0 8px;}
   .lec-card .lec-pdf{display:inline-block;margin-top:6px;font-size:.82rem;text-decoration:underline;}
+  .lec-card .lec-pdf + .lec-pdf{margin-left:12px;}
   .lec-card img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;background:#f0ece8;border:1px solid #d9d3cb;border-radius:0;transition:opacity .15s ease;}
   .lec-card a:hover img{opacity:.82;}
   .lec-preview{position:relative;}
@@ -31,9 +32,9 @@ title: "BIOL2022 2026 Lectures"
 ## Week 2: Sampling and modelling
 
 <div class="lec-grid">
-<div class="lec-card"><a href="lectures/L02a-representative-sampling/index.html"><span class="lec-title">Representative sampling</span><img src="assets/thumbnails/L02a-representative-sampling.png" alt="Representative sampling"></a><a class="lec-pdf" href="lectures/L02a-representative-sampling/slides.pdf">PDF slides</a> <a class="lec-pdf" href="lectures/L02a-representative-sampling/slides-solarized.pdf">Solarized PDF</a></div>
-<div class="lec-card"><a href="lectures/L02b-linear-model/index.html"><span class="lec-title">The linear model</span><img src="assets/thumbnails/L02b-linear-model.png" alt="The linear model"></a><a class="lec-pdf" href="lectures/L02b-linear-model/slides.pdf">PDF slides</a></div>
-<div class="lec-card"><a href="lectures/L02c-all-linear-model/index.html"><span class="lec-title">All linear models</span><img src="assets/thumbnails/L02c-all-linear-model.png" alt="All linear models"></a><a class="lec-pdf" href="lectures/L02c-all-linear-model/slides.pdf">PDF slides</a></div>
+<div class="lec-card"><a href="lectures/L02a-representative-sampling/index.html"><span class="lec-title">Representative sampling</span><img src="assets/thumbnails/L02a-representative-sampling.png" alt="Representative sampling"></a><a class="lec-pdf" href="lectures/L02a-representative-sampling/slides.pdf">PDF slides</a> <a class="lec-pdf" href="lectures/L02a-representative-sampling/slides-solarized.pdf">PDF slides (solarised)</a></div>
+<div class="lec-card"><a href="lectures/L02b-linear-model/index.html"><span class="lec-title">The linear model</span><img src="assets/thumbnails/L02b-linear-model.png" alt="The linear model"></a><a class="lec-pdf" href="lectures/L02b-linear-model/slides.pdf">PDF slides</a> <a class="lec-pdf" href="lectures/L02b-linear-model/slides-solarized.pdf">PDF slides (solarised)</a></div>
+<div class="lec-card"><a href="lectures/L02c-all-linear-model/index.html"><span class="lec-title">All linear models</span><img src="assets/thumbnails/L02c-all-linear-model.png" alt="All linear models"></a><a class="lec-pdf" href="lectures/L02c-all-linear-model/slides.pdf">PDF slides</a> <a class="lec-pdf" href="lectures/L02c-all-linear-model/slides-solarized.pdf">PDF slides (solarised)</a></div>
 </div>
 
 ## Week 3: Assumptions and comparisons

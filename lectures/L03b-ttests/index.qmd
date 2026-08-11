@@ -1,6 +1,6 @@
 ---
 title: "Introduction to *t*-tests: a special case of the GLM"
-subtitle: "BIOL2022"
+subtitle: "BIOL2022 - L03b"
 draft: true
 author:
   - name: Dr Januar Harianto
