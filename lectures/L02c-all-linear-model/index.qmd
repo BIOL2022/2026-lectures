@@ -10,6 +10,15 @@ embed-resources: false # embed resources into single HTML file -- enable when re
 # NOTE: please check _quarto.yml file for more options
 ---
 
+## Learning objectives
+
+The ideas in this lecture are a bit more abstract than the previous lectures, but they are important to understand as they will help you to:
+
+- [ ] Understand why we focus on modelling relationships between variables (we try not to use the hypothesis testing framework)
+- [ ] Recognise that most common statistical tests can be expressed as a general linear model (GLM)
+- [ ] While not all statistical tests are GLMs, the GLM framework is a useful way to think about relationships between variables and how to model them.
+
+You should read through this lecture at your own time as it will make your experiments a bit easier to design, assess and interpret.
 
 # The general linear model (GLM)
 
@@ -278,9 +287,6 @@ You are probably **NOT experienced enough to use it to its full potential**, and
   2. Identify the **statistical test** the GLM is *related* to.
   3. Run the statistical test, but use GLM **as a guide** to diagnose (e.g. assumptions) and interpret the results.
 :::
-
-
-# (If there is time) Examples in Jamovi and R
 
 
 
