@@ -1,5 +1,5 @@
 ---
-title: "Introduction to *t*-tests: a special case of the GLM"
+title: "Modelling differences between groups: Part 1 (of 2)"
 subtitle: "BIOL2022 - L03b"
 draft: true
 author:

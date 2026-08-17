@@ -1,0 +1,380 @@
+---
+title: "DRAFT PREVIEW: Modelling differences between groups: Part 1 (of 2)"
+subtitle: "BIOL2022 - L03b"
+draft: true
+author:
+  - name: Dr Januar Harianto
+    affiliations: The University of Sydney
+embed-resources: false # embed resources into single HTML file -- enable when ready to publish
+# NOTE: please check _quarto.yml file for more options
+execute:
+  echo: true
+code-fold: true
+---
+
+```{r setup, include=FALSE}
+if (!require("pacman")) install.packages("pacman", repos = "http://cran.us.r-project.org")
+pacman::p_load(tidyverse, cowplot, palmerpenguins)
+ggplot2::theme_set(cowplot::theme_half_open())
+```
+
+## Learning objectives
+
+You will:
+
+1. Explain how a model can quantify a difference in means.
+2. Match a research question and study design to one of three structures: one group and a reference value, two independent groups, or paired measurements.
+3. Build a simple linear model for each structure and explain what its coefficients estimate.
+4. Identify and assess the assumptions relevant to each model.
+5. Interpret the estimated difference, confidence interval, and *p* value from model output.
+
+# Study design
+
+## Which question about means are we asking? {background-image="../../assets/gentoo.jpeg" background-size="cover" background-position="center" background-opacity="0.4"}
+
+Gentoo penguins and patients can lead us to three different questions:
+
+1. Is the mean bill length of penguins different from **40 mm**?
+2. Do female and male penguins differ in mean bill length?
+3. For the same patients, does extra sleep differ under **drug 2** compared with **drug 1**?
+
+::: {.fragment}
+These questions all concern a difference in means. What is structurally different about them?
+:::
+
+## One group and a fixed reference value
+
+> Is the mean bill length of penguins different from the fixed reference value of 40 mm?
+
+$$E(Y)=\mu,\qquad \Delta=\mu-c$$
+
+Here, $Y$ is the bill length of one penguin, $\mu$ is the population mean bill length, and $c$ is the fixed reference value. A positive $\Delta$ means that the population mean is above $c$.
+
+```{r}
+#| echo: false
+#| fig-width: 10.5
+#| fig-height: 5.25
+one_schematic <- tibble(
+  x = c(0.86, 0.94, 0.97, 1.02, 1.06, 1.12, 1.16),
+  y = c(36.5, 39.2, 41.0, 42.8, 44.0, 46.3, 48.0)
+)
+one_mean <- mean(one_schematic$y)
+
+ggplot(one_schematic, aes(x, y)) +
+  geom_point(color = "grey65", size = 3) +
+  geom_hline(yintercept = 40, color = "grey40", linetype = "dashed") +
+  geom_segment(x = 0.78, xend = 1.24, y = one_mean, yend = one_mean, color = "#0072B2", linewidth = 1.2) +
+  geom_segment(
+    x = 1.3, xend = 1.3, y = 40, yend = one_mean,
+    color = "#D55E00",
+    linewidth = 1,
+    arrow = grid::arrow(length = grid::unit(0.12, "inches"), ends = "last")
+  ) +
+  annotate("text", x = 1.34, y = mean(c(40, one_mean)), label = expression(Delta), color = "#D55E00", hjust = 0) +
+  annotate("text", x = 0.78, y = 40, label = "fixed reference: c", color = "grey40", hjust = 0, vjust = -0.7) +
+  annotate("text", x = 0.78, y = one_mean, label = "expected mean: μ", color = "#0072B2", hjust = 0, vjust = -0.7) +
+  scale_x_continuous(NULL, breaks = NULL, limits = c(0.65, 1.55)) +
+  labs(y = "Response", caption = "Schematic: mean structure, not observed data") +
+  theme_cowplot()
+```
+
+The reference is treated as fixed and prespecified for this analysis, not as another uncertain group mean.
+
+## Two independent groups
+
+> How different are the mean bill lengths of female and male penguins?
+
+$$
+E(Y\mid G=\text{female})=\mu_F,\qquad
+E(Y\mid G=\text{male})=\mu_M,\qquad
+\Delta=\mu_M-\mu_F
+$$
+
+Here, $Y$ is the bill length of one penguin and $G$ is its sex. $\mu_F$ and $\mu_M$ are the population mean bill lengths for female and male penguins. A positive $\Delta$ means that the male mean is higher than the female mean.
+
+```{r}
+#| echo: false
+#| fig-width: 10.5
+#| fig-height: 5.25
+two_schematic <- tibble(
+  group = rep(c("Female", "Male"), each = 6),
+  x = rep(c(0, 1), each = 6) + c(-.10, -.06, -.02, .02, .06, .10, -.10, -.06, -.02, .02, .06, .10),
+  y = c(37.5, 39.0, 41.0, 42.2, 43.3, 44.0, 41.0, 42.5, 44.0, 45.0, 46.2, 47.0)
+)
+female_mean <- mean(two_schematic$y[two_schematic$group == "Female"])
+male_mean <- mean(two_schematic$y[two_schematic$group == "Male"])
+
+ggplot(two_schematic, aes(x, y)) +
+  geom_point(color = "grey65", size = 3) +
+  geom_segment(x = -.23, xend = .23, y = female_mean, yend = female_mean, color = "#0072B2", linewidth = 1.2) +
+  geom_segment(x = .77, xend = 1.23, y = male_mean, yend = male_mean, color = "#0072B2", linewidth = 1.2) +
+  geom_segment(
+    x = .18, xend = .82, y = female_mean, yend = male_mean,
+    color = "#D55E00",
+    linewidth = 1,
+    arrow = grid::arrow(length = grid::unit(0.12, "inches"), ends = "last")
+  ) +
+  annotate("text", x = .5, y = mean(c(female_mean, male_mean)) + .35, label = expression(Delta), color = "#D55E00") +
+  scale_x_continuous(NULL, breaks = c(0, 1), labels = c("Female", "Male"), limits = c(-.45, 1.45)) +
+  labs(y = "Response", caption = "Schematic: mean structure, not observed data") +
+  theme_cowplot()
+```
+
+Sex is observed, not assigned, so $\Delta$ is an observed association rather than a causal treatment effect.
+
+## Paired measurements
+
+> For the same patients, what is the mean difference in extra sleep under drug 2 compared with drug 1?
+
+$$D_i=Y_{i,\text{drug 2}}-Y_{i,\text{drug 1}},\qquad E(D)=\Delta$$
+
+For patient $i$, $D_i$ is the extra-sleep difference between drug 2 and drug 1; $\Delta$ is the population mean of those differences. A positive $\Delta$ means greater sleep prolongation under drug 2.
+
+```{r}
+#| echo: false
+#| fig-width: 10.5
+#| fig-height: 5.25
+paired_schematic <- tibble(
+  patient = rep(1:6, each = 2),
+  drug = rep(c("Drug 1", "Drug 2"), 6),
+  x = rep(c(0, 1), 6),
+  extra_sleep = c(1.2, 2.0, 2.1, 1.8, .5, 1.3, 1.8, 2.7, 1.0, 1.7, 2.4, 3.0)
+)
+difference_schematic <- paired_schematic |>
+  select(patient, drug, extra_sleep) |>
+  pivot_wider(names_from = drug, values_from = extra_sleep) |>
+  mutate(difference = `Drug 2` - `Drug 1`)
+mean_difference <- mean(difference_schematic$difference)
+
+paired_plot <- ggplot(paired_schematic, aes(x, extra_sleep, group = patient)) +
+  geom_line(color = "grey65") +
+  geom_point(color = "grey40", size = 2.6) +
+  scale_x_continuous(NULL, breaks = c(0, 1), labels = c("Drug 1", "Drug 2")) +
+  labs(y = "Extra sleep") +
+  theme_cowplot()
+
+difference_plot <- ggplot(difference_schematic, aes(x = 1, y = difference)) +
+  geom_hline(yintercept = 0, color = "grey40", linetype = "dashed") +
+  geom_point(color = "grey65", size = 2.8) +
+  geom_segment(aes(x = .76, xend = 1.24, y = mean_difference, yend = mean_difference), color = "#0072B2", linewidth = 1.2) +
+  annotate("text", x = 1.27, y = mean_difference, label = expression(Delta), color = "#0072B2", hjust = 0, vjust = -0.7) +
+  scale_x_continuous(NULL, breaks = NULL, limits = c(.55, 1.6)) +
+  labs(y = "Drug 2 − drug 1") +
+  theme_cowplot()
+
+cowplot::plot_grid(
+  paired_plot,
+  difference_plot,
+  labels = c("Measurements within each patient", "One difference per patient"),
+  label_size = 11
+)
+```
+*Schematic: mean structure, not observed data.*
+
+
+The two measurements are dependent within each patient. One signed difference is formed per patient; these differences are independent if the patients are independent.
+
+## Three questions, one idea
+
+| Question structure | What is estimated | Mean structure |
+|---|---|---|
+| One group versus fixed reference | Mean minus reference | $\Delta=\mu-c$ |
+| Two independent groups | Difference between group means | $\Delta=\mu_M-\mu_F$ |
+| Paired measurements | Mean within-pair difference | $E(D)=\Delta$ |
+
+::: {.fragment}
+All three questions estimate a difference, $\Delta$. They differ in where that difference comes from.
+:::
+
+# Fit, check, and interpret models
+
+## Read every model output in three steps
+
+For every model, ask:
+
+1. **What is our best estimate of the difference?**
+2. **How uncertain is that estimate?** Read the standard error and confidence interval.
+3. **How compatible are these data with a model of no mean difference?** Read the *t* value and *p* value.
+
+We will work through these steps once, then practise them with the next two designs.
+
+# One group relative to a reference value
+
+## Visualise the comparison
+
+Are mean penguin bill lengths in this sample (blue line) different from the hypothesised reference value of 40 mm (red line)?
+
+```{r}
+penguins |>
+  ggplot(aes(x = bill_length_mm, y = "")) +
+  geom_boxplot(width = .2) +
+  geom_vline(xintercept = 40, color = "red", linetype = "dashed") +
+  geom_vline(xintercept = mean(penguins$bill_length_mm, na.rm = TRUE), color = "blue", linetype = "dashed") +
+  theme_cowplot()
+```
+
+## Build and fit the mean model
+
+Subtracting 40 mm moves the reference value to zero. The intercept is now the mean bill-length difference from 40 mm.
+
+$$\text{bill\_length\_mm} - 40 \sim 1$$
+
+```{r}
+fit_one <- lm(bill_length_mm - 40 ~ 1, data = penguins)
+summary(fit_one)
+confint(fit_one)
+```
+
+## Check the model
+
+Independence comes from the sampling design: one penguin's measurement should not determine another's. After fitting, inspect the response or residuals for severe departures from normality and extreme outliers.
+
+```{r}
+plot(fit_one, which = 2)
+```
+
+With a reasonably large sample and no extreme outliers, *t*-based inference is often robust to modest departures from normality. Whether this sample represents a wider population is a separate design question.
+
+## Interpret the output
+
+For this model:
+
+1. The **intercept** is our best estimate of the mean difference from 40 mm.
+2. The confidence interval shows a range of plausible mean differences.
+3. The *t* test asks how compatible the data are with a model in which the mean difference is zero.
+
+::: {.fragment}
+The estimate is 3.92 mm: penguin bill lengths in this sample are estimated to be higher than 40 mm on average.
+:::
+
+# Two independent groups
+
+## Build and fit the mean model
+
+Are mean bill lengths different between male and female penguins?
+
+```{r}
+penguins_complete <- penguins |>
+  drop_na(bill_length_mm, sex)
+
+penguins_complete |>
+  ggplot(aes(x = sex, y = bill_length_mm)) +
+  geom_boxplot() +
+  theme_cowplot()
+```
+
+With R's default coding, female penguins are the reference group:
+
+$$\text{bill\_length\_mm} \sim \text{sex}$$
+
+```{r}
+fit_two <- lm(bill_length_mm ~ sex, data = penguins_complete)
+summary(fit_two)
+confint(fit_two)
+```
+
+## Check the model
+
+The **intercept** is the mean bill length for female penguins. The `sexmale` coefficient is the observed mean difference for male penguins relative to female penguins.
+
+```{r}
+par(mfrow = c(2, 2))
+plot(fit_two)
+```
+
+The ordinary `lm()` uncertainty calculation assumes similar residual variability in both groups. It is exactly the pooled, common-variance two-sample analysis. Welch's method estimates the same mean difference but uses a different uncertainty calculation and degrees of freedom when equal variability is not plausible.
+
+## Practise reading the output
+
+With a partner, answer these questions before revealing the interpretation:
+
+1. What is the estimated difference between the group means?
+2. Does the confidence interval include zero?
+3. Is this an observed association or a causal treatment effect?
+
+::: {.fragment}
+The `sexmale` estimate is the observed mean difference in bill length. It is an association because sex was not randomly assigned in this study.
+:::
+
+# Paired measurements
+
+## Build one difference per pair
+
+For each patient, define the difference as drug 2 minus drug 1. A positive value means greater sleep prolongation under drug 2.
+
+$$\text{difference} \sim 1$$
+
+```{r}
+data(sleep)
+sleep_wide <- sleep |>
+  mutate(drug = if_else(group == 1, "drug1", "drug2")) |>
+  select(ID, drug, extra) |>
+  pivot_wider(names_from = drug, values_from = extra) |>
+  mutate(difference = drug2 - drug1)
+
+fit_paired <- lm(difference ~ 1, data = sleep_wide)
+summary(fit_paired)
+confint(fit_paired)
+```
+
+## Check the model
+
+The pairs must be correctly matched, and different patients should contribute independent pairs. For this model, inspect the **within-pair differences**, not the two original measurements separately.
+
+```{r}
+ggplot(sleep_wide, aes(sample = difference)) +
+  stat_qq() +
+  stat_qq_line() +
+  labs(x = "Theoretical quantiles", y = "Sample quantiles") +
+  theme_cowplot()
+```
+
+The two original measurements do **not** need to have equal variances. This model concerns the distribution of their differences.
+
+## Practise reading the output
+
+1. What does the intercept estimate?
+2. Does its confidence interval include zero?
+3. What would a negative estimate mean with our chosen subtraction order?
+
+::: {.fragment}
+The intercept is the estimated mean difference in sleep prolongation: drug 2 minus drug 1. A positive estimate means greater sleep prolongation under drug 2.
+:::
+
+# Where the *t*-tests fit
+
+## The same models have traditional names
+
+| Modelled structure | Traditional name |
+|---|---|
+| One group relative to a fixed reference | One-sample *t*-test |
+| Two independent groups | Two-sample *t*-test |
+| Mean of independent paired differences | Paired *t*-test |
+
+You have not learned three unrelated tests. You have learned how three common study designs create three simple models of a difference.
+
+## Why do we see a *t* value?
+
+The model output compares an estimate with a null value, relative to its uncertainty:
+
+$$t = \frac{\text{estimate} - \text{null value}}{\text{standard error}}$$
+
+For the centred one-group and paired models, the null value is zero. A large absolute *t* value means that the estimated difference is large relative to its uncertainty.
+
+## Next: more than two groups
+
+For $k$ groups, the same linear-model idea uses an intercept and $k - 1$ group contrasts. An ANOVA omnibus test asks whether any group means differ; planned contrasts or follow-up comparisons answer particular group questions.
+
+## Questions to consider
+
+- What difference does each model estimate?
+- What is the independent replicate in each study design?
+- Which claims come from sampling, which come from treatment assignment, and which come from the model output?
+- Why are the three traditional *t*-test names useful labels but not the starting point for model building?
+
+# Thanks
+
+This presentation is based on the [SOLES Quarto reveal.js template](https://github.com/usyd-soles-edu/soles-revealjs) and is licensed under a [Creative Commons Attribution 4.0 International License][cc-by].
+
+<!-- Links -->
+[cc-by]: http://creativecommons.org/licenses/by/4.0/
