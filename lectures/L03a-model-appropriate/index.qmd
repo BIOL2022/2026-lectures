@@ -1,6 +1,7 @@
 ---
 title: "L03a: Is my model appropriate?"
 subtitle: "BIOL2022 - L03a"
+chalkboard: true
 revealjs-plugins:
   - solarized-pdf
 author:
