@@ -247,9 +247,6 @@ plot(fit, which = 2)
 
 ::: {.column}
 <br>
-<br>
-<br>
-<br>
 
 1. The residuals should follow the **diagonal line**, which represents a standard normal distribution.
 2. Deviation from the line is to be expected, but *too much* of it indicates **non-normality**. *How much is "too much"*?
