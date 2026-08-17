@@ -6,3 +6,10 @@ project:
     - "lectures/L02a-representative-sampling/index.qmd"
     - "lectures/L02b-linear-model/index.qmd"
     - "lectures/L02c-all-linear-model/index.qmd"
+    - "lectures/L03a-model-appropriate/index.qmd"
+    - "lectures/L03b-ttests/index.qmd"
+  resources:
+    - "lectures/L03a-model-appropriate/slides.pdf"
+    - "lectures/L03a-model-appropriate/slides-solarized.pdf"
+    - "lectures/L03b-ttests/slides.pdf"
+    - "lectures/L03b-ttests/slides-solarized.pdf"

@@ -1,7 +1,8 @@
 ---
 title: "L03a: Is my model appropriate?"
 subtitle: "BIOL2022 - L03a"
-draft: true
+revealjs-plugins:
+  - solarized-pdf
 author:
   - name: Dr Januar Harianto
     affiliations: The University of Sydney
@@ -22,7 +23,7 @@ library(gt)
 library(gtsummary)
 ```
 
-# (Statistical) models
+## (Statistical) models
 
 > I remember a remark of Albert Einstein, which certainly applies to music. He said, in effect, that everything should be as simple as it can be, but not simpler.
 
@@ -30,10 +31,11 @@ library(gtsummary)
 
 ## Stay with me!
 
-Do not let the mathematical notation scare you. You do NOT need to know how to solve the equations. Rather, focus on the **interpretation** of the models.
+- Do not let the mathematical notation scare you. You do NOT need to know how to solve the equations. 
+- Rather, focus on the **interpretation** of the models.
+- This lecture focuses on assumptions of the General Linear Model (GLM) and how to check them using residuals.
 
-This lecture focuses on assumptions of the General Linear Model (GLM) and how to check them using residuals. There are other ways to determine model fit, including use of performance metrics and cross-validation, but we will not cover them.
-
+# Model building basics (revision)
 
 ## Recall the modelling process 
 ### What is the relationship between $x$ and $y$?

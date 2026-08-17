@@ -40,8 +40,8 @@ title: "BIOL2022 2026 Lectures"
 ## Week 3: Assumptions and comparisons
 
 <div class="lec-grid">
-<div class="lec-card is-draft"><span class="lec-title">Is my model appropriate?</span><div class="lec-preview"><span class="lec-status">Coming soon</span></div></div>
-<div class="lec-card is-draft"><span class="lec-title">t-tests</span><div class="lec-preview"><span class="lec-status">Coming soon</span></div></div>
+<div class="lec-card"><a href="lectures/L03a-model-appropriate/index.html"><span class="lec-title">Is my model appropriate?</span><img src="assets/thumbnails/L03a-model-appropriate.png" alt="Is my model appropriate?"></a><a class="lec-pdf" href="lectures/L03a-model-appropriate/slides.pdf">PDF slides</a> <a class="lec-pdf" href="lectures/L03a-model-appropriate/slides-solarized.pdf">PDF slides (solarised)</a></div>
+<div class="lec-card"><a href="lectures/L03b-ttests/index.html"><span class="lec-title">Modelling differences between groups: Part 1 (of 2)</span><img src="assets/thumbnails/L03b-ttests.png" alt="Modelling differences between groups: Part 1 (of 2)"></a><a class="lec-pdf" href="lectures/L03b-ttests/slides.pdf">PDF slides</a> <a class="lec-pdf" href="lectures/L03b-ttests/slides-solarized.pdf">PDF slides (solarised)</a></div>
 </div>
 
 ## Week 4: Multiple predictors and transformations
