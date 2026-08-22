@@ -1,7 +1,6 @@
 ---
 title: "Modelling multiple differences: a linear model with two or more categorical $X$ variables"
 subtitle: "BIOL2022 - L04b"
-draft: true
 author:
   - name: Dr Januar Harianto
     affiliations: The University of Sydney
@@ -25,19 +24,19 @@ data(penguins)
 ```
 
 
-# Learning objectives
+## Learning objectives
 
-You should:
+You should be able to:
 
 - [ ] Frame ANOVA as a specific application of the General Linear Model (GLM) for categorical predictors.
 - [ ] Formulate a GLM to test for differences between two or more group means.
 - [ ] Explain how an ANOVA summary partitions the variance of a GLM with categorical predictors.
 - [ ] Interpret main effects and interaction terms for categorical predictors within a GLM framework.
 - [ ] Use post-hoc tests to probe significant main effects and interactions in a GLM.
-- [ ] Visualize and interpret the results from a GLM with categorical predictors using interaction plots.
 
 # Analysis of variance (ANOVA)
 
+## Using categorical predictors in a GLM
 > It is better to solve the right problem approximately than to solve the *wrong* problem exactly.
 
 — [John Tukey](https://en.wikipedia.org/wiki/John_Tukey) (1915-2000)
@@ -168,14 +167,14 @@ $$ \text{body mass} \sim \text{species} \times \text{sex} $$
 
 ::: fragment
 ### Four steps (as always), with a [post-hoc](https://en.wikipedia.org/wiki/Post_hoc_analysis)
-1. **Fit the model**, but do not interpret yet. Visualise the relationship (if possible).
-2. **Check assumptions** from diagnostic plots (residuals).
-3. Select a different model or transform data if assumptions are violated, go back to (2). Skip if assumptions are met.
-4. **Interpret** the model **✨and post-hoc✨**.
+1. Visualise the relationship.
+2. Fit the regression model.
+3. Check and revise the model if needed (assumptions, outliers, issues).
+4. Interpret the model **✨and post-hoc✨**.
 :::
 
 
-## 1. Model/plot {auto-animate=true}
+## 1 of 4: Visualise the relationship {auto-animate=true}
 
 $$ \text{body mass} \sim \text{species} \times \text{sex} $$
 
@@ -194,31 +193,26 @@ pbox
 
 Side note: [Beyond bar and box plots](https://z3tt.github.io/beyond-bar-and-box-plots/)
 
+## 2 of 4: Fit the model {auto-animate=true}
 
-## 2. Check assumptions
+Ths is performed using software so we can assume this is done correctly (for now). The model is still:
+
 $$ \text{body mass} \sim \text{species} \times \text{sex} $$
 
+## 3 of 4: Check assumptions 
+
 ```{r fit_diagnostics}
+#| fig-height: 9
+#| fig-width: 9
+#| label: fit_diagnostics
+#| fig-cap: "Diagnostic plots for the linear model with species and sex as predictors of body mass."
 fit <- lm(body_mass_g ~ species * sex, data = penguins)
-par(mfrow = c(1, 4))
+par(mfrow = c(2, 2))
 plot(fit)
 ```
 
-- We see clusters of residuals, a total of 6, representing the 6 combinations of **species $\times$ sex**.
-- Interpretation of the residuals is as normal: just think of **LINE**!
 
-
-## 2. Check assumptions
-$$ \text{body mass} \sim \text{species} \times \text{sex} $$
-
-```{r check_model}
-fit <- lm(body_mass_g ~ species * sex, data = penguins)
-check_model(fit)
-```
-
-
-
-## 4. Interpret
+## 4: Interpret
 
 In practice, if we are interested in comparing means, the **ANOVA summary** table is the most useful.
 
@@ -263,70 +257,12 @@ summary(fit)
 # pwpp(emm)
 ```
 
+## Post-hoc
 
+## How and why do we perform post-hoc tests?
 
-# Example 2
-
-![](../../assets/gentoo.jpeg)
-
-Are species and sex significant predictors of bill length in penguins?
-
-## 1. Model/plot {auto-animate=true}
-
-$$ \text{bill length} \sim \text{species} \times \text{sex} $$
-
-```{r bill_boxplot}
-ggplot(penguins, aes(x = species, y = bill_length_mm, fill = species)) +
-  geom_boxplot(alpha = 0.6) +
-  xlab("Species") +
-  ylab("Bill length (mm)") +
-  theme_cowplot() +
-  scale_fill_viridis_d() +
-  theme(legend.position = "none")
-```
-
-## 2. Check assumptions
-
-$$ \text{bill length} \sim \text{species} \times \text{sex} $$
-
-```{r fit2_diagnostics}
-fit2 <- lm(bill_length_mm ~ species * sex, data = penguins)
-par(mfrow = c(1, 4))
-plot(fit2)
-```
-
-## 4. Interpret
-
-
-```{r anova_fit2}
-anova(fit2)
-```
-
-No significant interactions, **so we can interpret the main effects**.
-
-- The results revealed significant main effects for both species and sex. 
-- Specifically, the effect of species on bill length was statistically significant, F(2, 327) = 654.19, p < .001, indicating that bill length varies significantly across different species. 
-- The effect of sex was also significant, F(1, 327) = 211.81, p < .001, suggesting that bill length differs between males and females.
-
-
-## 4. Post-hoc
-
-To further investigate where the differences lie, we can perform a post-hoc test. The most common post-hoc is the Tukey HSD test (honestly significant difference), which can be performed using estimated marginal means (often referred to as emmeans). 
-
-```{r emm_sp}
-emm_sp <- emmeans(fit2, pairwise ~ species)
-emm_sp
-```
-
-##
-
-
-```{r plot_emm_sp}
-plot(emm_sp) +
-  theme_cowplot()
-```
-
-Post-hoc tests revealed that Chinstrap penguins had significantly longer mean bill lengths (48.8 mm $\pm$ 0.28 SE) compared to Adelie (38.8 mm $\pm$ 0.19 SE) and Gentoo penguins (47.5 mm $\pm$ 0.21 SE), and that all pairwise comparisons were statistically significant (p < .001).
+- If there is a significant effect of a categorical predictor with more than two levels, we need to perform post-hoc tests to determine which specific groups differ from each other.
+- Post-hoc tests control for the increased risk of Type I error that arises from making multiple comparisons, ensuring that the overall significance level is maintained.
 
 
 ## Questions to consider

@@ -15,9 +15,6 @@ title: "BIOL2022 2026 Lectures"
   .lec-card .lec-pdf + .lec-pdf{margin-left:12px;}
   .lec-card img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;background:#f0ece8;border:1px solid #d9d3cb;border-radius:0;transition:opacity .15s ease;}
   .lec-card a:hover img{opacity:.82;}
-  .lec-preview{position:relative;}
-  .lec-card.is-draft .lec-preview{aspect-ratio:16/9;background:#fff;border:1px solid #d9d3cb;}
-  .lec-status{position:absolute;inset:0;display:grid;place-items:center;text-align:center;font-size:.9rem;font-weight:700;}
 </style>
 
 <div class="week">
@@ -47,16 +44,16 @@ title: "BIOL2022 2026 Lectures"
 ## Week 4: Multiple predictors and transformations
 
 <div class="lec-grid">
-<div class="lec-card is-draft"><span class="lec-title">Multiple linear regression</span><div class="lec-preview"><span class="lec-status">Coming soon</span></div></div>
-<div class="lec-card is-draft"><span class="lec-title">ANOVA</span><div class="lec-preview"><span class="lec-status">Coming soon</span></div></div>
-<div class="lec-card is-draft"><span class="lec-title">Model transformations</span><div class="lec-preview"><span class="lec-status">Coming soon</span></div></div>
+<div class="lec-card"><a href="lectures/L04a-mlr/index.html"><span class="lec-title">Multiple linear regression</span><img src="assets/thumbnails/L04a-mlr.png" alt="Multiple linear regression"></a></div>
+<div class="lec-card"><a href="lectures/L04b-anova/index.html"><span class="lec-title">ANOVA</span><img src="assets/thumbnails/L04b-anova.png" alt="ANOVA"></a></div>
+<div class="lec-card"><a href="lectures/L04c-model-transformations/index.html"><span class="lec-title">Model transformations</span><img src="assets/thumbnails/L04c-model-transformations.png" alt="Model transformations"></a></div>
 </div>
 
 ## Week 5: Fixed and random effects
 
 <div class="lec-grid">
-<div class="lec-card is-draft"><span class="lec-title">Blocking: fixed and random</span><div class="lec-preview"><span class="lec-status">Coming soon</span></div></div>
-<div class="lec-card is-draft"><span class="lec-title">Module 1 revision</span><div class="lec-preview"><span class="lec-status">Coming soon</span></div></div>
+<div class="lec-card"><a href="lectures/L05a-blocking-fixed-random/index.html"><span class="lec-title">Blocking: fixed and random</span><img src="assets/thumbnails/L05a-blocking-fixed-random.png" alt="Blocking: fixed and random"></a></div>
+<div class="lec-card"><a href="lectures/L05b-revision/index.html"><span class="lec-title">Module 1 revision</span><img src="assets/thumbnails/L05b-revision.png" alt="Module 1 revision"></a></div>
 </div>
 
 </div>
