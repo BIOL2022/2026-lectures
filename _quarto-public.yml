@@ -11,8 +11,6 @@ project:
     - "lectures/L04a-mlr/index.qmd"
     - "lectures/L04b-anova/index.qmd"
     - "lectures/L04c-model-transformations/index.qmd"
-    - "lectures/L05a-blocking-fixed-random/index.qmd"
-    - "lectures/L05b-revision/index.qmd"
   resources:
     - "lectures/L03a-model-appropriate/slides.pdf"
     - "lectures/L03a-model-appropriate/slides-solarized.pdf"
