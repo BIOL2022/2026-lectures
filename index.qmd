@@ -52,8 +52,7 @@ title: "BIOL2022 2026 Lectures"
 ## Week 5: Fixed and random effects
 
 <div class="lec-grid">
-<div class="lec-card"><a href="lectures/L05a-blocking-fixed-random/index.html"><span class="lec-title">Blocking: fixed and random</span><img src="assets/thumbnails/L05a-blocking-fixed-random.png" alt="Blocking: fixed and random"></a></div>
-<div class="lec-card"><a href="lectures/L05b-revision/index.html"><span class="lec-title">Module 1 revision</span><img src="assets/thumbnails/L05b-revision.png" alt="Module 1 revision"></a></div>
+<div class="lec-card"><a href="lectures/L05a-blocking-fixed-random/index.html"><span class="lec-title">Control, fixed and random variables</span><img src="assets/thumbnails/L05a-blocking-fixed-random.png" alt="Control, fixed and random variables"></a></div>
 </div>
 
 </div>
