@@ -67,20 +67,20 @@ We start with the *simple* model:
 
 $$ \text{body mass} \sim \text{flipper length}$$ 
 
-:::::
+::::
 
 :::: fragment
 But, we know that there are other (possible) factors that may influence the body mass of a penguin.
 
 $$ Sex $$ $$ Species $$ $$ Bill\ length $$
 
-:::::
+::::
 
 :::: fragment
 ### It is rarely the case that a response variable is influenced by a *single* explanatory variable.
 
 Importantly, we include additional variables in the model only if they are necessary in answering biological questions -- there is *no point* in a highly precise model if it cannot be interpreted in a biologically meaningful way. 
-:::::
+::::
 
 
 ## How do we include multiple predictors in a model? {auto-animate=true}
@@ -89,7 +89,7 @@ $$ \text{body mass} \sim \text{flipper length}$$
 
 :::: fragment
 $$ y \sim x $$
-:::::
+::::
 
 :::: fragment
 
@@ -98,7 +98,7 @@ We add more predictors to the model by including them in the equation:
 $$ y \sim x_1 + x_2 + x_3 + \ldots + x_n $$ 
 
 where $x_1, x_2, x_3, \ldots, x_n$ are the predictors **that can be continuous or categorical**, or both.
-:::::
+::::
 
 :::: fragment
 
@@ -108,7 +108,7 @@ where $x_1, x_2, x_3, \ldots, x_n$ are the predictors **that can be continuous o
 - $\text{body mass} \sim \color{blue}\text{flipper length} \color{black} + \color{orange}\text{species}$, at *least* one continuous, one categorical
 - $\text{body mass} \sim \color{orange}\text{sex} \color{black} + \color{orange}\text{species}$, all categorical
 
-:::::
+::::
 
 ## Simple is best {auto-animate=true}
 
@@ -122,7 +122,7 @@ The simplest model is one that is **ADDITIVE**, where in theory, each predictor 
 
 :::: fragment
 Once the model is built, the makeup of the model determines whether it is equivalent to a $t$-test, ANOVA, or ANCOVA, linear regression or multiple linear regression...
-:::::
+::::
 
 ## Focusing on continuous predictors (for now)
 
@@ -469,7 +469,7 @@ $$ \text{body mass} \sim \color{blue}\text{flipper length} \color{black} \times 
 
 which is also equivalent to:
 $$ \text{body mass} \sim \color{blue}\text{flipper length} \color{black} + \color{blue}\text{bill depth} \color{black} + \color{red}\text{flipper length:bill depth}$$
-:::::
+::::
 
 
 ## Checking the model {auto-animate=true}
