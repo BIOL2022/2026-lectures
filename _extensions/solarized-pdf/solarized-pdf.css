@@ -8,15 +8,16 @@ html.solarized-pdf .reveal .slides section {
 
 html.solarized-pdf .reveal .slides section.title-slide.level1,
 html.solarized-pdf .reveal .slide-background.title-slide.level1 {
-  background-color: #e64626 !important;
+  background-color: #fdf6e3 !important;
 }
 
 html.solarized-pdf .reveal .slides section#title-slide,
 html.solarized-pdf .reveal .backgrounds .slide-background:first-child {
-  background-color: #e64626 !important;
+  background-color: #fdf6e3 !important;
 }
 
-html.solarized-pdf .reveal .slides section#title-slide .title,
-html.solarized-pdf .reveal .slides section#title-slide .subtitle {
-  color: #ffffff !important;
+html.solarized-pdf .reveal .slides section#title-slide,
+html.solarized-pdf .reveal .slides section#title-slide * {
+  color: #000000 !important;
+  opacity: 1 !important;
 }
