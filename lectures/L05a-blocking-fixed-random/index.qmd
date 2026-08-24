@@ -1,6 +1,8 @@
 ---
 title: Control, fixed and random variables
 subtitle: "BIOL2022 - L05a"
+revealjs-plugins:
+  - solarized-pdf
 author:
   - name: Dr Januar Harianto
     affiliations: The University of Sydney

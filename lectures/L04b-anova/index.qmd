@@ -1,6 +1,8 @@
 ---
 title: "Modelling multiple differences: a linear model with two or more categorical $X$ variables"
 subtitle: "BIOL2022 - L04b"
+revealjs-plugins:
+  - solarized-pdf
 author:
   - name: Dr Januar Harianto
     affiliations: The University of Sydney

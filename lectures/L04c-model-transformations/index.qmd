@@ -1,6 +1,8 @@
 ---
 title: Model transformations
 subtitle: "BIOL2022 - L04c"
+revealjs-plugins:
+  - solarized-pdf
 author:
   - name: Dr Januar Harianto
     affiliations: The University of Sydney

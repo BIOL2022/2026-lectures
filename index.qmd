@@ -29,7 +29,7 @@ title: "BIOL2022 2026 Lectures"
 ## Week 2: Sampling and modelling
 
 <div class="lec-grid">
-<div class="lec-card"><a href="lectures/L02a-representative-sampling/index.html"><span class="lec-title">Representative sampling</span><img src="assets/thumbnails/L02a-representative-sampling.png" alt="Representative sampling"></a><a class="lec-pdf" href="lectures/L02a-representative-sampling/slides.pdf">PDF slides</a> <a class="lec-pdf" href="lectures/L02a-representative-sampling/slides-solarized.pdf">PDF slides (solarised)</a></div>
+<div class="lec-card"><a href="lectures/L02a-representative-sampling/index.html"><span class="lec-title">Representative sampling</span><img src="assets/thumbnails/L02a-represcommentative-sampling.png" alt="Representative sampling"></a><a class="lec-pdf" href="lectures/L02a-representative-sampling/slides.pdf">PDF slides</a> <a class="lec-pdf" href="lectures/L02a-representative-sampling/slides-solarized.pdf">PDF slides (solarised)</a></div>
 <div class="lec-card"><a href="lectures/L02b-linear-model/index.html"><span class="lec-title">The linear model</span><img src="assets/thumbnails/L02b-linear-model.png" alt="The linear model"></a><a class="lec-pdf" href="lectures/L02b-linear-model/slides.pdf">PDF slides</a> <a class="lec-pdf" href="lectures/L02b-linear-model/slides-solarized.pdf">PDF slides (solarised)</a></div>
 <div class="lec-card"><a href="lectures/L02c-all-linear-model/index.html"><span class="lec-title">All linear models</span><img src="assets/thumbnails/L02c-all-linear-model.png" alt="All linear models"></a><a class="lec-pdf" href="lectures/L02c-all-linear-model/slides.pdf">PDF slides</a> <a class="lec-pdf" href="lectures/L02c-all-linear-model/slides-solarized.pdf">PDF slides (solarised)</a></div>
 </div>
@@ -44,15 +44,15 @@ title: "BIOL2022 2026 Lectures"
 ## Week 4: Multiple predictors and transformations
 
 <div class="lec-grid">
-<div class="lec-card"><a href="lectures/L04a-mlr/index.html"><span class="lec-title">Multiple linear regression</span><img src="assets/thumbnails/L04a-mlr.png" alt="Multiple linear regression"></a></div>
-<div class="lec-card"><a href="lectures/L04b-anova/index.html"><span class="lec-title">ANOVA</span><img src="assets/thumbnails/L04b-anova.png" alt="ANOVA"></a></div>
-<div class="lec-card"><a href="lectures/L04c-model-transformations/index.html"><span class="lec-title">Model transformations</span><img src="assets/thumbnails/L04c-model-transformations.png" alt="Model transformations"></a></div>
+<div class="lec-card"><a href="lectures/L04a-mlr/index.html"><span class="lec-title">Multiple linear regression</span><img src="assets/thumbnails/L04a-mlr.png" alt="Multiple linear regression"></a><a class="lec-pdf" href="lectures/L04a-mlr/slides.pdf">PDF slides</a> <a class="lec-pdf" href="lectures/L04a-mlr/slides-solarized.pdf">PDF slides (solarised)</a></div>
+<div class="lec-card"><a href="lectures/L04b-anova/index.html"><span class="lec-title">ANOVA</span><img src="assets/thumbnails/L04b-anova.png" alt="ANOVA"></a><a class="lec-pdf" href="lectures/L04b-anova/slides.pdf">PDF slides</a> <a class="lec-pdf" href="lectures/L04b-anova/slides-solarized.pdf">PDF slides (solarised)</a></div>
+<div class="lec-card"><a href="lectures/L04c-model-transformations/index.html"><span class="lec-title">Model transformations</span><img src="assets/thumbnails/L04c-model-transformations.png" alt="Model transformations"></a><a class="lec-pdf" href="lectures/L04c-model-transformations/slides.pdf">PDF slides</a> <a class="lec-pdf" href="lectures/L04c-model-transformations/slides-solarized.pdf">PDF slides (solarised)</a></div>
 </div>
 
 ## Week 5: Fixed and random effects
 
 <div class="lec-grid">
-<div class="lec-card"><a href="lectures/L05a-blocking-fixed-random/index.html"><span class="lec-title">Control, fixed and random variables</span><img src="assets/thumbnails/L05a-blocking-fixed-random.png" alt="Control, fixed and random variables"></a></div>
+<div class="lec-card"><a href="lectures/L05a-blocking-fixed-random/index.html"><span class="lec-title">Control, fixed and random variables</span><img src="assets/thumbnails/L05a-blocking-fixed-random.png" alt="Control, fixed and random variables"></a><a class="lec-pdf" href="lectures/L05a-blocking-fixed-random/slides.pdf">PDF slides</a> <a class="lec-pdf" href="lectures/L05a-blocking-fixed-random/slides-solarized.pdf">PDF slides (solarised)</a></div>
 </div>
 
 </div>
