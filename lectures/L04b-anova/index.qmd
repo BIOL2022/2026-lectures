@@ -25,6 +25,7 @@ library(emmeans)
 data(penguins)
 ```
 
+# Modelling differences between groups: Part 2 (of 2)
 
 ## Learning objectives
 
@@ -252,6 +253,10 @@ p1 + p2
 - Species affects the relationship between body mass and sex. Males are generally heavier than females, but the difference is less pronounced in Chinstrap penguins as seen by the flatter slope compared to the other two species.
 - Sex also affects the relationship between body mass and species. Adelie males are generally heavier than Chinstrap males, but in females it is the opposite: Adelie females are generally lighter than Chinstrap females.
 
+:::fragment
+But which interactions are "significant"?
+:::
+
 ## What if we look at the non-ANOVA summary?
 ```{r lm_fit}
 summary(fit)
@@ -259,15 +264,80 @@ summary(fit)
 # pwpp(emm)
 ```
 
-## Post-hoc
+# Post-hoc
 
-## How and why do we perform post-hoc tests?
 
-- If there is a significant effect of a categorical predictor with more than two levels, we need to perform post-hoc tests to determine which specific groups differ from each other.
-- Post-hoc tests control for the increased risk of Type I error that arises from making multiple comparisons, ensuring that the overall significance level is maintained.
+## Where are the differences?
 
+We are looking at the species × sex interaction where the relationship between species and body mass differs by sex.
+
+::: {.columns .bordered-columns .fragment}
+
+::: {.column}
+### Female penguins
+
+Which species differ?
+:::
+
+::: {.column}
+### Male penguins
+
+Which species differ?
+:::
+
+:::
+
+::: fragment
+**Post-hoc comparisons identify the differences, their direction, and their size.**
+:::
+
+## Pairwise comparisons within each sex
+
+**Estimated marginal means** are the group means predicted by the fitted GLM.
+
+::: {.columns .bordered-columns}
+
+::: {.column}
+### Female penguins
+
+- Adelie vs Chinstrap
+- Adelie vs Gentoo
+- Chinstrap vs Gentoo
+:::
+
+::: {.column}
+### Male penguins
+
+- Adelie vs Chinstrap
+- Adelie vs Gentoo
+- Chinstrap vs Gentoo
+:::
+
+:::
+
+::: fragment
+We can also consider pairwise comparisons within each species.
+:::
+
+## Results
+
+
+```{r pairs}
+#| echo: false
+emm <- emmeans(fit, ~ species | sex)
+summary(pairs(emm, by = "sex", adjust = "tukey"), infer = c(TRUE, TRUE))
+```
+
+Are there **differences** between species significant for each sex, and if so, how did interactions affect the **direction** and **size** of the differences?
+
+## Results
+
+```{r pairs2}
+plot(emm)
+```
 
 ## Questions to consider
+
 
 - When is it more appropriate to summarise a GLM with an ANOVA table versus regression coefficients?
 - How do the standard GLM assumptions (LINE) apply when working with categorical predictors?
