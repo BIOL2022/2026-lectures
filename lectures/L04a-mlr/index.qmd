@@ -106,17 +106,17 @@ where $x_1, x_2, x_3, \ldots, x_n$ are the predictors **that can be continuous o
 
 ### Examples
 
-- $\text{body mass} \sim \color{blue}\text{flipper length} \color{black} + \color{blue}\text{bill depth}$, all continuous
-- $\text{body mass} \sim \color{blue}\text{flipper length} \color{black} + \color{orange}\text{species}$, at *least* one continuous, one categorical
-- $\text{body mass} \sim \color{orange}\text{sex} \color{black} + \color{orange}\text{species}$, all categorical
+- $\text{body mass} \sim \textcolor{blue}{\text{flipper length}} + \textcolor{blue}{\text{bill depth}}$, all continuous
+- $\text{body mass} \sim \textcolor{blue}{\text{flipper length}} + \textcolor{orange}{\text{species}}$, at *least* one continuous, one categorical
+- $\text{body mass} \sim \textcolor{orange}{\text{sex}} + \textcolor{orange}{\text{species}}$, all categorical
 
 ::::
 
 ## Simple is best {auto-animate=true}
 
-- $\text{body mass} \sim \color{blue}\text{flipper length} \color{black} + \color{blue}\text{bill depth}$, all continuous
-- $\text{body mass} \sim \color{blue}\text{flipper length} \color{black} + \color{orange}\text{species}$, at *least* one continuous, one categorical
-- $\text{body mass} \sim \color{orange}\text{sex} \color{black} + \color{orange}\text{species}$, all categorical
+- $\text{body mass} \sim \textcolor{blue}{\text{flipper length}} + \textcolor{blue}{\text{bill depth}}$, all continuous
+- $\text{body mass} \sim \textcolor{blue}{\text{flipper length}} + \textcolor{orange}{\text{species}}$, at *least* one continuous, one categorical
+- $\text{body mass} \sim \textcolor{orange}{\text{sex}} + \textcolor{orange}{\text{species}}$, all categorical
 
 ::: fragment
 The simplest model is one that is **ADDITIVE**, where in theory, each predictor contributes to the response variable *independently* of the other predictors.
@@ -130,7 +130,7 @@ Once the model is built, the makeup of the model determines whether it is equiva
 
 In this lecture, we will focus on this:
 
-$$\text{body mass} \sim \color{blue}\text{flipper length} \color{black} + \color{blue}\text{bill depth}$$
+$$\text{body mass} \sim \textcolor{blue}{\text{flipper length}} + \textcolor{blue}{\text{bill depth}}$$
 
 where all predictors are *continuous* variables.
 
@@ -174,7 +174,7 @@ For explanatory biological models, prefer the simplest model that answers the re
 
 Our workflow is more or less fixed:
 
-$$ \text{body mass} \sim \color{blue}\text{flipper length} $$
+$$ \text{body mass} \sim \textcolor{blue}{\text{flipper length}} $$
 
 1. Visualise the relationship.
 2. Fit the regression model.
@@ -232,7 +232,7 @@ summary(fit)
 
 ## 4: Interpret
 
-$$ \text{body mass} \sim \color{blue}\text{flipper length} $$
+$$ \text{body mass} \sim \textcolor{blue}{\text{flipper length}} $$
 
 ```{r}
 #| label: tbl-penguin1
@@ -261,7 +261,7 @@ tab_model(
 What if we add another variable to the model, such as bill depth? 
 
 ## A *multiple* linear regression model 
-$$ \text{body mass} \sim \color{blue}\text{flipper length} \color{black} + \color{blue}\text{bill depth}$$
+$$ \text{body mass} \sim \textcolor{blue}{\text{flipper length}} + \textcolor{blue}{\text{bill depth}}$$
 
 ### Four steps (it does not change... much):
 
@@ -283,7 +283,7 @@ $$ \text{body mass} \sim \color{blue}\text{flipper length} \color{black} + \colo
 
 ## 1 of 4: Visualise the relationship
 
-$$ \text{body mass} \sim \color{blue}\text{flipper length} \color{black} + \color{blue}\text{bill depth}$$
+$$ \text{body mass} \sim \textcolor{blue}{\text{flipper length}} + \textcolor{blue}{\text{bill depth}}$$
 
 ```{r}
 plot_ly(penguins,
@@ -329,7 +329,7 @@ Why is it necessary to fit the model first?
 
 ## 3 of 4: Check assumptions
 
-$$ \text{body mass} \sim \color{blue}\text{flipper length} \color{black} + \color{blue}\text{bill depth}$$
+$$ \text{body mass} \sim \textcolor{blue}{\text{flipper length}} + \textcolor{blue}{\text{bill depth}}$$
 
 ```{r}
 #| fig-height: 9
@@ -364,7 +364,7 @@ performance::check_collinearity(fit)
 
 ## 4: Interpret
 
-$$ \text{body mass} \sim \color{blue}\text{flipper length} \color{black} + \color{blue}\text{bill depth}$$
+$$ \text{body mass} \sim \textcolor{blue}{\text{flipper length}} + \textcolor{blue}{\text{bill depth}}$$
 
 ```{r}
 #| echo: false
@@ -378,7 +378,7 @@ sjPlot::tab_model(
 
 ## 4: Interpret partial effect: flipper length
 
-$$ \text{body mass} \sim \color{blue}\text{flipper length} \color{black} + \color{blue}\text{bill depth}$$
+$$ \text{body mass} \sim \textcolor{blue}{\text{flipper length}} + \textcolor{blue}{\text{bill depth}}$$
 
 ```{r}
 #| echo: false
@@ -398,7 +398,7 @@ sjPlot::tab_model(
 
 ## 4: Interpret partial effect: bill depth
 
-$$ \text{body mass} \sim \color{blue}\text{flipper length} \color{black} + \color{blue}\text{bill depth}$$
+$$ \text{body mass} \sim \textcolor{blue}{\text{flipper length}} + \textcolor{blue}{\text{bill depth}}$$
 
 ```{r}
 #| echo: false
@@ -418,7 +418,7 @@ sjPlot::tab_model(
 
 ## 4: How well does the model fit?
 
-$$ \text{body mass} \sim \color{blue}\text{flipper length} \color{black} + \color{blue}\text{bill depth}$$
+$$ \text{body mass} \sim \textcolor{blue}{\text{flipper length}} + \textcolor{blue}{\text{bill depth}}$$
 
 ```{r}
 #| echo: false
@@ -463,20 +463,20 @@ For a given MLR model $$ y \sim x_1 + x_2 $$ we can declare an interaction term 
 :::: fragment
 So for the current MLR model from the penguins dataset:
 
-$$ \text{body mass} \sim \color{blue}\text{flipper length} \color{black} + \color{blue}\text{bill depth}$$
+$$ \text{body mass} \sim \textcolor{blue}{\text{flipper length}} + \textcolor{blue}{\text{bill depth}}$$
 
 becomes:
 
-$$ \text{body mass} \sim \color{blue}\text{flipper length} \color{black} \times \color{blue}\text{bill depth}$$
+$$ \text{body mass} \sim \textcolor{blue}{\text{flipper length}} \times \textcolor{blue}{\text{bill depth}}$$
 
 which is also equivalent to:
-$$ \text{body mass} \sim \color{blue}\text{flipper length} \color{black} + \color{blue}\text{bill depth} \color{black} + \color{red}\text{flipper length:bill depth}$$
+$$ \text{body mass} \sim \textcolor{blue}{\text{flipper length}} + \textcolor{blue}{\text{bill depth}} + \textcolor{red}{\text{flipper length:bill depth}}$$
 ::::
 
 
 ## Checking the model {auto-animate=true}
 
-$$ \text{body mass} \sim \color{blue}\text{flipper length} \color{black} \times \color{blue}\text{bill depth}$$
+$$ \text{body mass} \sim \textcolor{blue}{\text{flipper length}} \times \textcolor{blue}{\text{bill depth}}$$
 
 
 ### Four steps (it does not change!):
@@ -488,7 +488,7 @@ $$ \text{body mass} \sim \color{blue}\text{flipper length} \color{black} \times 
 
 ## 2. Diagnostic plots (assumptions)
 
-$$ \text{body mass} \sim \color{blue}\text{flipper length} \color{black} \times \color{blue}\text{bill depth}$$
+$$ \text{body mass} \sim \textcolor{blue}{\text{flipper length}} \times \textcolor{blue}{\text{bill depth}}$$
 
 ```{r}
 fit <- lm(body_mass_g ~ flipper_length_mm * bill_depth_mm, data = penguins)
