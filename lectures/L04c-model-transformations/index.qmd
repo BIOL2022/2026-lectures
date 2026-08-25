@@ -10,7 +10,7 @@ embed-resources: false # embed resources into single HTML file -- enable when re
 # NOTE: please check _quarto.yml file for more options
 ---
 
-# Learning objectives
+## Learning objectives
 
 You should:
 
@@ -59,10 +59,12 @@ ggplot(df, aes(x = x, y = y)) +
 
 ## Two ways to transform 
 
-We can either formulate a new model that better fits the data, or transform the data to better fit the model. **Both methods are essentially equivalent.**
+We can either formulate a new model that better fits the data, or transform the data to better fit the model. **Both methods are (practically) equivalent.**
 
 
 ```{r}
+#| label: fig-transform-methods
+
 # Fit the non-linear model
 model <- nls(y ~ a * 2^x + b, data = df, start = list(a = 1, b = 1))
 
@@ -76,7 +78,7 @@ p1 <- ggplot(df, aes(x = x, y = y)) +
     ggtitle("Formulate a new model") +
     theme_cowplot()
 
-p2 <- ggplot(df, aes(x = x, y = log(y))) +
+p2 <- ggplot(df, aes(x = x, y = log2(y))) +
     geom_point() +
     geom_smooth(method = "lm", se = FALSE) +
     ggtitle("Transform the data") +
@@ -93,7 +95,7 @@ It turns out that you need a lot of domain knowledge to formulate a new model.
 To fit the model to this particular dataset, we need to formulate: $$ y = a \times 2^x + b $$
 
 ::: fragment
-**Transforming the data is easier.** Basically, we can transform the response variable and approximate the model: $$ \log(y) \sim x $$
+**Transforming the data is easier.** Basically, we can transform the response variable and approximate the model: $$ \log_{2}(y) \sim x $$
 
 It is not perfect and may even introduce issues, but it can be a good starting point. It is also easier to do when dealing with complex multi-factorial models.
 :::
@@ -124,7 +126,7 @@ Given a model:
 
 $$ \log(y) = \beta_0 + \beta_1 x $$
 
-where we are transforming the response variable $y$ using the **natural** logarithm, $\log(y)$, then **for a one-unit increase in $x$, the response variable $y$ increases by a factor of $\beta_1 \times 100\%$**.
+where we are transforming the response variable $y$ using the **natural** logarithm, $\log(y)$, then a one-unit increase in $x$ is associated with a change of $(e^{\beta_1} - 1) \times 100\%$ in $y$.
 
 We can also use estimated marginal means to interpret the results in R, where back-transforms can be automatically calculated to the model.
 
@@ -167,11 +169,31 @@ Given the non-linear relationship between ozone and solar radiation, we can appl
 $$ \log(\text{ozone}) \sim \text{solar radiation} $$
 
 ```{r}
+#| label: fig-transform-log
+#| fig-cap: "Residual diagnostics of the log-transformed model"
 fit_log <- lm(log(Ozone) ~ Solar.R, data = airquality)
 par(mfrow = c(1, 4))
 plot(fit_log)
 ```
 
+## Comparison
+
+::: {.panel-tabset}
+### Untransformed model
+
+```{r}
+par(mfrow = c(1, 4))
+plot(fit)
+```
+
+### Transformed model
+
+```{r}
+par(mfrow = c(1, 4))
+plot(fit_log)
+```
+
+:::
 
 ## Is the model a better fit?
 
@@ -211,7 +233,7 @@ summary(fit_log)
 
 ::: fragment
 - The **log-transformed model** fits the data better, but is more difficult to interpret.
-- A 1 W/m² increase in solar radiation is associated with a `r round(coef(fit_log)*100, 2)`% increase in ozone concentration.
+- A 1 W/m² increase in solar radiation is associated with a `r round((exp(coef(fit_log)[["Solar.R"]]) - 1) * 100, 2)`% increase in ozone concentration.
 - We can also back-transform the results to the original scale, but this gives us the *median* change in ozone concentration, not the *mean*.
 :::
 
