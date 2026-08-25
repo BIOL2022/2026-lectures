@@ -102,7 +102,7 @@ It is not perfect and may even introduce issues, but it can be a good starting p
 
 Irregardless of the complexity of the model, apply the transformation to the response variable:
 
-$$ y \sim x_1 + x_2 + \ldots + x_n \rightarrow \color{blue} f(y) \sim x_1 + x_2 + \ldots + x_n $$
+$$ y \sim x_1 + x_2 + \ldots + x_n \rightarrow \textcolor{blue}{f(y)} \sim x_1 + x_2 + \ldots + x_n $$
 
 ::: fragment
 Depending on the relationship between the response and predictor variables, we can apply different transformations:

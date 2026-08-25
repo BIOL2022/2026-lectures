@@ -47,7 +47,7 @@ $$ y \sim x_1 + x_2 $$
 ### When both predictors are [CONTINUOUS]{style="color:blue"}
 
 $$
-\text{body mass} \sim \color{blue}{\text{bill length}} + \color{blue}{\text{flipper length}}
+\text{body mass} \sim \textcolor{blue}{\text{bill length}} + \textcolor{blue}{\text{flipper length}}
 $$
 
 Use a **regression summary** and interpret beta ($\beta$) coefficients:
@@ -70,7 +70,7 @@ $$ y \sim x_1 + x_2 $$
 
 ::: fragment
 
-$$ \text{body mass} \sim \color{orange}{\text{species}} \color{black}+ \color{orange}{\text{sex}} $$
+$$ \text{body mass} \sim \textcolor{orange}{\text{species}} \textcolor{black}{+} \textcolor{orange}{\text{sex}} $$
 
 Use an **ANOVA summary** and *also* interpret the **post-hoc tests** to figure out where the differences are:
 
@@ -126,7 +126,7 @@ $$ y \sim x_1 + x_2 $$
 
 ::: fragment
 
-$$ \text{body mass} \sim \color{blue}{\text{bill length}} \color{black}+ \color{orange}{\text{species}} $$
+$$ \text{body mass} \sim \textcolor{blue}{\text{bill length}} \textcolor{black}{+} \textcolor{orange}{\text{species}} $$
 
 ::: columns
 ::: {.column width="50%"}
@@ -213,7 +213,7 @@ We want to measure species diversity in lakes (that are influenced by aquacultur
 
 ::: {.fragment}
 
-$$ \text{species diversity} \sim \color{red}{\text{lake size}} + \color{black}{\text{species diversity}} $$
+$$ \text{species diversity} \sim \textcolor{red}{\text{lake size}} + \textcolor{black}{\text{species diversity}} $$
 
 What is the effect of lake size on species diversity, *if we control for the effects of lake size*?
 
@@ -226,11 +226,11 @@ We want to determine differences in the body mass of penguins based on their spe
 ![](../../assets/cartoon-penguins.png){fig-align="center"}
 
 
-$$ \text{body mass} \sim \color{red}{\text{sex}} + \color{black}\text{species} $$
+$$ \text{body mass} \sim \textcolor{red}{\text{sex}} + \textcolor{black}{\text{species}} $$
 
 ## Covariates in the model {auto-animate=true}
 
-$$ \text{body mass} \sim \color{red}{\text{sex}} + \color{black}\text{species} $$
+$$ \text{body mass} \sim \textcolor{red}{\text{sex}} + \textcolor{black}{\text{species}} $$
 
 ::: fragment
 In the model, we include the covariate as a **predictor**, but we are not interested in its effect on the response variable.
@@ -263,24 +263,24 @@ Same concept as covariate, but manipulated by the experimenter, and so is *part*
 
 We want to measure the abundance of kangaroos between different habitats, but we know that the time of day can affect the number of kangaroos we see (e.g. more kangaroos are active in the morning). We can use **time of day as a block** and ensure that we sample each habitat at pre-determined times.
 
-$$ \text{kangaroo abundance} \sim \color{red}{\text{time of day}} + \color{black}\text{habitat} $$
+$$ \text{kangaroo abundance} \sim \textcolor{red}{\text{time of day}} + \textcolor{black}{\text{habitat}} $$
 
 ## Example: "worker" block
 We want to determine the influence of a new fertiliser on plant growth in a large farm, and so hire multiple workers to apply the fertiliser. We can use the **worker as a block** and ensure that each worker applies the fertiliser to each plot.
 
-$$ \text{plant growth} \sim \color{red}{\text{worker}} + \color{black}\text{fertiliser} $$
+$$ \text{plant growth} \sim \textcolor{red}{\text{worker}} + \textcolor{black}{\text{fertiliser}} $$
 
 ## Example: "spatial" block
 We want to measure the effect of different feeds on the growth of pigs in farms. We can use the **farm as a block** and ensure that each feed is given to pigs in each farm.
 
-$$ \text{pig growth} \sim \color{red}{\text{farm}} + \color{black}\text{feed} $$
+$$ \text{pig growth} \sim \textcolor{red}{\text{farm}} + \textcolor{black}{\text{feed}} $$
 
 
 ## Blocking a model
 
 Just include the block as a predictor in the model, and interpret the treatment effects (here we assume that we intentionally surveyed several islands to consider them as blocks)
 
-$$ \text{body mass} \sim \color{red}{\text{island}} + \color{black}\text{species} $$
+$$ \text{body mass} \sim \textcolor{red}{\text{island}} + \textcolor{black}{\text{species}} $$
 ```{r}
 fit02 <- lm(body_mass_g ~ species + island, data = penguins)
 summary(fit02) |>
@@ -311,19 +311,19 @@ summary(fit02) |>
 We assume that the block is a random effect, and that the levels of the block are a random sample from a larger population of possible levels. 
 
 ::: fragment
-$$ \text{kangaroo abundance} \sim \color{red}{\text{time of day}} + \text{habitat} $$
+$$ \text{kangaroo abundance} \sim \textcolor{red}{\text{time of day}} + \text{habitat} $$
 
 $$becomes$$
 :::
 
 ::: fragment
-$$ \text{kangaroo abundance} \sim \color{red}{\text{error(time of day)}} + \text{habitat} $$
+$$ \text{kangaroo abundance} \sim \textcolor{red}{\text{error(time of day)}} + \text{habitat} $$
 
 Therefore, we assume that the sample of time values is a **covariate** that comes from a *larger* population of time of days that are normally distributed. In some cases we see the formula written as:
 :::
 
 ::: fragment
-$$ \text{response} \sim \color{red}{\text{(1|block)}} + \text{treatment} $$
+$$ \text{response} \sim \textcolor{red}{\text{(1|block)}} + \text{treatment} $$
 
 :::
 
@@ -331,7 +331,7 @@ $$ \text{response} \sim \color{red}{\text{(1|block)}} + \text{treatment} $$
 The statistical model will no longer assign a coefficient to the block, but will estimate the variance of the block effect. This variance is then used to estimate the standard error of the treatment effect. **Basically, the block is now *lumped* into the error term.**
 
 $$
-\text{response} = \beta_0 + \color{red}{b \cdot \text{block}} + \beta_1\,\text{treatment} + \epsilon \\
+\text{response} = \beta_0 + \textcolor{red}{b \cdot \text{block}} + \beta_1\,\text{treatment} + \epsilon \\
 \textcolor{black}{\text{where}\ b \sim \mathcal{N}(0, \sigma^2_b)}
 $$
 
@@ -372,7 +372,7 @@ $$ y \sim x_1 + x_2 $$
 ::: fragment
 ### When both predictors are [CONTINUOUS]{style="color:blue"}, but one is a [COVARIATE]{style="color:red"}
 
-$$ \text{body mass} \sim \color{red}{\text{error(flipper length)}} + \color{blue}{\text{bill length}} $$
+$$ \text{body mass} \sim \textcolor{red}{\text{error(flipper length)}} + \textcolor{blue}{\text{bill length}} $$
 
 ~~Use a **regression summary** and interpret beta ($\beta$) coefficients:~~
 
@@ -396,7 +396,7 @@ $$ y \sim x_1 + x_2 $$
 
 ::: fragment
 
-$$ \text{body mass} \sim \color{red}{\text{island}} + \color{orange}{\text{species}} $$
+$$ \text{body mass} \sim \textcolor{red}{\text{island}} + \textcolor{orange}{\text{species}} $$
 
 ~~Use an **ANOVA summary** and *also* interpret the **post-hoc tests** to figure out where the differences are:~~
 
@@ -434,7 +434,7 @@ $$ y \sim x_1 + x_2 $$
 ### When both predictors are [CONTINUOUS]{style="color:blue"} and [CATEGORICAL]{style="color:orange"} but one is a BLOCK
 
 ::: fragment
-$$ \text{body mass} \sim \color{red}{\text{species}} + \color{blue}{\text{bill length}} $$
+$$ \text{body mass} \sim \textcolor{red}{\text{species}} + \textcolor{blue}{\text{bill length}} $$
 
 ::: columns
 ::: {.column width="50%"}
@@ -468,7 +468,7 @@ $$ y \sim x_1 + x_2 $$
 
 ::: fragment
 
-$$ \text{body mass} \sim \color{blue}{\text{error(bill length)}} + \color{orange}{\text{species}} $$
+$$ \text{body mass} \sim \textcolor{blue}{\text{error(bill length)}} + \textcolor{orange}{\text{species}} $$
 
 ::: columns
 ::: {.column width="50%"}
