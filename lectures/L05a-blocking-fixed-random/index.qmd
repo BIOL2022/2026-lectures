@@ -192,7 +192,24 @@ These variables have special names (but in the end they are just predictors in t
 We include the control variable as a *predictor*, **but we are not interested in its effect on the response variable**.
 :::
 
+## Decisions, decisions...
 
+::: fragment
+### Covariate or block?
+The decision to treat a variable as a covariate or block depends on whether we can **plan for it**.
+
+- Measured alongside the response variable, but *not manipulated*: **covariate**.
+- Levels used to allocate and replicate treatments: *block*.
+:::
+
+::: fragment
+### Fixed effect, or random effect?
+
+This is decided by the **research question**.
+
+- If we are interested in the effect of the variable itself, then it is a **fixed effect**.
+- If we are *not* interested in the effect of the variable itself or sample the levels of the variable from a larger population, then it is a **random effect**.
+:::
 
 # Covariates
 
@@ -218,8 +235,12 @@ We want to determine differences in the body mass of penguins based on their spe
 
 ![](../../assets/cartoon-penguins.png){fig-align="center"}
 
-
 $$ \text{body mass} \sim \textcolor{red}{\text{sex}} + \textcolor{black}{\text{species}} $$
+
+::: fragment
+**Q:** Why is sex a covariate in this case, and not a block? How would we design the study differently if we wanted to use sex as a block?
+:::
+
 
 ## Covariates in the model {auto-animate=true}
 
@@ -273,12 +294,32 @@ $$ \text{pig growth} \sim \textcolor{red}{\text{farm}} + \textcolor{black}{\text
 
 Just include the block as a predictor in the model, and interpret the treatment effects (here we assume that we intentionally surveyed several islands to consider them as blocks)
 
+::: panel-tabset
+### GLM table
 $$ \text{body mass} \sim \textcolor{red}{\text{island}} + \textcolor{black}{\text{species}} $$
 ```{r}
 fit02 <- lm(body_mass_g ~ species + island, data = penguins)
 summary(fit02) |>
     gtsummary::tbl_regression()
+
 ```
+
+### ANOVA table
+
+$$ \text{body mass} \sim \textcolor{red}{\text{island}} + \textcolor{black}{\text{species}} $$
+
+```{r}
+anova(fit02) |>
+    anova_summary() |>
+    select(-ges) |>
+    gt()
+```
+
+:::
+
+::: fragment
+Importantly, each level of the block (e.g. island) must have **all levels of the treatment** (e.g. species) for the model to work properly.
+:::
 
 ## Missing data in blocking
 
@@ -294,12 +335,12 @@ summary(fit02) |>
 
 - If we have missing data in blocking, that is ok.
 - But if we have missing treatment levels in a block, we cannot estimate the variance of the block effect effectively!
-- We can still block the data... by defining the block as a **random effect** in the model, i.e. think of it as a **covariate** that we cannot control.
+- We can still block the data... by defining the block as a **random effect** in the model, i.e. think of it as a **covariate** that we cannot control. **This does not repair the confounding effect of the missing treatment levels, but it allows us to estimate other treatment effects in the model.**
 :::
 
 # Random effects
 
-## Implementation
+## Implementation {auto-animate=true}
 
 We assume that the block is a random effect, and that the levels of the block are a random sample from a larger population of possible levels. 
 
@@ -314,6 +355,10 @@ $$ \text{kangaroo abundance} \sim \textcolor{red}{\text{(1 | time of day)}} + \t
 
 Therefore, we assume that the observed blocks are a random **sample** from a *larger* population of possible times of day, and that the **block effects** (not the times of day themselves) are normally distributed. In some cases we see the formula written as:
 :::
+
+## Implementation {auto-animate=true}
+
+$$ \text{kangaroo abundance} \sim \textcolor{red}{\text{(1 | time of day)}} + \text{habitat} $$
 
 ::: fragment
 $$ \text{response} \sim \textcolor{red}{\text{(1|block)}} + \text{treatment} $$
@@ -342,7 +387,7 @@ $$
 
 - For random block effects to work, we need a minimum of **two levels** of treatment within each block. 
 - If we only have one level of treatment within each block (e.g. all the controls are within a block), we cannot estimate the variance of the block effect, and so the model will not converge!
-- One way to fix this is to **combine blocks** to ensure that there are at least two levels of treatment within each block.
+- One way to fix this is to **combine blocks** to ensure that there are at least two levels of treatment within each block. **This MUST be done at experiment design stage, not after the fact!**
 
 ![](assets/rb2.svg){fig-align="center"}
 
@@ -350,7 +395,7 @@ $$
 
 - For random block effects to work, we need a minimum of **two levels** of treatment within each block. 
 - If we only have one level of treatment within each block (e.g. all the controls are within a block), we cannot estimate the variance of the block effect, and so the model will not converge!
-- One way to fix this is to **combine blocks** to ensure that there are at least two levels of treatment within each block.
+- One way to fix this is to **combine blocks** to ensure that there are at least two levels of treatment within each block. **This MUST be done at experiment design stage, not after the fact!**
 
 ![](assets/rb3.svg){fig-align="center"}
 
@@ -427,6 +472,7 @@ $$ \text{body mass} \sim \textcolor{red}{\text{species}} + \textcolor{blue}{\tex
 
 ::: columns
 ::: {.column width="50%"}
+#### Regression
 ```{r}
 fit03 <- lm(body_mass_g ~  bill_length_mm + species, data = penguins)
 summary(fit03) |>
@@ -486,8 +532,7 @@ emmeans(fit03, pairwise ~ species) |>
 :::
 :::
 
-# Interpretation: live demonstration in R
-... and Jamovi, if there is time
+
 
 
 # Thanks!
