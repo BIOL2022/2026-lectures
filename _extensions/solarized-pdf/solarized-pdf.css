@@ -17,7 +17,9 @@ html.solarized-pdf .reveal .backgrounds .slide-background:first-child {
 }
 
 html.solarized-pdf .reveal .slides section#title-slide,
-html.solarized-pdf .reveal .slides section#title-slide * {
+html.solarized-pdf .reveal .slides section#title-slide *,
+html.solarized-pdf .reveal .slides section.title-slide.level1,
+html.solarized-pdf .reveal .slides section.title-slide.level1 * {
   color: #000000 !important;
   opacity: 1 !important;
 }
