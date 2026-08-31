@@ -82,10 +82,6 @@ Use an **ANOVA summary** and *also* interpret the **post-hoc tests** to figure o
 #| cache: true
 
 fit02 <- lm(body_mass_g ~ species + sex, data = penguins)
-# car::Anova(fit02) |>
-#     gt(rowname_col = "row") |>
-#     gt::fmt_missing(missing_text = "") |>
-#     gt::fmt_number(columns = everything(), decimals = 3)
 car::Anova(fit02) |>
     anova_summary() |>
     select(-ges) |>
@@ -98,11 +94,6 @@ car::Anova(fit02) |>
 ```{r}
 #| cache: true
 #| fig-height: 4
-# emmeans(fit02, pairwise ~ species)$contrasts |>
-#   as_tibble() %>%
-#   # round all cells to 3 decimal places
-#   mutate_if(is.numeric, ~round(., 3)) |>
-#   gt()
 
 p1 <- emmeans(fit02, pairwise ~ species) |>
   plot() +
@@ -158,6 +149,8 @@ emmeans(fit03, pairwise ~ species) |>
 
 # Modelling + study design
 
+## Updating a model
+
 > Block what you can; randomise what you cannot.
 
 -- George Box (1978), on the design of experiments. [Source](https://williamghunter.net/george-box-articles/must-we-randomize-our-experiment)
@@ -185,13 +178,13 @@ Sometimes...
 
 ## The concept of "control" in a model
 
-It turns out that we *can* **plan our data collection** in a way that if certain variables are of not interest but are likely to affect our response variable, we can include their effects in their model as **control variables**.
+It turns out that we *can* **plan our data collection** in a way that if certain variables are not of interest but are likely to affect our response variable, we can include their effects in our model as **control variables**.
 
 ::: fragment
 These variables have special names (but in the end they are just predictors in the model):
 
-- **COVARIATE**: variables that are likely to affect the response variable, yet we **cannot control** them. i.e. they can only be measured. Most likely **continuous**, but can be **categorical**.
-- **BLOCK**: variables that are likely to affect the response variable, but we are able to **control** them. i.e. we can manipulate them. Most likely **categorical**.
+- **COVARIATE**: variables that are likely to affect the response variable, yet we **cannot control** them. i.e. they are **measured**, not assigned. Most likely **continuous**, but can be **categorical**.
+- **BLOCK**: nuisance factors that are likely to affect the response variable, and that we account for by **allocating (replicating) treatments within each of their levels**. Most likely **categorical**.
 
 :::
 
@@ -207,15 +200,15 @@ Measured before, during or after the experiment, and not manipulated.
 
 ## Example: lake species diversity
 
-We want to measure species diversity in lakes (that are influenced by aquaculture) but the size of the lake can affect the diversity of species (e.g. larger lakes can support more species).
+We want to measure the effect of aquaculture exposure on species diversity in lakes, but the size of the lake can also affect the diversity of species (e.g. larger lakes can support more species).
 
 ![Three Ethiopian lakes. March 29, 2022. Source: [NASA Earth Observatory](https://earthobservatory.nasa.gov/images/150449/a-trio-of-ethiopian-lakes).](assets/3lakes.jpg){fig-align="center"}
 
 ::: {.fragment}
 
-$$ \text{species diversity} \sim \textcolor{red}{\text{lake size}} + \textcolor{black}{\text{species diversity}} $$
+$$ \text{species diversity} \sim \textcolor{red}{\text{lake size}} + \textcolor{black}{\text{aquaculture exposure}} $$
 
-What is the effect of lake size on species diversity, *if we control for the effects of lake size*?
+What is the effect of aquaculture exposure on species diversity, *if we control for the effects of lake size*?
 
 :::
 
@@ -241,12 +234,12 @@ summary(fit01) |>
     gtsummary::tbl_regression()
 ```
 
-We *only* interpret the effect of the species on the body mass. The effect of sex is ignored.
+We *only* interpret the effect of the species on the body mass. The effect of sex is adjusted for, but is not the focus of interpretation.
 :::
 
 # Block
 
-Same concept as covariate, but manipulated by the experimenter, and so is *part* of the study design.
+Same concept as covariate, but because we can plan for it -- allocating treatments within block levels -- it is *part* of the study design.
 
 ## Planning the study to include blocking
 ![](assets/rcbd.svg)
@@ -254,19 +247,19 @@ Same concept as covariate, but manipulated by the experimenter, and so is *part*
 ## How blocking works
 
 - We recognise that data may be collected in groups that are location-specific, time-specific, etc.
-- "Blocking" on these groups essentially means **repeating the experiment within each group**, and therefore removing within-group variance.
-- Thus within-block effects are minimised, allowing us to focus on between-treatment effects.
+- "Blocking" on these groups essentially means **replicating every treatment within each group**, so that treatment comparisons are made **within blocks**.
+- The variation **among blocks** is then partitioned from the residual error, allowing us to focus on between-treatment effects.
 - **Doing this requires careful planning of the study design since blocking cannot be implemented/measured after the study is done**.
 
 
 ## Example: temporal block
 
-We want to measure the abundance of kangaroos between different habitats, but we know that the time of day can affect the number of kangaroos we see (e.g. more kangaroos are active in the morning). We can use **time of day as a block** and ensure that we sample each habitat at pre-determined times.
+We want to measure the abundance of kangaroos between different habitats, but we know that the time of day can affect the number of kangaroos we see (e.g. more kangaroos are active in the morning). We can use **time of day as a block** and ensure that every habitat is sampled within each time of day.
 
 $$ \text{kangaroo abundance} \sim \textcolor{red}{\text{time of day}} + \textcolor{black}{\text{habitat}} $$
 
 ## Example: "worker" block
-We want to determine the influence of a new fertiliser on plant growth in a large farm, and so hire multiple workers to apply the fertiliser. We can use the **worker as a block** and ensure that each worker applies the fertiliser to each plot.
+We want to determine the influence of a new fertiliser on plant growth in a large farm, and so hire multiple workers to apply the fertiliser. We can use the **worker as a block** and ensure that every fertiliser treatment is applied within each worker's set of plots.
 
 $$ \text{plant growth} \sim \textcolor{red}{\text{worker}} + \textcolor{black}{\text{fertiliser}} $$
 
@@ -313,13 +306,13 @@ We assume that the block is a random effect, and that the levels of the block ar
 ::: fragment
 $$ \text{kangaroo abundance} \sim \textcolor{red}{\text{time of day}} + \text{habitat} $$
 
-$$becomes$$
+becomes
 :::
 
 ::: fragment
-$$ \text{kangaroo abundance} \sim \textcolor{red}{\text{error(time of day)}} + \text{habitat} $$
+$$ \text{kangaroo abundance} \sim \textcolor{red}{\text{(1 | time of day)}} + \text{habitat} $$
 
-Therefore, we assume that the sample of time values is a **covariate** that comes from a *larger* population of time of days that are normally distributed. In some cases we see the formula written as:
+Therefore, we assume that the observed blocks are a random **sample** from a *larger* population of possible times of day, and that the **block effects** (not the times of day themselves) are normally distributed. In some cases we see the formula written as:
 :::
 
 ::: fragment
@@ -331,8 +324,8 @@ $$ \text{response} \sim \textcolor{red}{\text{(1|block)}} + \text{treatment} $$
 The statistical model will no longer assign a coefficient to the block, but will estimate the variance of the block effect. This variance is then used to estimate the standard error of the treatment effect. **Basically, the block is now *lumped* into the error term.**
 
 $$
-\text{response} = \beta_0 + \textcolor{red}{b \cdot \text{block}} + \beta_1\,\text{treatment} + \epsilon \\
-\textcolor{black}{\text{where}\ b \sim \mathcal{N}(0, \sigma^2_b)}
+\text{response} = \beta_0 + \textcolor{red}{b_j} + \beta_1\,\text{treatment} + \epsilon \\
+\textcolor{black}{\text{where}\ b_j \sim \mathcal{N}(0, \sigma^2_b)}
 $$
 
 :::
@@ -372,11 +365,11 @@ $$ y \sim x_1 + x_2 $$
 ::: fragment
 ### When both predictors are [CONTINUOUS]{style="color:blue"}, but one is a [COVARIATE]{style="color:red"}
 
-$$ \text{body mass} \sim \textcolor{red}{\text{error(flipper length)}} + \textcolor{blue}{\text{bill length}} $$
+$$ \text{body mass} \sim \textcolor{red}{\text{flipper length}} + \textcolor{blue}{\text{bill length}} $$
 
 ~~Use a **regression summary** and interpret beta ($\beta$) coefficients:~~
 
-Ignore the covariate effect and interpret the remaining coefficients.
+Adjust for the covariate effect and interpret the remaining coefficients; the covariate itself is not the focus of interpretation.
 
 ```{r}
 #| cache: true
@@ -400,7 +393,7 @@ $$ \text{body mass} \sim \textcolor{red}{\text{island}} + \textcolor{orange}{\te
 
 ~~Use an **ANOVA summary** and *also* interpret the **post-hoc tests** to figure out where the differences are:~~
 
-Ignore the block effect and interpret the remaining coefficients.
+Adjust for the block effect and interpret the remaining coefficients; the block itself is not the focus of interpretation.
 
 ::: columns
 ::: {.column width="50%"}
@@ -408,10 +401,6 @@ Ignore the block effect and interpret the remaining coefficients.
 #| cache: true
 #| fig-height: 2.5
 fit02 <- lm(body_mass_g ~ species + island, data = penguins)
-# car::Anova(fit02) |>
-#     gt(rowname_col = "row") |>
-#     gt::fmt_missing(missing_text = "") |>
-#     gt::fmt_number(columns = everything(), decimals = 3)
 car::Anova(fit02) |>
     anova_summary() |>
     select(-ges) |>
@@ -431,7 +420,7 @@ plot(emmeans(fit02, pairwise ~ species))
 
 $$ y \sim x_1 + x_2 $$
 
-### When both predictors are [CONTINUOUS]{style="color:blue"} and [CATEGORICAL]{style="color:orange"} but one is a BLOCK
+### When both predictors are [CONTINUOUS]{style="color:blue"} and [CATEGORICAL]{style="color:orange"}, but one is a [BLOCK]{style="color:red"}
 
 ::: fragment
 $$ \text{body mass} \sim \textcolor{red}{\text{species}} + \textcolor{blue}{\text{bill length}} $$
@@ -464,11 +453,11 @@ car::Anova(fit03) |>
 $$ y \sim x_1 + x_2 $$
 
 
-### When both predictors are [CONTINUOUS]{style="color:blue"} and [CATEGORICAL]{style="color:orange"} but one is a COVARIATE
+### When both predictors are [CONTINUOUS]{style="color:blue"} and [CATEGORICAL]{style="color:orange"}, but one is a [COVARIATE]{style="color:red"}
 
 ::: fragment
 
-$$ \text{body mass} \sim \textcolor{blue}{\text{error(bill length)}} + \textcolor{orange}{\text{species}} $$
+$$ \text{body mass} \sim \textcolor{red}{\text{bill length}} + \textcolor{orange}{\text{species}} $$
 
 ::: columns
 ::: {.column width="50%"}
