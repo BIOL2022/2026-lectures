@@ -1,7 +1,8 @@
 ---
 title: "Revision: Module 1"
 subtitle: "BIOL2022 - L05b"
-draft: true
+revealjs-plugins:
+  - solarized-pdf
 author:
   - name: Dr Januar Harianto
     affiliations: The University of Sydney
@@ -131,10 +132,6 @@ ggplot(penguins, aes(x = body_mass_g, y = flipper_length_mm)) +
 
 ### When the predictor is [CATEGORICAL]{style="color:orange"}
 
-## Modelling in a nutshell {auto-animate=true}
-
-### When the predictor is [CATEGORICAL]{style="color:orange"}
-
 ```{r}
 p1 <- ggplot(penguins, aes(y = body_mass_g, x = species)) +
     geom_boxplot() +
@@ -143,6 +140,10 @@ p1
 ```
 
 ## Modelling in a nutshell
+
+### $response \sim x$
+
+> The *response* can be explained by *a predictor*.
 
 ### When the predictor is [CATEGORICAL]{style="color:orange"}
 

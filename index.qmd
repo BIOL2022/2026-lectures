@@ -53,6 +53,7 @@ title: "BIOL2022 2026 Lectures"
 
 <div class="lec-grid">
 <div class="lec-card"><a href="lectures/L05a-blocking-fixed-random/index.html"><span class="lec-title">Control variables, fixed and random effects</span><img src="assets/thumbnails/L05a-blocking-fixed-random.png" alt="Control variables, fixed and random effects"></a><a class="lec-pdf" href="lectures/L05a-blocking-fixed-random/slides.pdf">PDF slides</a> <a class="lec-pdf" href="lectures/L05a-blocking-fixed-random/slides-solarized.pdf">PDF slides (solarised)</a></div>
+<div class="lec-card"><a href="lectures/L05b-revision/index.html"><span class="lec-title">Revision: Module 1</span><img src="assets/thumbnails/L05b-revision.png" alt="Revision: Module 1"></a><a class="lec-pdf" href="lectures/L05b-revision/slides.pdf">PDF slides</a> <a class="lec-pdf" href="lectures/L05b-revision/slides-solarized.pdf">PDF slides (solarised)</a></div>
 </div>
 
 </div>
