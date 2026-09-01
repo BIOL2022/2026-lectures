@@ -1,6 +1,7 @@
 ---
 title: Control, fixed and random variables
 subtitle: "BIOL2022 - L05a"
+chalkboard: true
 revealjs-plugins:
   - solarized-pdf
 author:
