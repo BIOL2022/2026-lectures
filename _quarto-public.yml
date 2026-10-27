@@ -15,7 +15,10 @@ project:
     - "lectures/L04c-model-transformations/index.qmd"
     - "lectures/L05a-blocking-fixed-random/index.qmd"
     - "lectures/L05b-revision/index.qmd"
+    - "lectures/L12b-exam-revision/index.qmd"
   resources:
+    - "lectures/L12b-exam-revision/slides.pdf"
+    - "lectures/L12b-exam-revision/slides-solarized.pdf"
     - "lectures/L03a-model-appropriate/slides.pdf"
     - "lectures/L03a-model-appropriate/slides-solarized.pdf"
     - "lectures/L03b-ttests/slides.pdf"

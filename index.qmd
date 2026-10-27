@@ -56,4 +56,11 @@ title: "BIOL2022 2026 Lectures"
 <div class="lec-card"><a href="lectures/L05b-revision/index.html"><span class="lec-title">Revision: Module 1</span><img src="assets/thumbnails/L05b-revision.png" alt="Revision: Module 1"></a><a class="lec-pdf" href="lectures/L05b-revision/slides.pdf">PDF slides</a> <a class="lec-pdf" href="lectures/L05b-revision/slides-solarized.pdf">PDF slides (solarised)</a></div>
 </div>
 
+
+## Week 12: Exam revision
+
+<div class="lec-grid">
+<div class="lec-card"><a href="lectures/L12b-exam-revision/index.html"><span class="lec-title">Wednesday: Exam revision Part 1</span><img src="assets/thumbnails/L12b-exam-revision.png" alt="Final exam guide title slide"></a><a class="lec-pdf" href="lectures/L12b-exam-revision/slides.pdf">PDF slides</a> <a class="lec-pdf" href="lectures/L12b-exam-revision/slides-solarized.pdf">PDF slides (solarised)</a></div>
+</div>
+
 </div>
